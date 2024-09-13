@@ -1,11 +1,10 @@
-import { NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import GoogleProvider from "next-auth/providers/google"
+import type { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 import { db } from "../database";
 
-
-const authConfig : NextAuthOptions = {
-  callbacks: {
+const authConfig: NextAuthOptions = {
+	callbacks: {
 		session: ({ session, user }) => ({
 			...session,
 			user: {
@@ -16,14 +15,14 @@ const authConfig : NextAuthOptions = {
 	},
 	adapter: PrismaAdapter(db),
 	providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-  ],
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID as string,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+		}),
+	],
 	session: {
-		maxAge: 30 * 24 * 60 * 60, 
+		maxAge: 30 * 24 * 60 * 60,
 	},
-} 
+};
 
 export { authConfig };
