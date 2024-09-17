@@ -31,7 +31,11 @@ describe("Authentication Tests", () => {
 			const session = useSession();
 
 			expect(useSession).toHaveBeenCalled();
-			expect(session).toEqual(mockUseSession);
+			expect(session.data?.user.name).toEqual("John Doe");
+			expect(session.data?.user.email).toEqual("john.doe@neu.edu.ph");
+			expect(session.data?.user.image).toEqual("https://example.com/image.jpg");
+			expect(session.data?.expires).toEqual("some-future-date");
+			expect(session.status).toEqual("authenticated");
 		});
 
 		it("should return unauthenticated result if no session", () => {
@@ -45,7 +49,8 @@ describe("Authentication Tests", () => {
 			const session = useSession();
 
 			expect(useSession).toHaveBeenCalled();
-			expect(session).toEqual(mockUseSession);
+			expect(session.data).toBeNull();
+			expect(session.status).toEqual("unauthenticated");
 		});
 	});
 
@@ -64,7 +69,9 @@ describe("Authentication Tests", () => {
 			const session = await getServerAuthSession();
 
 			expect(getServerSession).toHaveBeenCalledWith(authConfig);
-			expect(session).toEqual(mockSession);
+			expect(session?.user.id).toEqual("user-id");
+			expect(session?.user.name).toEqual("John Doe");
+			expect(session?.user.email).toEqual("johndoe@example.com");
 		});
 
 		it("should return null if no session", async () => {
