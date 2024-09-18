@@ -2,6 +2,9 @@
 	"preset": "ts-jest",
 	"testEnvironment": "node",
 	"unmockedModulePathPatterns": ["<rootDir>/node_modules"],
-	"testMatch": ["**/tests/**/?(*.)+(spec|test).js?(x)", "**/tests/**/?(*.)+(spec|test).ts?(x)"],
+	"testMatch": [
+		"<rootDir>/src/**/__test__/**/*.(spec|test).js?(x)",
+		"<rootDir>/src/**/__test__/**/*.(spec|test).ts?(x)"
+	],
 	"verbose": true
 }

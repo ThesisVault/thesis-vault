@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-import { authConfig } from "../src/shared/infrastructure/authentication/config";
-import { getServerAuthSession } from "../src/shared/infrastructure/authentication/index";
+import { authConfig } from "../config";
+import { getServerAuthSession } from "../index";
 
 jest.mock("next-auth", () => ({
 	getServerSession: jest.fn(),
