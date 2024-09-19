@@ -1,6 +1,10 @@
-## **Related Issues/Tasks (for linking the Jira Task here)**
+## **Related Issues/Tasks**
 
-***Example: [LM-X](https://vgonzales5157.atlassian.net/browse/LM-17?atlOrigin=eyJpIjoiZmVhNmE4NGQ0Zjg1NGYyZGExMjEyNjc0NDIxMTQ2MWEiLCJwIjoiaiJ9)***
+- Link your jira task here e.g. [LM-X](link)
+
+## PR Question
+**Do you have specific questions or issues you would like to address with the reviewer?**
+- Respond with "none" if nothing applies
 
 ## Description
 - "Provide a brief description of the changes made."
