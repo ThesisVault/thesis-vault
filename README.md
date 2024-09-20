@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Project Description
+This is a Library Management System built to simplify the management of resources, users, and library operations. It enables librarians to track loans, returns, and catalog updates efficiently. The system is designed with scalability and maintainability in mind.
 
-## Getting Started
+## Design Pattern
+The project follows Clean Architecture and Domain-Driven Design (DDD) principles.
 
-First, run the development server:
+# Project Setup Instructions
+
+Follow these steps to clone and set up the project using `pnpm`, configure the environment variables, and set up the database and authentication.
+
+### 1. Clone the Repository
+
+Start by cloning the repository from GitHub to your local machine:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+git clone https://github.com/KuroXI/library-management.git
+cd library-management
+```
+
+### 2. Install Dependencies
+
+After cloning the repository, run the following command to install the required packages:
+
+```bash
+pnpm install
+```
+
+### 3. Set Up Environment Variables
+
+You need to create a .env file based on the provided .env.example. Copy the template file and update the environment variables accordingly:
+
+```bash
+cp .env.example .env
+```
+
+Update the values in the .env file with required variable keys (such as API keys, database credentials, etc.).
+
+### 4. Create a Supabase PostgreSQL Database
+
+Follow these steps to create a PostgreSQL database using Supabase:
+
+1. Go to [Supabase](https://supabase.com/), sign in, and create a new project.
+2. Once the project is created, go to the Database project, click connect, select URI copy your database URL.
+3. Update the .env file with your supabase database credentials and replace [YOUR-PASSWORD] with your database password, typically:
+```env
+DATABASE_URL="postgresql://postgres.[USERNAME]:[YOUR-PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+```
+
+### 5. Create Google OAuth Credentials
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project
+3. Navigate to APIs & Services > Credentials.
+4. Click Create Credentials, then select OAuth 2.0 Client IDs.
+5. Configure the OAuth consent screen and choose Web application as the application type.
+6. Add your authorized redirect URIs 
+```
+http://localhost:3000/api/auth/callback/google
+```
+8. After creating the credentials, copy the Client ID and Client Secret.
+9. Add them to your .env file:
+```
+GOOGLE_CLIENT_ID="REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET="REPLACE_WITH_YOUR_GOOGLE_CLIENT_SECRET"
+```
+
+More reference: [How to create Google OAuth Credentials (Client ID and Secret)](https://youtu.be/OKMgyF5ezFs)
+
+### 6. Push Database Schema to your Database
+```bash
+pnpm db:push
+```
+
+Check your supabase project, tables should match schema.prisma if nothing happens, try replacing the port of your database URL to 5432 in your .env.
+
+### 7. Start Development Server
+```bash
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
