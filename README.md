@@ -1,12 +1,12 @@
 ## Project Description
-This is a Library Management System built to simplify the management of resources, users, and library operations. It enables librarians to track loans, returns, and catalog updates efficiently. The system is designed with scalability and maintainability in mind.
+This is a Library Management System built to simplify the management of resources, users, and library operations. It enables librarians to track resource transactions and catalog updates efficiently. The system is designed with scalability and maintainability in mind.
 
 ## Design Pattern
 The project follows Clean Architecture and Domain-Driven Design (DDD) principles.
 
 # Project Setup Instructions
 
-Follow these steps to clone and set up the project using `pnpm`, configure the environment variables, and set up the database and authentication.
+To clone and set up the project, please ensure you have [pnpm](https://pnpm.io/) installed. If you don’t have it yet, visit the pnpm website for [installation instructions](https://pnpm.io/installation) . Once you have pnpm, follow these steps to configure the environment variables and set up the database and authentication.
 
 ### 1. Clone the Repository
 
@@ -14,7 +14,7 @@ Start by cloning the repository from GitHub to your local machine:
 
 ```bash
 git clone https://github.com/KuroXI/library-management.git
-cd library-management
+cd ./library-management
 ```
 
 ### 2. Install Dependencies
