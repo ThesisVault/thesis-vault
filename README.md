@@ -1,5 +1,5 @@
 ## Project Description
-This is a Library Management System built to simplify the management of resources, users, and library operations. It enables librarians to track resource transactions and catalog updates efficiently. The system is designed with scalability and maintainability in mind.
+This is a Library Management System built to simplify the management of resources, users, and library operations. It enables librarians to efficiently manage resource catalogs, track resource loans, and returns. The system is designed with scalability and maintainability in mind.
 
 ## Design Pattern
 The project follows Clean Architecture and Domain-Driven Design (DDD) principles.
@@ -29,8 +29,14 @@ pnpm install
 
 You need to create a .env file based on the provided .env.example. Copy the template file and update the environment variables accordingly:
 
+`bash`
 ```bash
 cp .env.example .env
+```
+
+`cmd`
+```cmd
+copy .env.example .env
 ```
 
 Update the values in the .env file with required variable keys (such as API keys, database credentials, etc.).
