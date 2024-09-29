@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 import TailwindAnimate from "tailwindcss-animate";
-import TailwindShadCN from "./plugins/shadcn";
+import TailwindUI from "./plugins/ui";
 
 const config: Config = {
 	darkMode: ["class"],
@@ -9,6 +9,6 @@ const config: Config = {
 		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
-	plugins: [TailwindAnimate, TailwindShadCN],
+	plugins: [TailwindAnimate, TailwindUI],
 };
 export default config;

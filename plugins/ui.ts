@@ -1,7 +1,7 @@
 import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 
-const shadcn = plugin(
+const ui = plugin(
 	({ addBase }) => {
 		addBase({
 			"*": {
@@ -84,4 +84,4 @@ const shadcn = plugin(
 	},
 );
 
-export default shadcn;
+export default ui;
