@@ -4,8 +4,11 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 226.2 57% 21%;
+    --white: 0 0% 100%;
+    --custom-green: 120 60.7% 33.9%;
+    --black: 0 0% 0%;
+    --black-low: 0 0% 0% / 0.5;
+    --placeholder: 0 0% 41% / 0.80; 
 
     --card: 0 0% 100%;
     --card-foreground: 226.2 57% 21%;
@@ -28,7 +31,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 213.8 100% 96.9%;
 
-    --border: 213.3 96.9% 87.3%;
+    --border: 120 60.7% 33.9%/0.6;
     --input: 213.3 96.9% 87.3%;
     --ring: 226.2 57% 21%;
 
