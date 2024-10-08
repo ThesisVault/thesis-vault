@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
-import { cleanup, render, screen, fireEvent } from "@testing-library/react";
-import { Navbar } from "../../common/Navbar";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { Navbar } from "../../common/Navigationbar";
 
 afterEach(cleanup);
 
