@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { cleanup, render, screen, fireEvent } from "@testing-library/react";
-import { SearchBar } from "../SearchBar";
+import { SearchBar } from "../../home/SearchBar";
 
 afterEach(cleanup);
 
