@@ -1,10 +1,18 @@
 {
-	"preset": "ts-jest",
-	"testEnvironment": "node",
-	"unmockedModulePathPatterns": ["<rootDir>/node_modules"],
-	"testMatch": [
-		"<rootDir>/src/**/__test__/**/*.(spec|test).js?(x)",
-		"<rootDir>/src/**/__test__/**/*.(spec|test).ts?(x)"
-	],
-	"verbose": true
-}
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "unmockedModulePathPatterns": ["<rootDir>/node_modules"],
+    "testMatch": [
+        "<rootDir>/src/**/__test__/**/*.(spec|test).js?(x)",
+        "<rootDir>/src/**/__test__/**/*.(spec|test).ts?(x)"
+    ],
+	"verbose": true,
+	"transform": {
+	  "^.+\\.(ts|tsx)$": "ts-jest"
+	},
+	"transformIgnorePatterns": ["<rootDir>/node_modules/"],
+	"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+	"moduleNameMapper": {
+	  "^@/(.*)$": "<rootDir>/src/$1"
+	}
+  }
