@@ -4,11 +4,7 @@ import TailwindUI from "./plugins/ui";
 
 const config: Config = {
 	darkMode: ["class"],
-	content: [
-		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-		"./src/shared/components/**/*.{js,ts,jsx,tsx,mdx}",
-		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-	],
+	content: ["./src/**/*.tsx"],
 	plugins: [TailwindAnimate, TailwindUI],
 };
 export default config;

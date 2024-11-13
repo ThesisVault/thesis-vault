@@ -19,7 +19,7 @@ export const Navbar = () => {
 							<AlignJustify className="h-6 w-6 text-primary" />
 						</div>
 					</SheetTrigger>
-					<SheetContent side="left">
+					<SheetContent side="left" aria-describedby={undefined}>
 						<div className="py-5">
 							<div className="flex flex-col gap-2">
 								<SheetHeader className="flex items-center justify-center">
@@ -72,7 +72,7 @@ export const Navbar = () => {
 						<AvatarFallback>NY</AvatarFallback>
 					</Avatar>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" className="ml-3 mt-1 w-72">
+				<DropdownMenuContent align="end" className="ml-3 mt-1 w-72" aria-describedby={undefined}>
 					<Button variant="ghost" size="full" className="flex justify-around">
 						<Avatar className="w-20 h-20">
 							<AvatarImage src="https://img.freepik.com/free-psd/3d-rendering-avatar_23-2150833554.jpg?w=740&t=st=1727684407~exp=1727685007~hmac=d94e2a5c2e158613a4c66e0b4623ffba571b35d2be28981616569d772951be60" />
