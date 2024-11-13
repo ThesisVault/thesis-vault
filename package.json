@@ -11,6 +11,9 @@
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "test": "cross-env NODE_PATH=./src NODE_ENV=test NODE_OPTIONS='--max-old-space-size=2048' jest --config .jestrc.json",
+    "test:frontend": "jest --config .jestrc.json --selectProjects=jsdom-tests",
+    "test:backend": "jest --config .jestrc.json --selectProjects=node-tests --verbose",
+    "test:all": "pnpm test:frontend && pnpm test:backend",
     "format": "biome format --write ./src"
   },
   "dependencies": {
@@ -37,6 +40,7 @@
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
