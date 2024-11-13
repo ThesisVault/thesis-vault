@@ -1,12 +1,15 @@
 import { Result } from "@/shared/core/result";
 
 export class UserPermission {
-  private constructor(private readonly _value: number) {
-    this._value = _value;
+  private readonly _value: number
+  private static readonly MINIMUM_PERMISSION_BITS_VALUE = 0;
+  
+  private constructor(value: number) {
+    this._value = value;
   }
   
   public static create(permissionBits: number): Result<UserPermission> {
-    if (permissionBits < 0) {
+    if (permissionBits < UserPermission.MINIMUM_PERMISSION_BITS_VALUE) {
       return Result.fail("Permission value must be greater than 0");
     }
     

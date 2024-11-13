@@ -5,6 +5,8 @@ import { UserRole } from "@/modules/user/src/domain/models/user/classes/userRole
 import { Roles } from "@/shared/lib/types";
 
 describe("User", () => {
+  const createdAt = new Date();
+  const updatedAt = new Date();
   const userProps = {
     id: "user-id",
     name: UserName.create("Luis Bulatao").getValue(),
@@ -13,30 +15,30 @@ describe("User", () => {
     image: "profile-image-link.jpg",
     role: UserRole.create(Roles.ADMIN).getValue(),
     permissions: UserPermission.create(15).getValue(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: createdAt,
+    updatedAt: updatedAt,
   };
   
   it("should create a User", () => {
     const user = User.create(userProps);
     
     expect(user).toBeInstanceOf(User);
-    expect(user.id).toBe(userProps.id);
-    expect(user.name).toBe(userProps.name);
-    expect(user.email).toBe(userProps.email);
-    expect(user.image).toBe(userProps.image);
-    expect(user.role).toBe(userProps.role);
-    expect(user.permissions).toBe(userProps.permissions);
-    expect(user.createdAt).toBe(userProps.createdAt);
-    expect(user.updatedAt).toBe(userProps.updatedAt);
+    expect(user.id).toBe("user-id");
+    expect(user.name.value).toBe("Luis Bulatao");
+    expect(user.email).toBe("luis.bulatao@neu.edu.ph");
+    expect(user.image).toBe("profile-image-link.jpg");
+    expect(user.role.value).toBe("ADMIN");
+    expect(user.permissions.value).toBe(15);
+    expect(user.createdAt.toString()).toBe(createdAt.toString());
+    expect(user.updatedAt.toString()).toBe(updatedAt.toString());
   });
   
   it("should get correct values from getters", () => {
     const user = User.create(userProps);
     
-    expect(user.id).toBe(userProps.id);
-    expect(user.name).toBe(userProps.name);
-    expect(user.role).toBe(userProps.role);
-    expect(user.permissions).toBe(userProps.permissions);
+    expect(user.id).toBe("user-id");
+    expect(user.name.value).toBe("Luis Bulatao");
+    expect(user.role.value).toBe("ADMIN");
+    expect(user.permissions.value).toBe(15);
   });
 });

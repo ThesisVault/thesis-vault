@@ -25,11 +25,11 @@ export class User implements IUser {
 
   private constructor(props: IUser) {
     this._id = props.id;
-    this._name = props.name; // Logic
+    this._name = props.name;
     this._email = props.email;
     this._image = props.image;
-    this._role = props.role; // Logic
-    this._permission = props.permissions; // Logic
+    this._role = props.role;
+    this._permission = props.permissions;
     this._createdAt = props.createdAt;
     this._updatedAt = props.updatedAt;
   }

@@ -2,8 +2,10 @@ import { Result } from "@/shared/core/result";
 import { Roles } from "@/shared/lib/types";
 
 export class UserRole {
-  private constructor(private readonly _value: Roles) {
-    this._value = _value;
+  private readonly _value: Roles;
+  
+  private constructor(value: Roles) {
+    this._value = value;
   }
   
   public static create(userRole: string): Result<UserRole> {

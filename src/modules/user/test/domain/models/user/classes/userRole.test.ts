@@ -7,7 +7,7 @@ describe("UserRole", () => {
     
     expect(result.isSuccess).toBe(true);
     expect(result.getValue()).toBeInstanceOf(UserRole);
-    expect(result.getValue().value).toBe(Roles.ADMIN);
+    expect(result.getValue().value).toBe('ADMIN');
   });
   
   it("should fail if role is invalid", () => {

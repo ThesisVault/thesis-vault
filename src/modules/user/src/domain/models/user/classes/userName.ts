@@ -1,12 +1,15 @@
 import { Result } from "@/shared/core/result";
 
 export class UserName {
-  private constructor(private readonly _value: string) {
-    this._value = _value;
+  private readonly _value: string
+  private static readonly MAXIMUM_USERNAME_LENGTH = 60;
+  
+  private constructor(value: string) {
+    this._value = value;
   }
   
   public static create(userName: string): Result<UserName> {
-    if (userName.length > 60) {
+    if (userName.length > UserName.MAXIMUM_USERNAME_LENGTH) {
       return Result.fail("Username is limited to 60 characters long");
     }
     
