@@ -3,7 +3,7 @@ import { db } from "@/shared/infrastructure/database";
 import { User } from "@/modules/user/src/domain/models/user/classes/user";
 import { seedUser } from "@/modules/user/test/utils/seedUser";
 
-describe("UserRepository Integration Tests", () => {
+describe("Test User Repository getUserById", () => {
   let userRepository: UserRepository;
   
   beforeAll(async () => {

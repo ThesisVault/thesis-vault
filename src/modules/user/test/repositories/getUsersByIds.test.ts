@@ -13,7 +13,7 @@ const assertUser = (userValue: IUser, expectedUserValue: UserPersistence) => {
   expect(userValue!.permissionsValue).toBe(expectedUserValue.permissions);
 }
 
-describe("UserRepository Integration Tests", () => {
+describe("Test User Repository getUsersByIds", () => {
   let userRepository: UserRepository;
   
   beforeAll(async () => {
