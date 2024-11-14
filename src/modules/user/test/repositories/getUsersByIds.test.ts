@@ -4,17 +4,17 @@ import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
 import { seedUser } from "@/modules/user/test/utils/seedUser";
 import type { User as UserPersistence } from "@prisma/client"
 
+const assertUser = (userValue: IUser, expectedUserValue: UserPersistence) => {
+  expect(userValue!.id).toBe(expectedUserValue.id);
+  expect(userValue!.nameValue).toBe(expectedUserValue.name);
+  expect(userValue!.email).toBe(expectedUserValue.email);
+  expect(userValue!.image).toBe(expectedUserValue.image);
+  expect(userValue!.roleValue).toBe(expectedUserValue.role);
+  expect(userValue!.permissionsValue).toBe(expectedUserValue.permissions);
+}
+
 describe("UserRepository Integration Tests", () => {
   let userRepository: UserRepository;
-  
-  const assertUser = (userValue: IUser, expectedUserValue: UserPersistence) => {
-    expect(userValue!.id).toBe(expectedUserValue.id);
-    expect(userValue!.nameValue).toBe(expectedUserValue.name);
-    expect(userValue!.email).toBe(expectedUserValue.email);
-    expect(userValue!.image).toBe(expectedUserValue.image);
-    expect(userValue!.roleValue).toBe(expectedUserValue.role);
-    expect(userValue!.permissionsValue).toBe(expectedUserValue.permissions);
-  }
   
   beforeAll(async () => {
     userRepository = new UserRepository();
