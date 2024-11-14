@@ -14,6 +14,6 @@ describe("UserName", () => {
     const result = UserName.create(longName);
     
     expect(result.isFailure).toBe(true);
-    expect(result.getErrorMessage()).toBe("Username is limited to 60 characters long");
+    expect(result.getErrorMessage()).toBe(`Username is limited to ${UserName.MAXIMUM_USERNAME_LENGTH} characters long`);
   });
 });

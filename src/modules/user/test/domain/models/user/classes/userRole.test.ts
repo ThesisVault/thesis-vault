@@ -1,5 +1,5 @@
 import { UserRole } from "@/modules/user/src/domain/models/user/classes/userRole";
-import { Roles } from "@/shared/lib/types";
+import { Roles } from "@/modules/user/src/domain/models/user/permission/constant";
 
 describe("UserRole", () => {
   it("should create a UserRole instance with a valid role", () => {

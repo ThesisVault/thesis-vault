@@ -1,7 +1,7 @@
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { User } from "@/modules/user/src/domain/models/user/classes/user";
 import type { User as UserPersistence } from "@prisma/client"
-import { Roles } from "@/shared/lib/types";
+import { PermissionsBits, Roles } from "@/modules/user/src/domain/models/user/permission/constant";
 import { faker } from "@faker-js/faker";
 
 describe("UserMapper", () => {
@@ -15,7 +15,7 @@ describe("UserMapper", () => {
       emailVerified: null,
       image: faker.image.url(),
       role: faker.helpers.arrayElement(Object.values(Roles)),
-      permissions: faker.number.int({ min: 0, max: 4095, multipleOf: 2 }),
+      permissions: faker.number.int({ min: 0, max: PermissionsBits.ALL, multipleOf: 2 }),
       createdAt: faker.date.past(),
       updatedAt: faker.date.past(),
     };
@@ -26,9 +26,9 @@ describe("UserMapper", () => {
     
     expect(user).toBeInstanceOf(User);
     expect(user.id).toBe(mockUserData.id);
-    expect(user.name.value).toBe(mockUserData.name);
-    expect(user.permissions.value).toBe(mockUserData.permissions);
-    expect(user.role.value).toBe(mockUserData.role);
+    expect(user.nameValue).toBe(mockUserData.name);
+    expect(user.permissionsValue).toBe(mockUserData.permissions);
+    expect(user.roleValue).toBe(mockUserData.role);
   });
   
   it("should map to persistence from domain", () => {
@@ -36,8 +36,8 @@ describe("UserMapper", () => {
     const persistence = UserMapper.toPersistence(user);
     
     expect(persistence.id).toBe(user.id);
-    expect(persistence.name).toBe(user.name.value);
-    expect(persistence.permissions).toBe(user.permissions.value);
-    expect(persistence.role).toBe(user.role.value);
+    expect(persistence.name).toBe(user.nameValue);
+    expect(persistence.permissions).toBe(user.permissionsValue);
+    expect(persistence.role).toBe(user.roleValue);
   });
 });

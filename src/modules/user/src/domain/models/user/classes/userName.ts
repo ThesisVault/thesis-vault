@@ -2,7 +2,7 @@ import { Result } from "@/shared/core/result";
 
 export class UserName {
   private readonly _value: string
-  private static readonly MAXIMUM_USERNAME_LENGTH = 60;
+  public static readonly MAXIMUM_USERNAME_LENGTH = 60;
   
   private constructor(value: string) {
     this._value = value;

@@ -42,6 +42,10 @@ export class User implements IUser {
     return this._name;
   }
   
+  get nameValue(): string {
+    return this._name.value
+  }
+  
   get email(): string {
     return this._email;
   }
@@ -62,8 +66,16 @@ export class User implements IUser {
     return this._role;
   }
   
+  get roleValue(): string {
+    return this._role.value;
+  }
+  
   get permissions(): UserPermission {
     return this._permission;
+  }
+  
+  get permissionsValue(): number {
+    return this._permission.value;
   }
   
   public static create(props: IUser): User {

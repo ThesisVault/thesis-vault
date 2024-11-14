@@ -1,5 +1,5 @@
 import { Result } from "@/shared/core/result";
-import { Roles } from "@/shared/lib/types";
+import { Roles } from "@/modules/user/src/domain/models/user/permission/constant";
 
 export class UserRole {
   private readonly _value: Roles;

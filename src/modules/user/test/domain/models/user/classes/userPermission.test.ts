@@ -13,6 +13,13 @@ describe("UserPermission", () => {
     const result = UserPermission.create(-1);
     
     expect(result.isFailure).toBe(true);
-    expect(result.getErrorMessage()).toBe("Permission value must be greater than or equal 0");
+    expect(result.getErrorMessage()).toBe(`Permission value must be greater than or equal ${UserPermission.MINIMUM_PERMISSION_BITS_VALUE}`);
   });
+  
+  it("should fail if permissionBits is greater than maximum value", () => {
+    const result = UserPermission.create(UserPermission.MAXIMUM_PERMISSION_BITS_VALUE + 1);
+    
+    expect(result.isFailure).toBe(true);
+    expect(result.getErrorMessage()).toBe(`Permission value must be less than or equal ${UserPermission.MAXIMUM_PERMISSION_BITS_VALUE}`);
+  })
 });

@@ -1,4 +1,4 @@
-import type { Roles } from "@/shared/lib/types";
+import type { Roles } from "@/modules/user/src/domain/models/user/permission/constant";
 
 export interface UpdateUserRoleDTO {
   editorId: string;

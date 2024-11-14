@@ -1,6 +1,6 @@
 import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
 import { User } from "@/modules/user/src/domain/models/user/classes/user";
-import { Roles } from "@/shared/lib/types";
+import { PermissionsBits, Roles } from "@/modules/user/src/domain/models/user/permission/constant";
 import { faker } from "@faker-js/faker";
 
 describe("UserFactory", () => {
@@ -11,7 +11,7 @@ describe("UserFactory", () => {
     emailVerified: null,
     image: faker.image.url(),
     role: faker.helpers.arrayElement(Object.values(Roles)),
-    permissions: faker.number.int({ min: 0, max: 4095, multipleOf: 2 }),
+    permissions: faker.number.int({ min: 0, max: PermissionsBits.ALL, multipleOf: 2 }),
     createdAt: faker.date.past(),
     updatedAt: faker.date.past(),
   };
