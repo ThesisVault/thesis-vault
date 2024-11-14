@@ -9,7 +9,7 @@ describe("UserName", () => {
     expect(result.getValue().value).toBe("Luis Joshua");
   });
 
-  it("should fail if username exceeds 60 characters", () => {
+  it("should fail if username exceeds maximum characters", () => {
     const longName = "a".repeat(61);
     const result = UserName.create(longName);
     

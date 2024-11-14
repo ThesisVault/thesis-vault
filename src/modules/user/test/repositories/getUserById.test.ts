@@ -1,7 +1,6 @@
 import { UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { db } from "@/shared/infrastructure/database";
 import { Roles } from "@/shared/lib/types";
-import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { User } from "@/modules/user/src/domain/models/user/classes/user";
 import type { User as UserPersistence } from "@prisma/client"
 import { faker } from '@faker-js/faker';
@@ -52,21 +51,7 @@ describe("UserRepository Integration Tests", () => {
     expect(user.permissions.value).toBe(mockUserData.permissions);
   });
   
-  it("should return permission bits of a user", async () => {
-    const permissions = await userRepository.getUserPermissionBits(mockUserData.id);
-    expect(permissions).toBe(mockUserData.permissions);
-  });
-  
-  it("should update a user data", async () => {
-    const updatedUser = UserMapper.toDomain({
-      ...mockUserData,
-      email: "new.email@neu.edu.ph",
-    })
-    
-    const user = await userRepository.updateUser(updatedUser);
-    expect(user.email).toBe("new.email@neu.edu.ph");
-    
-    const shouldBeUpdatedUser = await userRepository.getUserById(mockUserData.id);
-    expect(shouldBeUpdatedUser.email).toBe("new.email@neu.edu.ph");
-  });
+  it("should throw an error when user was not found", async () => {
+    await expect(userRepository.getUserById("non-existing-id")).rejects.toThrow("No User found");
+  })
 });

@@ -1,41 +1,38 @@
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { User } from "@/modules/user/src/domain/models/user/classes/user";
-import { UserName } from "@/modules/user/src/domain/models/user/classes/userName";
-import { UserPermission } from "@/modules/user/src/domain/models/user/classes/userPermission";
-import { UserRole } from "@/modules/user/src/domain/models/user/classes/userRole";
+import type { User as UserPersistence } from "@prisma/client"
 import { Roles } from "@/shared/lib/types";
+import { faker } from "@faker-js/faker";
 
 describe("UserMapper", () => {
-  const userProps = {
-    id: "user-id",
-    name: UserName.create("Luis Bulatao").getValue(),
-    email: "luis.bulatao@neu.edu.ph",
-    emailVerified: null,
-    image: "profile-image-link.jpg",
-    role: UserRole.create(Roles.ADMIN).getValue(),
-    permissions: UserPermission.create(15).getValue(),
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  let mockUserData: UserPersistence;
+  
+  beforeEach(() => {
+    mockUserData = {
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      emailVerified: null,
+      image: faker.image.url(),
+      role: faker.helpers.arrayElement(Object.values(Roles)),
+      permissions: faker.number.int({ min: 0, max: 4095, multipleOf: 2 }),
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+    };
+  })
   
   it("should map to domain from persistence data", () => {
-    const rawData = {
-      ...userProps,
-      name: userProps.name.value,
-      permissions: userProps.permissions.value,
-      role: userProps.role.value
-    };
-    const user = UserMapper.toDomain(rawData);
+    const user = UserMapper.toDomain(mockUserData);
     
     expect(user).toBeInstanceOf(User);
-    expect(user.id).toBe(rawData.id);
-    expect(user.name.value).toBe(rawData.name);
-    expect(user.permissions.value).toBe(rawData.permissions);
-    expect(user.role.value).toBe(rawData.role);
+    expect(user.id).toBe(mockUserData.id);
+    expect(user.name.value).toBe(mockUserData.name);
+    expect(user.permissions.value).toBe(mockUserData.permissions);
+    expect(user.role.value).toBe(mockUserData.role);
   });
   
   it("should map to persistence from domain", () => {
-    const user = User.create(userProps);
+    const user = UserMapper.toDomain(mockUserData);
     const persistence = UserMapper.toPersistence(user);
     
     expect(persistence.id).toBe(user.id);

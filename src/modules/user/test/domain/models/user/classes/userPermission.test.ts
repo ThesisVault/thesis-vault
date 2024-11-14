@@ -13,6 +13,6 @@ describe("UserPermission", () => {
     const result = UserPermission.create(-1);
     
     expect(result.isFailure).toBe(true);
-    expect(result.getErrorMessage()).toBe("Permission value must be greater than 0");
+    expect(result.getErrorMessage()).toBe("Permission value must be greater than or equal 0");
   });
 });

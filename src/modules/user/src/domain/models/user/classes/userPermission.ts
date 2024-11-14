@@ -10,7 +10,7 @@ export class UserPermission {
   
   public static create(permissionBits: number): Result<UserPermission> {
     if (permissionBits < UserPermission.MINIMUM_PERMISSION_BITS_VALUE) {
-      return Result.fail("Permission value must be greater than 0");
+      return Result.fail(`Permission value must be greater than or equal ${UserPermission.MINIMUM_PERMISSION_BITS_VALUE}`);
     }
     
     return Result.ok(new UserPermission(permissionBits));

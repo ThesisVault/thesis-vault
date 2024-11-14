@@ -10,7 +10,7 @@ export class UserName {
   
   public static create(userName: string): Result<UserName> {
     if (userName.length > UserName.MAXIMUM_USERNAME_LENGTH) {
-      return Result.fail("Username is limited to 60 characters long");
+      return Result.fail(`Username is limited to ${UserName.MAXIMUM_USERNAME_LENGTH} characters long`);
     }
     
     return Result.ok(new UserName(userName));
