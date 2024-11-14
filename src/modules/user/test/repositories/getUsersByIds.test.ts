@@ -1,13 +1,13 @@
 import { UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { db } from "@/shared/infrastructure/database";
-import type { User } from "@/modules/user/src/domain/models/user/classes/user";
+import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
 import { seedUser } from "@/modules/user/test/utils/seedUser";
 import type { User as UserPersistence } from "@prisma/client"
 
 describe("UserRepository Integration Tests", () => {
   let userRepository: UserRepository;
   
-  const assertUser = (userValue: User, expectedUserValue: UserPersistence) => {
+  const assertUser = (userValue: IUser, expectedUserValue: UserPersistence) => {
     expect(userValue!.id).toBe(expectedUserValue.id);
     expect(userValue!.nameValue).toBe(expectedUserValue.name);
     expect(userValue!.email).toBe(expectedUserValue.email);

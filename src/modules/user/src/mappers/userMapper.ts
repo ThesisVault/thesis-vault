@@ -1,14 +1,13 @@
-import type { User as UserPersistence } from "@prisma/client"
-import type { User } from "@/modules/user/src/domain/models/user/classes/user"
+import type { Prisma, User as UserPersistence } from "@prisma/client"
+import type { IUser } from "@/modules/user/src/domain/models/user/classes/user"
 import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
-import type { Prisma } from "@prisma/client";
 
 export class UserMapper {
-  public static toDomain(rawData: UserPersistence): User {
+  public static toDomain(rawData: UserPersistence): IUser {
     return UserFactory.create(rawData).getValue();
   }
   
-  public static toPersistence(user: User): Prisma.UserCreateInput {
+  public static toPersistence(user: IUser): Prisma.UserCreateInput {
     return {
       id: user.id,
       name: user.name.value,
