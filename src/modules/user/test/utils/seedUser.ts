@@ -2,8 +2,6 @@ import { faker } from "@faker-js/faker";
 import { v4 as uuid } from "uuid";
 import { PermissionsBits, Roles } from "@/modules/user/src/domain/models/user/permission/constant";
 import { db } from "@/shared/infrastructure/database";
-import { UserMapper } from "@/modules/user/src/mappers/userMapper";
-import type { User } from "@/modules/user/src/domain/models/user/classes/user";
 import type { User as UserPersistence } from "@prisma/client"
 
 export const seedUser = async ({
@@ -16,7 +14,7 @@ export const seedUser = async ({
     permissions = faker.number.int({ min: 0, max: PermissionsBits.ALL, multipleOf: 2 }),
     createdAt = faker.date.past(),
     updatedAt = faker.date.past(),
-  }: Partial<UserPersistence>): Promise<User> => {
+  }: Partial<UserPersistence>): Promise<UserPersistence> => {
   const mockUserData = {
     id,
     name,
@@ -29,9 +27,7 @@ export const seedUser = async ({
     updatedAt,
   }
   
-  const user = await db.user.create({
+  return db.user.create({
     data: mockUserData
   })
-  
-  return UserMapper.toDomain(user);
 }
