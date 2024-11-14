@@ -2,7 +2,6 @@ import { UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { db } from "@/shared/infrastructure/database";
 import { User } from "@/modules/user/src/domain/models/user/classes/user";
 import { seedUser } from "@/modules/user/test/utils/seedUser";
-import type { User as UserPersistence } from "@prisma/client"
 
 describe("UserRepository Integration Tests", () => {
   let userRepository: UserRepository;
