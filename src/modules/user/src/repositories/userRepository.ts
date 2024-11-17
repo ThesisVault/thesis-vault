@@ -47,4 +47,33 @@ export class UserRepository implements IUserRepository {
 			isDeleted: false,
 		};
 	}
+
+	async updateUser(data: IUser): Promise<IUser | null> {
+		const updatedUser = await this.updateUsers([data]);
+
+		if (updatedUser.length === 0) {
+			return null;
+		}
+
+		return updatedUser[0];
+	}
+
+	async updateUsers(users: IUser[]): Promise<IUser[]> {
+		try {
+			const updatedUsersPersistence = await db.$transaction(
+				users.map((user) => {
+					return this._userDatabase.update({
+						data: UserMapper.toPersistence(user),
+						where: {
+							id: user.id,
+						},
+					});
+				}),
+			);
+
+			return updatedUsersPersistence.map((user) => UserMapper.toDomain(user));
+		} catch (error) {
+			return [];
+		}
+	}
 }

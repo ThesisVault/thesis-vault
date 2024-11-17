@@ -3,6 +3,7 @@ import { UserName } from "@/modules/user/src/domain/models/user/classes/userName
 import { UserPermission } from "@/modules/user/src/domain/models/user/classes/userPermission";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { faker } from "@faker-js/faker";
+import { createUserDomainObject } from "@/modules/user/tests/utils/createUserDomainObject";
 
 describe("User", () => {
 	const mockUserData = {
@@ -40,4 +41,14 @@ describe("User", () => {
 		expect(user.createdAt.toString()).toBe(mockUserData.createdAt.toString());
 		expect(user.updatedAt.toString()).toBe(mockUserData.updatedAt.toString());
 	});
+	
+	describe("updatePermissions", () => {
+		it("should update user permissions", () => {
+			const user = createUserDomainObject({});
+			const updatedUserPermission = UserPermission.create(Permissions.MANAGE_PERMISSION)
+			user.updateUserPermission(updatedUserPermission.getValue());
+			
+			expect(user.permissionsValue).toBe(Permissions.MANAGE_PERMISSION);
+		})
+	})
 });

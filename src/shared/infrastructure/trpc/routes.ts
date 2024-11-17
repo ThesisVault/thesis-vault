@@ -1,7 +1,8 @@
 import { createCallerFactory, router } from ".";
+import { userRouter } from "@/modules/user/src/infrastructure/http/routes/userRouter";
 
 export const appRouter = router({
-	// add router here
+  userRouter,
 });
 
 export type AppRouter = typeof appRouter;
