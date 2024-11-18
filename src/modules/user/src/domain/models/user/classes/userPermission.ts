@@ -1,4 +1,4 @@
-import { Permissions } from "@/modules/user/src/domain/models/user/shared/permission/permissions";
+import { Permissions } from "@/modules/user/src/shared/permissions";
 import { Result } from "@/shared/core/result";
 
 export class UserPermission {

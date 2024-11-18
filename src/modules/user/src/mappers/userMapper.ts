@@ -1,9 +1,9 @@
 import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
+import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
 import type {
 	IUserRawObject,
 	IUserSchemaObject,
-} from "@/modules/user/src/domain/models/user/constant";
-import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
+} from "@/modules/user/src/domain/models/user/shared/constant";
 
 export class UserMapper {
 	public static toDomain(rawData: IUserRawObject): IUser {
@@ -16,8 +16,11 @@ export class UserMapper {
 			name: user.name.value,
 			email: user.email,
 			image: user.image,
-			permissions: user.permissions.value,
-			role: user.role.value,
+			isSuperAdmin: user.isSuperAdmin,
+			allowPermissions: user.allowPermissionsValue,
+			denyPermissions: user.denyPermissionsValue,
+			isDeleted: user.isDeleted,
+			deletedAt: user.deletedAt,
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt,
 		};

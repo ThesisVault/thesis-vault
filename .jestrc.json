@@ -6,8 +6,8 @@
 			"displayName": "node-tests",
 			"testEnvironment": "node",
 			"testMatch": [
-				"<rootDir>/src/**/**/tests/**/*.(spec|test).js?(x)",
-				"<rootDir>/src/**/**/tests/**/*.(spec|test).ts?(x)"
+				"<rootDir>/**/**/tests/**/*.(spec|test).js?(x)",
+				"<rootDir>/**/**/tests/**/*.(spec|test).ts?(x)"
 			],
 			"transform": {
 				"^.+\\.(ts|tsx)$": "ts-jest"

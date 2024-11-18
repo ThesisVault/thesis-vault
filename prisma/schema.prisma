@@ -34,19 +34,35 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  name          String
-  email         String         @unique
-  emailVerified DateTime?
-  image         String
-  permissions   Int            @default(0)
-  role          UserRole       @default(GUEST)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  thesis        Thesis[]       @relation("ThesisAuthors")
-  sessions      Session[]
-  accounts      Account[]
-  auditLog      UserAuditLog[]
+  id               String         @id @default(uuid())
+  name             String
+  email            String         @unique
+  emailVerified    DateTime?
+  image            String
+  isSuperAdmin     Boolean        @default(false)
+  allowPermissions Int            @default(0)
+  denyPermissions  Int            @default(0)
+  roleId           String?
+  Role             Role?          @relation(fields: [roleId], references: [id])
+  isDeleted        Boolean        @default(false)
+  deletedAt        DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  thesis           Thesis[]       @relation("ThesisAuthors")
+  sessions         Session[]
+  accounts         Account[]
+  auditLog         UserAuditLog[]
+}
+
+model Role {
+  id          String    @id @default(uuid())
+  name        String
+  permissions Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isDeleted   Boolean   @default(false)
+  deletedAt   DateTime?
+  users       User[]    @relation
 }
 
 model UserAuditLog {
@@ -64,6 +80,8 @@ model Thesis {
   authors    User[]           @relation("ThesisAuthors")
   categories String[]
   auditLog   ThesisAuditLog[]
+  isDeleted  Boolean          @default(false)
+  deletedAt  DateTime?
   createdAt  DateTime         @default(now())
   updatedAt  DateTime         @updatedAt
 }
@@ -72,11 +90,4 @@ model ThesisAuditLog {
   id       String @id @default(uuid())
   thesisId String
   thesis   Thesis @relation(fields: [thesisId], references: [id])
-}
-
-enum UserRole {
-  ADMIN
-  LIBRARIAN
-  STUDENT
-  GUEST
 }

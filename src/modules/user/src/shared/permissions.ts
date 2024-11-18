@@ -20,3 +20,5 @@ export const Permissions = {
 	// ! UPDATE THIS WHENEVER YOU ADD NEW PERMISSION
 	ALL: (1 << 12) - 1,
 } as const;
+
+export type PermissionKeys = keyof typeof Permissions;

@@ -1,7 +1,5 @@
 import type { UserName } from "@/modules/user/src/domain/models/user/classes/userName";
 import type { UserPermission } from "@/modules/user/src/domain/models/user/classes/userPermission";
-import type { UserRole } from "@/modules/user/src/domain/models/user/classes/userRole";
-import type { Role } from "@/modules/user/src/domain/models/user/shared/permission/roles";
 
 export interface IUser {
 	id: string;
@@ -9,10 +7,14 @@ export interface IUser {
 	nameValue: string;
 	email: string;
 	image: string;
-	role: UserRole;
-	roleValue: Role;
-	permissions: UserPermission;
-	permissionsValue: number;
+	roleId: string | null;
+	isSuperAdmin: boolean;
+	allowPermissions: UserPermission;
+	allowPermissionsValue: number;
+	denyPermissions: UserPermission;
+	denyPermissionsValue: number;
+	isDeleted: boolean;
+	deletedAt: Date | null;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -22,8 +24,12 @@ export class User implements IUser {
 	private readonly _name: UserName;
 	private readonly _email: string;
 	private readonly _image: string;
-	private readonly _role: UserRole;
-	private readonly _permission: UserPermission;
+	private readonly _roleId: string | null;
+	private readonly _isSuperAdmin: boolean;
+	private readonly _allowPermissions: UserPermission;
+	private readonly _denyPermissions: UserPermission;
+	private readonly _isDeleted: boolean;
+	private readonly _deletedAt: Date | null;
 	private readonly _createdAt: Date;
 	private readonly _updatedAt: Date;
 
@@ -32,8 +38,12 @@ export class User implements IUser {
 		name,
 		email,
 		image,
-		role,
-		permissions,
+		roleId,
+		isSuperAdmin,
+		allowPermissions,
+		denyPermissions,
+		isDeleted,
+		deletedAt,
 		createdAt,
 		updatedAt,
 	}: {
@@ -41,8 +51,12 @@ export class User implements IUser {
 		name: UserName;
 		email: string;
 		image: string;
-		role: UserRole;
-		permissions: UserPermission;
+		roleId: string | null;
+		isSuperAdmin: boolean;
+		allowPermissions: UserPermission;
+		denyPermissions: UserPermission;
+		isDeleted: boolean;
+		deletedAt: Date | null;
 		createdAt: Date;
 		updatedAt: Date;
 	}) {
@@ -50,8 +64,12 @@ export class User implements IUser {
 		this._name = name;
 		this._email = email;
 		this._image = image;
-		this._role = role;
-		this._permission = permissions;
+		this._roleId = roleId;
+		this._isSuperAdmin = isSuperAdmin;
+		this._allowPermissions = allowPermissions;
+		this._denyPermissions = denyPermissions;
+		this._isDeleted = isDeleted;
+		this._deletedAt = deletedAt;
 		this._createdAt = createdAt;
 		this._updatedAt = updatedAt;
 	}
@@ -76,6 +94,38 @@ export class User implements IUser {
 		return this._image;
 	}
 
+	get roleId(): string | null {
+		return this._roleId;
+	}
+
+	get isSuperAdmin(): boolean {
+		return this._isSuperAdmin;
+	}
+
+	get allowPermissions(): UserPermission {
+		return this._allowPermissions;
+	}
+
+	get allowPermissionsValue(): number {
+		return this._allowPermissions.value;
+	}
+
+	get denyPermissions(): UserPermission {
+		return this._denyPermissions;
+	}
+
+	get denyPermissionsValue(): number {
+		return this._denyPermissions.value;
+	}
+
+	get isDeleted(): boolean {
+		return this._isDeleted;
+	}
+
+	get deletedAt(): Date | null {
+		return this._deletedAt;
+	}
+
 	get createdAt(): Date {
 		return this._createdAt;
 	}
@@ -84,29 +134,17 @@ export class User implements IUser {
 		return this._updatedAt;
 	}
 
-	get role(): UserRole {
-		return this._role;
-	}
-
-	get roleValue(): Role {
-		return this._role.value;
-	}
-
-	get permissions(): UserPermission {
-		return this._permission;
-	}
-
-	get permissionsValue(): number {
-		return this._permission.value;
-	}
-
 	public static create(props: {
 		id: string;
 		name: UserName;
 		email: string;
 		image: string;
-		role: UserRole;
-		permissions: UserPermission;
+		roleId: string | null;
+		isSuperAdmin: boolean;
+		allowPermissions: UserPermission;
+		denyPermissions: UserPermission;
+		isDeleted: boolean;
+		deletedAt: Date | null;
 		createdAt: Date;
 		updatedAt: Date;
 	}): User {
