@@ -47,6 +47,7 @@ describe("Test Role Repository getRolesByIds", () => {
 
 		assertRole(roles[0], seededRoleOne);
 		assertRole(roles[1], seededRoleTwo);
+		expect(roles[2]).toBeUndefined();
 	});
 
 	it("should retrieve deleted roles when includeDeleted is true", async () => {

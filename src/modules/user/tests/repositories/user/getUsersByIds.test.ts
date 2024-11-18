@@ -51,6 +51,7 @@ describe("Test User Repository getUsersByIds", () => {
 
 		assertUser(users[0], seededUserOne);
 		assertUser(users[1], seededUserTwo);
+		expect(users[2]).toBeUndefined();
 	});
 
 	it("should retrieve deleted roles when includeDeleted is true", async () => {
