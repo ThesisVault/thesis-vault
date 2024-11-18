@@ -1,5 +1,5 @@
+import type { IRoleRawObject } from "@/modules/user/src/domain/models/role/constant";
 import { RoleFactory } from "@/modules/user/src/domain/models/role/factory";
-import type { IRoleRawObject } from "@/modules/user/src/domain/models/role/shared/constant";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { faker } from "@faker-js/faker";
 import { v4 as uuid } from "uuid";

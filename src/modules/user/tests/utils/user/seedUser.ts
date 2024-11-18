@@ -1,4 +1,4 @@
-import type { IUserRawObject } from "@/modules/user/src/domain/models/user/shared/constant";
+import type { IUserRawObject } from "@/modules/user/src/domain/models/user/constant";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { db } from "@/shared/infrastructure/database";
 import { faker } from "@faker-js/faker";

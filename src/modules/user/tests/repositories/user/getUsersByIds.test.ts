@@ -1,5 +1,5 @@
 import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
-import type { IUserRawObject } from "@/modules/user/src/domain/models/user/shared/constant";
+import type { IUserRawObject } from "@/modules/user/src/domain/models/user/constant";
 import {
 	type IUserRepository,
 	UserRepository,

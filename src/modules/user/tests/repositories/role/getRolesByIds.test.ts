@@ -1,5 +1,5 @@
 import type { IRole } from "@/modules/user/src/domain/models/role/classes/role";
-import type { IRoleRawObject } from "@/modules/user/src/domain/models/role/shared/constant";
+import type { IRoleRawObject } from "@/modules/user/src/domain/models/role/constant";
 import {
 	type IRoleRepository,
 	RoleRepository,

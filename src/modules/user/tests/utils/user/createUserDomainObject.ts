@@ -1,5 +1,5 @@
+import type { IUserRawObject } from "@/modules/user/src/domain/models/user/constant";
 import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
-import type { IUserRawObject } from "@/modules/user/src/domain/models/user/shared/constant";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { faker } from "@faker-js/faker";
 import { v4 as uuid } from "uuid";

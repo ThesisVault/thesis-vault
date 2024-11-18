@@ -1,4 +1,4 @@
-import type { IRoleRawObject } from "@/modules/user/src/domain/models/role/shared/constant";
+import type { IRoleRawObject } from "@/modules/user/src/domain/models/role/constant";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { db } from "@/shared/infrastructure/database";
 import { faker } from "@faker-js/faker";

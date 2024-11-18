@@ -1,7 +1,7 @@
 import {
 	type IUserPermissionService,
 	UserPermissionService,
-} from "@/modules/user/src/domain/models/user/services/userPermissionService";
+} from "@/modules/user/src/domain/services/userPermissionService";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";

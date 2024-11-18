@@ -1,9 +1,9 @@
 import type { IRole } from "@/modules/user/src/domain/models/role/classes/role";
-import { RoleFactory } from "@/modules/user/src/domain/models/role/factory";
 import type {
 	IRoleRawObject,
 	IRoleSchemaObject,
-} from "@/modules/user/src/domain/models/role/shared/constant";
+} from "@/modules/user/src/domain/models/role/constant";
+import { RoleFactory } from "@/modules/user/src/domain/models/role/factory";
 
 export class RoleMapper {
 	public static toDomain(rawData: IRoleRawObject): IRole {

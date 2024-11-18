@@ -1,9 +1,9 @@
 import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
-import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
 import type {
 	IUserRawObject,
 	IUserSchemaObject,
-} from "@/modules/user/src/domain/models/user/shared/constant";
+} from "@/modules/user/src/domain/models/user/constant";
+import { UserFactory } from "@/modules/user/src/domain/models/user/factory";
 
 export class UserMapper {
 	public static toDomain(rawData: IUserRawObject): IUser {
