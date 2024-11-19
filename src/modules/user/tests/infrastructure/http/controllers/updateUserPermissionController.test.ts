@@ -9,7 +9,7 @@ import { faker } from "@faker-js/faker";
 describe("updateUserPermissionController", () => {
   const updateUserPermissionController = new UpdateUserPermissionController();
   
-  it("should throw an UnauthorizedError when the editor doesnt have a required permissions", async () => {
+  it("should throw an UnauthorizedError when the user who requested does not have a required permissions", async () => {
     const request: UpdateUserPermissionDTO = {
       allowPermission: 0,
       denyPermission: 0,

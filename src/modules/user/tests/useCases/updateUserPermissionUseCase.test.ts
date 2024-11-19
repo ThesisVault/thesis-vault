@@ -53,17 +53,17 @@ describe("UpdateUserPermissionUseCase", () => {
 	});
 	
 	it("should successfully update user permission and return userId", async () => {
-		const userToModifyPermission = await seedUser({
+		const seededUser = await seedUser({
 			allowPermissions: 0,
 		});
-		const userThatHasManagePermission = await seedUser({
+		const seededUserRequestedBy = await seedUser({
 			allowPermissions: Permissions.MANAGE_PERMISSION
 		});
 		const request: UpdateUserPermissionDTO = {
-			userId: userToModifyPermission.id,
-			requestedById: userThatHasManagePermission.id,
-			allowPermission: Permissions.UPDATE_USER | Permissions.MODIFY_THESIS,
-			denyPermission: 0,
+			userId: seededUser.id,
+			requestedById: seededUserRequestedBy.id,
+			allowPermission: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+			denyPermission: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
 		};
 		
 		const userId = await updateUserPermissionUseCase.execute(request);
@@ -72,5 +72,6 @@ describe("UpdateUserPermissionUseCase", () => {
 		const updatedUser = await userRepository.getUserById(request.userId);
 		expect(updatedUser!.id).toBe(request.userId);
 		expect(updatedUser!.allowPermissionsValue).toBe(request.allowPermission);
+		expect(updatedUser!.denyPermissionsValue).toBe(request.denyPermission);
 	});
 });

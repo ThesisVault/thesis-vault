@@ -44,7 +44,14 @@ describe("User", () => {
 	
 	describe("updatePermissions", () => {
 		it("should update user permissions", () => {
-			const user = createUserDomainObject({});
+			const user = createUserDomainObject({
+				allowPermissions: Permissions.MANAGE_PERMISSION,
+				denyPermissions: Permissions.UPDATE_USER
+			});
+			
+			expect(user.allowPermissionsValue).toBe(Permissions.MANAGE_PERMISSION);
+			expect(user.denyPermissionsValue).toBe(Permissions.UPDATE_USER);
+			
 			const newAllowPermission = UserPermission.create(Permissions.UPDATE_USER);
 			const newDenyPermission = UserPermission.create(Permissions.MANAGE_PERMISSION);
 			user.updatePermission(newAllowPermission.getValue(), newDenyPermission.getValue());

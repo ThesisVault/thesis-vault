@@ -1,4 +1,3 @@
-
 export interface UpdateUserPermissionDTO {
   userId: string;
   allowPermission: number;

@@ -37,7 +37,7 @@ export class UpdateUserPermissionUseCase {
 
 		const updatedUser = await this.userRepository.updateUser(user);
 		if (updatedUser === null) {
-			throw new UnexpectedError("Unexpected error occurred saving the updated user");
+			throw new UnexpectedError("Unexpected error occurred while saving the updated user");
 		}
 
 		return updatedUser.id;

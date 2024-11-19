@@ -23,7 +23,7 @@ export class UpdateUserPermissionController extends BaseController<UpdateUserPer
       throw new UnauthorizedError(`User ${request.requestedById} does not have MANAGE_PERMISSION permission`);
     }
     
-    const updatedUser = await this.updateUserPermissionUseCase.execute(request);
-    return this.ok(updatedUser);
+    const userId = await this.updateUserPermissionUseCase.execute(request);
+    return this.ok(userId);
   }
 }

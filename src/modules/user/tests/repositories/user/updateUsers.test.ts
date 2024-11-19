@@ -1,55 +1,62 @@
+import { Permissions } from "@/modules/user/src/shared/permissions";
 import { db } from "@/shared/infrastructure/database";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUserDomainObject";
+import { faker } from "@faker-js/faker";
 
 describe("UserRepository.updateUsers", () => {
-  let userRepository: UserRepository;
-  
-  beforeAll(async () => {
-    userRepository = new UserRepository();
-  });
-  
-  afterAll(async () => {
-    await db.$disconnect();
-  });
-  
-  it("should update multiple user with different properties", async () => {
-    const seededUser = await seedUser({});
-    const seededUserTwo = await seedUser({});
-    
-    const updatedUsers = await userRepository.updateUsers(
-      [
-        UserMapper.toDomain({
-          ...seededUser,
-          name: "Luis Joshua"
-        }),
-        UserMapper.toDomain({
-          ...seededUserTwo,
-          name: "John Doe"
-        })
-      ]
-    );
-    expect(updatedUsers.length).toBe(2);
-    expect(updatedUsers[0].id).toBe(seededUser.id);
-    expect(updatedUsers[0].nameValue).toBe("Luis Joshua");
-    expect(updatedUsers[1].id).toBe(seededUserTwo.id);
-    expect(updatedUsers[1].nameValue).toBe("John Doe");
-  });
-  
-  it("should return empty array when updating multiple user and 1 failed", async () => {
-    const seededUser = await seedUser({});
-    const nonExistingUser = createUserDomainObject({});
-    
-    const user = await userRepository.updateUsers([
-      UserMapper.toDomain({
-        ...seededUser,
-        name: "Luis Joshua"
-      }),
-      nonExistingUser
-    ]);
+	let userRepository: UserRepository;
 
-    expect(user.length).toBe(0);
-  })
+	beforeAll(async () => {
+		userRepository = new UserRepository();
+	});
+
+	afterAll(async () => {
+		await db.$disconnect();
+	});
+
+	it("should update multiple user with different properties", async () => {
+		const seededUser = await seedUser({});
+		const domainUser = UserMapper.toDomain({
+			...seededUser,
+			name: faker.person.fullName(),
+			allowPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+			denyPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+		});
+  
+		const seededUserTwo = await seedUser({});
+		const domainUserTwo = UserMapper.toDomain({
+			...seededUserTwo,
+			name: faker.person.fullName(),
+			allowPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+			denyPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+		});
+
+		const updatedUsers = await userRepository.updateUsers([domainUser, domainUserTwo]);
+  
+		expect(updatedUsers.length).toBe(2);
+		expect(updatedUsers[0].nameValue).toBe(domainUser.nameValue);
+		expect(updatedUsers[0].allowPermissionsValue).toBe(domainUser.allowPermissionsValue);
+		expect(updatedUsers[0].denyPermissionsValue).toBe(domainUser.denyPermissionsValue);
+		expect(updatedUsers[1].nameValue).toBe(domainUserTwo.nameValue);
+		expect(updatedUsers[1].allowPermissionsValue).toBe(domainUserTwo.allowPermissionsValue);
+		expect(updatedUsers[1].denyPermissionsValue).toBe(domainUserTwo.denyPermissionsValue);
+	});
+
+	it("should return empty array when updating multiple user and 1 failed", async () => {
+		const seededUser = await seedUser({});
+		const nonExistingUser = createUserDomainObject({});
+
+		const user = await userRepository.updateUsers([
+			UserMapper.toDomain({
+				...seededUser,
+				name: "Luis Joshua",
+			}),
+			nonExistingUser,
+		]);
+
+		expect(user.length).toBe(0);
+	});
 });
