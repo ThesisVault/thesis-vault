@@ -17,6 +17,7 @@ export interface IUser {
 	deletedAt: Date | null;
 	createdAt: Date;
 	updatedAt: Date;
+	updatePermission: (allowPermissions: UserPermission, denyPermissions: UserPermission) => void;
 }
 
 export class User implements IUser {
@@ -26,8 +27,8 @@ export class User implements IUser {
 	private readonly _image: string;
 	private readonly _roleId: string | null;
 	private readonly _isSuperAdmin: boolean;
-	private readonly _allowPermissions: UserPermission;
-	private readonly _denyPermissions: UserPermission;
+	private _allowPermissions: UserPermission;
+	private _denyPermissions: UserPermission;
 	private readonly _isDeleted: boolean;
 	private readonly _deletedAt: Date | null;
 	private readonly _createdAt: Date;
@@ -132,6 +133,11 @@ export class User implements IUser {
 
 	get updatedAt(): Date {
 		return this._updatedAt;
+	}
+	
+	public updatePermission(allowPermissions: UserPermission, denyPermissions: UserPermission): void {
+		this._allowPermissions = allowPermissions;
+		this._denyPermissions = denyPermissions;
 	}
 
 	public static create(props: {

@@ -6,6 +6,8 @@ import { db } from "@/shared/infrastructure/database";
 export interface IUserRepository {
 	getUserById(userId: string, options?: QueryOptions): Promise<IUser | null>;
 	getUsersByIds(userIds: string[], options?: QueryOptions): Promise<IUser[]>;
+	updateUser(data: IUser): Promise<IUser | null>;
+	updateUsers(users: IUser[]): Promise<IUser[]>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -39,10 +41,39 @@ export class UserRepository implements IUserRepository {
 
 		return usersRaw.map((user) => this._userMapper.toDomain(user));
 	}
+	
+	async updateUser(data: IUser): Promise<IUser | null> {
+		const updatedUser = await this.updateUsers([data]);
 
+		if (updatedUser.length === 0) {
+			return null;
+		}
+
+		return updatedUser[0];
+	}
+
+	async updateUsers(users: IUser[]): Promise<IUser[]> {
+		try {
+			const updatedUsersPersistence = await db.$transaction(
+				users.map((user) => {
+					return this._userDatabase.update({
+						data: UserMapper.toPersistence(user),
+						where: {
+							id: user.id,
+						},
+					});
+				}),
+			);
+
+			return updatedUsersPersistence.map((user) => UserMapper.toDomain(user));
+		} catch {
+			return [];
+		}
+	}
+	
 	private _deletedUserFilter(includeDeleted?: boolean) {
 		if (includeDeleted) return {};
-
+		
 		return {
 			isDeleted: false,
 		};

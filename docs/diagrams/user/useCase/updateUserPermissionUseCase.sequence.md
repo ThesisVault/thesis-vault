@@ -6,14 +6,16 @@ sequenceDiagram
 
     box User Module
         participant UpdateUserPermissionController
+        participant UserPermissionService
         participant UpdateUserPermissionUseCase
         participant UserRepository
     end
 
-    Client ->> UpdateUserPermissionController: Request to update user's permission <br/> { userId: string, permission: number }
-    UpdateUserPermissionController ->> UpdateUserPermissionController: Check user has UpdateUser permission
+    Client ->> UpdateUserPermissionController: Request to update user's permission <br/> { userId: string, allowPermission: number, denyPermission: number, requestedById: string }
+    UpdateUserPermissionController ->> UserPermissionService: hasPermission(userId, "MANAGE_PERMISSION")
+    UserPermissionService -->> UpdateUserPermissionController: hasPermission?
     alt user does not have UpdateUser permission
-        UpdateUserPermissionController -->> Client: 403 Forbidden
+        UpdateUserPermissionController -->> Client: 401 Unauthorized
     end
 
     UpdateUserPermissionController ->> UpdateUserPermissionUseCase: execute
@@ -27,7 +29,7 @@ sequenceDiagram
 
     Note over UpdateUserPermissionUseCase: user.updatePermission(permission)
     UpdateUserPermissionUseCase ->> UserRepository: updateUser(user)
-    UserRepository -->> UpdateUserPermissionUseCase: Success Message
-    UpdateUserPermissionUseCase -->> UpdateUserPermissionController: updatedUser
-    UpdateUserPermissionController -->> Client: updatedUser
+    UserRepository -->> UpdateUserPermissionUseCase: updated User
+    UpdateUserPermissionUseCase -->> UpdateUserPermissionController: userId
+    UpdateUserPermissionController -->> Client: userId
 ```
