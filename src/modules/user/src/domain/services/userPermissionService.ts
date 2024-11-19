@@ -7,6 +7,7 @@ import {
 	UserRepository,
 } from "@/modules/user/src/repositories/userRepository";
 import { type PermissionKeys, Permissions } from "@/modules/user/src/shared/permissions";
+import { defaultTo } from "rambda";
 
 export interface IUserPermissionService {
 	hasPermission(userId: string, permission: PermissionKeys): Promise<boolean>;
@@ -33,9 +34,9 @@ export class UserPermissionService {
 			return false;
 		}
 
-		const userRole = await this._roleRepository.getRoleById(user.id);
+		const userRole = await this._roleRepository.getRoleById(defaultTo("", user.roleId));
 
-		let permissions = userRole ? userRole.permissionsValue : 0;
+		let permissions = defaultTo(0, userRole?.permissionsValue);
 		permissions &= ~user.denyPermissionsValue;
 		permissions |= user.allowPermissionsValue;
 

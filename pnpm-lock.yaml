@@ -59,6 +59,9 @@ importers:
       next-auth:
         specifier: ^4.24.7
         version: 4.24.7(next@14.2.10(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      rambda:
+        specifier: ^9.4.0
+        version: 9.4.0
       react:
         specifier: ^18
         version: 18.3.1
@@ -3395,6 +3398,9 @@ packages:
 
   queue@6.0.2:
     resolution: {integrity: sha512-iHZWu+q3IdFZFX36ro/lKBkSvfkztY5Y7HMiPlOUjhupPcG2JMfst2KKEpu5XndviX/3UhFbRngUPNKtgvtZiA==}
+
+  rambda@9.4.0:
+    resolution: {integrity: sha512-B7y7goUd+g0hNl5ODGUejNNERQL5gD8uANJ5Y5aHly8v0jKesFlwIe7prPfuJxttDpe3otQzHJ4NXMpTmL9ELA==}
 
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -8073,6 +8079,8 @@ snapshots:
   queue@6.0.2:
     dependencies:
       inherits: 2.0.4
+
+  rambda@9.4.0: {}
 
   range-parser@1.2.1: {}
 

@@ -54,6 +54,31 @@ describe("Test UserPermissionService", () => {
 			expect(hasPermission).toBe(true);
 		});
 
+		it("should return true when user role permission allow permission even without user permission", async () => {
+			const seededRole = await seedRole({
+				permissions: Permissions.UPDATE_USER,
+			});
+			const seededUser = await seedUser({
+				roleId: seededRole.id,
+				allowPermissions: 0,
+				denyPermissions: 0,
+			});
+
+			const hasPermission = await userPermissionService.hasPermission(seededUser.id, "UPDATE_USER");
+			expect(hasPermission).toBe(true);
+		});
+
+		it("should return true when user permission allow permission despite missing role", async () => {
+			const seededUser = await seedUser({
+				roleId: null,
+				allowPermissions: Permissions.UPDATE_USER,
+				denyPermissions: Permissions.DELETE_USER | Permissions.DELETE_THESIS,
+			});
+
+			const hasPermission = await userPermissionService.hasPermission(seededUser.id, "UPDATE_USER");
+			expect(hasPermission).toBe(true);
+		});
+
 		it("should return false when user does not have the specific permission", async () => {
 			const seededUser = await seedUser({
 				allowPermissions: Permissions.UPDATE_USER | Permissions.DELETE_THESIS,
@@ -85,6 +110,17 @@ describe("Test UserPermissionService", () => {
 				roleId: seededRole.id,
 				allowPermissions: 0,
 				denyPermissions: Permissions.DELETE_USER,
+			});
+
+			const hasPermission = await userPermissionService.hasPermission(seededUser.id, "DELETE_USER");
+			expect(hasPermission).toBe(false);
+		});
+
+		it("should return false when user permission denies permission despite missing role", async () => {
+			const seededUser = await seedUser({
+				roleId: null,
+				allowPermissions: Permissions.UPDATE_USER,
+				denyPermissions: Permissions.DELETE_USER | Permissions.DELETE_THESIS,
 			});
 
 			const hasPermission = await userPermissionService.hasPermission(seededUser.id, "DELETE_USER");
