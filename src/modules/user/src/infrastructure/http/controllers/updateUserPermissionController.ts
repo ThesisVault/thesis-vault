@@ -17,7 +17,7 @@ export class UpdateUserPermissionController extends BaseController<UpdateUserPer
     this.updateUserPermissionUseCase = updateUserPermissionUseCase;
   }
   
-  protected async executeImpl(request: UpdateUserPermissionDTO): Promise<string> {
+  public async executeImpl(request: UpdateUserPermissionDTO): Promise<string> {
     const hasManagePermission = await this.userPermissionService.hasPermission(request.requestedById, "MANAGE_PERMISSION");
     if (!hasManagePermission) {
       throw new UnauthorizedError(`User ${request.requestedById} does not have MANAGE_PERMISSION permission`);

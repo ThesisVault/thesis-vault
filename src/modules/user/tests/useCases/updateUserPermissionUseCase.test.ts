@@ -1,5 +1,5 @@
 import type { UpdateUserPermissionDTO } from "@/modules/user/src/dtos/userDTO";
-import { UserRepository } from "@/modules/user/src/repositories/userRepository";
+import { type IUserRepository, UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { UpdateUserPermissionUseCase } from "@/modules/user/src/useCases/updateUserPermissionUseCase";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
@@ -7,8 +7,13 @@ import { BadRequestError, NotFoundError } from "@/shared/core/errors";
 import { faker } from "@faker-js/faker";
 
 describe("UpdateUserPermissionUseCase", () => {
-	const updateUserPermissionUseCase = new UpdateUserPermissionUseCase();
-	const userRepository = new UserRepository();
+	let updateUserPermissionUseCase: UpdateUserPermissionUseCase;
+	let userRepository: IUserRepository;
+	
+	beforeAll(() => {
+		updateUserPermissionUseCase = new UpdateUserPermissionUseCase();
+		userRepository = new UserRepository();
+	})
 	
 	it("should throw NotFoundError if user does not exist", async () => {
 		const request: UpdateUserPermissionDTO = {
@@ -30,13 +35,13 @@ describe("UpdateUserPermissionUseCase", () => {
 	});
 	
 	it("should throw BadRequestError if the permissions are invalid", async () => {
-		const userToModifyPermission = await seedUser({});
-		const userThatHasManagePermission = await seedUser({
+		const seededUser = await seedUser({});
+		const seededUserRequestedBy = await seedUser({
 			allowPermissions: Permissions.MANAGE_PERMISSION
 		});
 		const request: UpdateUserPermissionDTO = {
-			userId: userToModifyPermission.id,
-			requestedById: userThatHasManagePermission.id,
+			userId: seededUser.id,
+			requestedById: seededUserRequestedBy.id,
 			allowPermission: -1,
 			denyPermission: 0,
 		};

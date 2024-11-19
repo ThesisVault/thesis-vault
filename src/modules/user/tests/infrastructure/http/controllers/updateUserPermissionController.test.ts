@@ -19,7 +19,7 @@ describe("updateUserPermissionController", () => {
     
     let errorMessage = '';
     try {
-      await updateUserPermissionController.execute(request);
+      await updateUserPermissionController.executeImpl(request);
     } catch (error) {
       errorMessage = (error as Error).message;
     }
@@ -38,7 +38,7 @@ describe("updateUserPermissionController", () => {
       userId: seededUser.id,
       requestedById: userWithManagePermission.id,
     };
-    const userId = await updateUserPermissionController.execute(request);
+    const userId = await updateUserPermissionController.executeImpl(request);
     
     expect(userId).toBe(request.userId);
   })

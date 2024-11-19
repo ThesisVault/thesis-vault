@@ -1,4 +1,4 @@
-import { UserRepository } from "@/modules/user/src/repositories/userRepository";
+import { type IUserRepository, UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { db } from "@/shared/infrastructure/database";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
@@ -7,7 +7,7 @@ import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUs
 import { faker } from "@faker-js/faker";
 
 describe("UserRepository.updateUser", () => {
-  let userRepository: UserRepository;
+  let userRepository: IUserRepository;
   
   beforeAll(async () => {
     userRepository = new UserRepository();

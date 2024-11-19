@@ -10,7 +10,7 @@ export const userRouter = router({
     allowPermission: z.number(),
     denyPermission: z.number()
   })).mutation(async ({ input, ctx }) => {
-    return new UpdateUserPermissionController().execute({
+    return new UpdateUserPermissionController().executeImpl({
       ...input,
       requestedById: ctx.session.user.id
     });
