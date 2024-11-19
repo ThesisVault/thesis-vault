@@ -1,8 +1,8 @@
 import { db } from "@/shared/infrastructure/database";
-import { seedUser } from "@/modules/user/tests/utils/seedUser";
+import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { UserRepository } from "@/modules/user/src/repositories/userRepository";
-import { createUserDomainObject } from "@/modules/user/tests/utils/createUserDomainObject";
+import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUserDomainObject";
 
 describe("UserRepository.updateUsers", () => {
   let userRepository: UserRepository;
@@ -10,10 +10,6 @@ describe("UserRepository.updateUsers", () => {
   beforeAll(async () => {
     userRepository = new UserRepository();
   });
-  
-  afterEach(async () => {
-    await db.user.deleteMany();
-  })
   
   afterAll(async () => {
     await db.$disconnect();
@@ -35,7 +31,6 @@ describe("UserRepository.updateUsers", () => {
         })
       ]
     );
-    
     expect(updatedUsers.length).toBe(2);
     expect(updatedUsers[0].id).toBe(seededUser.id);
     expect(updatedUsers[0].nameValue).toBe("Luis Joshua");

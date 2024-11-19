@@ -6,12 +6,13 @@ import {
 
 export const userRouter = router({
   updateUserPermissions: protectedProcedure.input(z.object({
-    userToEditId: z.string(),
-    permissions: z.number()
+    userId: z.string(),
+    allowPermission: z.number(),
+    denyPermission: z.number()
   })).mutation(async ({ input, ctx }) => {
     return new UpdateUserPermissionController().execute({
       ...input,
-      editorId: ctx.session.user.id
+      requestedById: ctx.session.user.id
     });
   })
 })

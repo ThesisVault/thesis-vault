@@ -1,10 +1,10 @@
-import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
+import { UserPermissionService } from "@/modules/user/src/domain/services/userPermissionService";
+import type { UpdateUserPermissionDTO } from "@/modules/user/src/dtos/userDTO";
 import { UpdateUserPermissionUseCase } from "@/modules/user/src/useCases/updateUserPermissionUseCase";
-import type { UserDTO, UpdateUserPermissionDTO } from "@/modules/user/src/dtos/userDTO";
-import { UserPermissionService } from "@/modules/user/src/domain/models/user/service/userPermissionService";
 import { UnauthorizedError } from "@/shared/core/errors";
+import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 
-export class UpdateUserPermissionController extends BaseController<UpdateUserPermissionDTO, UserDTO> {
+export class UpdateUserPermissionController extends BaseController<UpdateUserPermissionDTO, string> {
   private userPermissionService: UserPermissionService;
   private updateUserPermissionUseCase: UpdateUserPermissionUseCase;
   
@@ -17,10 +17,10 @@ export class UpdateUserPermissionController extends BaseController<UpdateUserPer
     this.updateUserPermissionUseCase = updateUserPermissionUseCase;
   }
   
-  protected async executeImpl(request: UpdateUserPermissionDTO): Promise<UserDTO> {
-    const canEditorEdit = await this.userPermissionService.hasPermission(request.userToEditId, "MANAGE_PERMISSION");
-    if (!canEditorEdit) {
-      throw new UnauthorizedError("You do not have the required permissions to modify this user's permissions.");
+  protected async executeImpl(request: UpdateUserPermissionDTO): Promise<string> {
+    const hasManagePermission = await this.userPermissionService.hasPermission(request.requestedById, "MANAGE_PERMISSION");
+    if (!hasManagePermission) {
+      throw new UnauthorizedError(`User ${request.requestedById} does not have MANAGE_PERMISSION permission`);
     }
     
     const updatedUser = await this.updateUserPermissionUseCase.execute(request);

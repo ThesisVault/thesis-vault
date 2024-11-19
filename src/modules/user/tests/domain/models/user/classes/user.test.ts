@@ -2,8 +2,8 @@ import { User } from "@/modules/user/src/domain/models/user/classes/user";
 import { UserName } from "@/modules/user/src/domain/models/user/classes/userName";
 import { UserPermission } from "@/modules/user/src/domain/models/user/classes/userPermission";
 import { Permissions } from "@/modules/user/src/shared/permissions";
+import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUserDomainObject";
 import { faker } from "@faker-js/faker";
-import { createUserDomainObject } from "@/modules/user/tests/utils/createUserDomainObject";
 
 describe("User", () => {
 	const mockUserData = {
@@ -45,10 +45,12 @@ describe("User", () => {
 	describe("updatePermissions", () => {
 		it("should update user permissions", () => {
 			const user = createUserDomainObject({});
-			const updatedUserPermission = UserPermission.create(Permissions.MANAGE_PERMISSION)
-			user.updateUserPermission(updatedUserPermission.getValue());
+			const newAllowPermission = UserPermission.create(Permissions.UPDATE_USER);
+			const newDenyPermission = UserPermission.create(Permissions.MANAGE_PERMISSION);
+			user.updatePermission(newAllowPermission.getValue(), newDenyPermission.getValue());
 			
-			expect(user.permissionsValue).toBe(Permissions.MANAGE_PERMISSION);
+			expect(user.allowPermissionsValue).toBe(Permissions.UPDATE_USER);
+			expect(user.denyPermissionsValue).toBe(Permissions.MANAGE_PERMISSION);
 		})
 	})
 });

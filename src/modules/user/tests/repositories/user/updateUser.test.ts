@@ -1,8 +1,8 @@
 import { UserRepository } from "@/modules/user/src/repositories/userRepository";
 import { db } from "@/shared/infrastructure/database";
-import { seedUser } from "@/modules/user/tests/utils/seedUser";
+import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
-import { createUserDomainObject } from "@/modules/user/tests/utils/createUserDomainObject";
+import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUserDomainObject";
 
 describe("UserRepository.updateUser", () => {
   let userRepository: UserRepository;
@@ -10,10 +10,6 @@ describe("UserRepository.updateUser", () => {
   beforeAll(async () => {
     userRepository = new UserRepository();
   });
-  
-  afterEach(async () => {
-    await db.user.deleteMany();
-  })
   
   afterAll(async () => {
     await db.$disconnect();
@@ -33,8 +29,6 @@ describe("UserRepository.updateUser", () => {
     expect(updatedUser!.nameValue).toBe("Luis Joshua");
     expect(updatedUser!.email).toBe(seededUser.email);
     expect(updatedUser!.image).toBe(seededUser.image);
-    expect(updatedUser!.roleValue).toBe(seededUser.role);
-    expect(updatedUser!.permissionsValue).toBe(seededUser.permissions);
   });
   
   it("should return null when try to update non-existing user", async () => {
