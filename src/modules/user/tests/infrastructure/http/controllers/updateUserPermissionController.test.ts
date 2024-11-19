@@ -7,7 +7,11 @@ import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { faker } from "@faker-js/faker";
 
 describe("updateUserPermissionController", () => {
-  const updateUserPermissionController = new UpdateUserPermissionController();
+  let updateUserPermissionController: UpdateUserPermissionController;
+  
+  beforeAll(() => {
+    updateUserPermissionController = new UpdateUserPermissionController()
+  })
   
   it("should throw an UnauthorizedError when the user who requested does not have a required permissions", async () => {
     const request: UpdateUserPermissionDTO = {

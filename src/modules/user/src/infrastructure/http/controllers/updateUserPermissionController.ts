@@ -1,11 +1,14 @@
-import { UserPermissionService } from "@/modules/user/src/domain/services/userPermissionService";
+import {
+  type IUserPermissionService,
+  UserPermissionService
+} from "@/modules/user/src/domain/services/userPermissionService";
 import type { UpdateUserPermissionDTO } from "@/modules/user/src/dtos/userDTO";
 import { UpdateUserPermissionUseCase } from "@/modules/user/src/useCases/updateUserPermissionUseCase";
 import { UnauthorizedError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 
 export class UpdateUserPermissionController extends BaseController<UpdateUserPermissionDTO, string> {
-  private userPermissionService: UserPermissionService;
+  private userPermissionService: IUserPermissionService;
   private updateUserPermissionUseCase: UpdateUserPermissionUseCase;
   
   constructor(
