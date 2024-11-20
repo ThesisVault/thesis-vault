@@ -18,6 +18,7 @@ export interface IUser {
 	createdAt: Date;
 	updatedAt: Date;
 	updatePermission: (allowPermissions: UserPermission, denyPermissions: UserPermission) => void;
+	updateRoleId(roleId: string | null): void;
 }
 
 export class User implements IUser {
@@ -25,7 +26,7 @@ export class User implements IUser {
 	private readonly _name: UserName;
 	private readonly _email: string;
 	private readonly _image: string;
-	private readonly _roleId: string | null;
+	private _roleId: string | null;
 	private readonly _isSuperAdmin: boolean;
 	private _allowPermissions: UserPermission;
 	private _denyPermissions: UserPermission;
@@ -138,6 +139,10 @@ export class User implements IUser {
 	public updatePermission(allowPermissions: UserPermission, denyPermissions: UserPermission): void {
 		this._allowPermissions = allowPermissions;
 		this._denyPermissions = denyPermissions;
+	}
+
+	public updateRoleId(roleId: string | null): void {
+		this._roleId = roleId;
 	}
 
 	public static create(props: {

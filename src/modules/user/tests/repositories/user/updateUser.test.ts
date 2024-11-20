@@ -2,6 +2,7 @@ import { type IUserRepository, UserRepository } from "@/modules/user/src/reposit
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { db } from "@/shared/infrastructure/database";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
+import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUserDomainObject";
 import { faker } from "@faker-js/faker";
@@ -19,10 +20,12 @@ describe("UserRepository.updateUser", () => {
   
   it("should update user properties", async () => {
     const seededUser = await seedUser({});
+    const seededRole = await seedRole({});
     const newUserData = {
       name: faker.person.fullName(),
       allowPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
-      denyPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 })
+      denyPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+      roleId: seededRole.id
     }
     const domainUser = UserMapper.toDomain({
       ...seededUser,

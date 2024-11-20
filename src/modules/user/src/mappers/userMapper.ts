@@ -13,16 +13,18 @@ export class UserMapper {
 	public static toPersistence(user: IUser): IUserSchemaObject {
 		return {
 			id: user.id,
-			name: user.name.value,
-			email: user.email,
-			image: user.image,
-			isSuperAdmin: user.isSuperAdmin,
-			allowPermissions: user.allowPermissionsValue,
-			denyPermissions: user.denyPermissionsValue,
-			isDeleted: user.isDeleted,
-			deletedAt: user.deletedAt,
-			createdAt: user.createdAt,
-			updatedAt: user.updatedAt,
+            name: user.name.value,
+            email: user.email,
+            emailVerified: null,
+            image: user.image,
+            isSuperAdmin: user.isSuperAdmin,
+            roleId: user.roleId,
+            allowPermissions: user.allowPermissionsValue,
+            denyPermissions: user.denyPermissionsValue,
+            isDeleted: user.isDeleted,
+            deletedAt: user.deletedAt,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
 		};
 	}
 }
