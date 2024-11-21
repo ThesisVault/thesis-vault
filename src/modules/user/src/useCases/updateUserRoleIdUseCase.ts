@@ -1,4 +1,5 @@
-import type { UpdateUserRoleIdDTO } from "@/modules/user/src/dtos/updateUserRoleIdDTO";
+import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
+import type { UpdateUserRoleIdDTO } from "@/modules/user/src/dtos/userDTO";
 import {
 	type IRoleRepository,
 	RoleRepository,
@@ -18,24 +19,31 @@ export class UpdateUserRoleIdUseCase {
 		this.roleRepository = roleRepository;
 	}
 
-	public async execute(request: UpdateUserRoleIdDTO): Promise<string> {
-		const user = await this.userRepository.getUserById(request.userId);
-		if (user === null) {
-			throw new NotFoundError(`User ${request.userId} not found`);
-		}
+	private async getUserById(userId: string) {
+		const user = await this.userRepository.getUserById(userId);
+		if (user === null) throw new NotFoundError(`User ${userId} not found`);
+		return user;
+	}
 
-		const role = await this.roleRepository.getRoleById(request.roleId);
-		if (role === null) {
-			throw new NotFoundError(`Role ${request.roleId} not found`);
-		}
+	private async getRoleById(roleId: string) {
+		const role = await this.roleRepository.getRoleById(roleId);
+		if (role === null) throw new NotFoundError(`Role ${roleId} not found`);
+		return role;
+	}
+
+	private async updateUser(user: IUser) {
+		const updatedUser = await this.userRepository.updateUser(user);
+		if (updatedUser === null)
+			throw new Error("Unexpected error occurred while saving the updated user");
+		return updatedUser;
+	}
+
+	public async execute(request: UpdateUserRoleIdDTO): Promise<string> {
+		const user = await this.getUserById(request.userId);
+		const role = await this.getRoleById(request.roleId);
 
 		user.updateRoleId(request.roleId);
-
-		const updatedUser = await this.userRepository.updateUser(user);
-
-		if (updatedUser === null) {
-			throw new Error("Unexpected error occurred while saving the updated user");
-		}
+		const updatedUser = await this.updateUser(user);
 
 		return updatedUser.id;
 	}

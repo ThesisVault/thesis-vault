@@ -18,7 +18,7 @@ export interface IUser {
 	createdAt: Date;
 	updatedAt: Date;
 	updatePermission: (allowPermissions: UserPermission, denyPermissions: UserPermission) => void;
-	updateRoleId(roleId: string | null): void;
+	updateRoleId: (roleId: string | null) => void;
 }
 
 export class User implements IUser {
