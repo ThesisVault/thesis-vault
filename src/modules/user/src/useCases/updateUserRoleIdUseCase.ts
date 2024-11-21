@@ -19,22 +19,27 @@ export class UpdateUserRoleIdUseCase {
 		this.roleRepository = roleRepository;
 	}
 
-	private async getUserById(userId: string) {
+	public async getUserById(userId: string) {
 		const user = await this.userRepository.getUserById(userId);
-		if (user === null) throw new NotFoundError(`User ${userId} not found`);
+		if (user === null) {
+			throw new NotFoundError(`User ${userId} not found`);
+		}
 		return user;
 	}
 
-	private async getRoleById(roleId: string) {
+	public async getRoleById(roleId: string) {	
 		const role = await this.roleRepository.getRoleById(roleId);
-		if (role === null) throw new NotFoundError(`Role ${roleId} not found`);
+		if (role === null) {
+			throw new NotFoundError(`Role ${roleId} not found`);
+		}
 		return role;
 	}
 
-	private async updateUser(user: IUser) {
+	public async updateUser(user: IUser) {
 		const updatedUser = await this.userRepository.updateUser(user);
-		if (updatedUser === null)
+		if (updatedUser === null) {
 			throw new Error("Unexpected error occurred while saving the updated user");
+		}
 		return updatedUser;
 	}
 
