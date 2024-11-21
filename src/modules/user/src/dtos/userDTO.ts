@@ -7,6 +7,6 @@ export interface UpdateUserPermissionDTO {
 
 export interface UpdateUserRoleIdDTO {
   userId: string
-  roleId: string
+  roleId: string | null
   requestedById: string
 }

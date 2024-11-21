@@ -63,6 +63,22 @@ describe("UpdateUserRoleIdUseCase", () => {
 		expect(errorMessage).toBe(`User ${request.userId} not found`);
 	});
 
+	it("should not throw error if roleId is null", async () => {
+		const seededRole = await seedRole({});
+		const seededUser = await seedUser({ roleId: seededRole.id });
+		const requestedByUser = await seedUser({});
+		
+		const request: UpdateUserRoleIdDTO = {
+		  userId: seededUser.id,
+		  roleId: null,
+		  requestedById: requestedByUser.id,
+		};
+	  
+		const updatedUserId = await updateUserRoleIdUseCase.execute(request);
+	  
+		expect(updatedUserId).toBe(seededUser.id);
+	  });	  
+
 	it("should throw NotFoundError if role does not exist", async () => {
 		const seededUser = await seedUser({});
 		const request: UpdateUserRoleIdDTO = {

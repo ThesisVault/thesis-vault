@@ -8,20 +8,20 @@ import { UnauthorizedError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 
 export class UpdateUserRoleIdController extends BaseController<UpdateUserRoleIdDTO, string> {
-	private userPermissionService: IUserPermissionService;
-	private updateUserRoleIdUseCase: UpdateUserRoleIdUseCase;
+	private _userPermissionService: IUserPermissionService;
+	private _updateUserRoleIdUseCase: UpdateUserRoleIdUseCase;
 
 	constructor(
 		userPermissionService = new UserPermissionService(),
 		updateUserRoleIdUseCase = new UpdateUserRoleIdUseCase(),
 	) {
 		super();
-		this.userPermissionService = userPermissionService;
-		this.updateUserRoleIdUseCase = updateUserRoleIdUseCase;
+		this._userPermissionService = userPermissionService;
+		this._updateUserRoleIdUseCase = updateUserRoleIdUseCase;
 	}
 
 	public async executeImpl(request: UpdateUserRoleIdDTO): Promise<string> {
-		const hasManagePermission = await this.userPermissionService.hasPermission(
+		const hasManagePermission = await this._userPermissionService.hasPermission(
 			request.requestedById,
 			"MANAGE_PERMISSION",
 		);
@@ -31,7 +31,7 @@ export class UpdateUserRoleIdController extends BaseController<UpdateUserRoleIdD
 			);
 		}
 
-		const updatedUserId = await this.updateUserRoleIdUseCase.execute(request);
+		const updatedUserId = await this._updateUserRoleIdUseCase.execute(request);
 		return this.ok(updatedUserId);
 	}
 }
