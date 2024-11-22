@@ -4,3 +4,9 @@ export interface UpdateUserPermissionDTO {
   denyPermission: number;
   requestedById: string;
 }
+
+export interface UpdateUserRoleIdDTO {
+  userId: string
+  roleId: string | null
+  requestedById: string
+}
