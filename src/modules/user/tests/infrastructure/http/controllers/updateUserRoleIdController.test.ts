@@ -30,9 +30,9 @@ describe("UpdateUserRoleIdController", () => {
 	});
 
 	it("should throw an UnauthorizedError when the user who requested does not have the required permissions", async () => {
-		const seededUser = await seedUser({}); 
-		const seededRole = await seedRole({}); 
-		const seededUserRequestedBy = await seedUser({}); 
+		const seededUser = await seedUser({});
+		const seededRole = await seedRole({});
+		const seededUserRequestedBy = await seedUser({});
 
 		const request: UpdateUserRoleIdDTO = {
 			userId: seededUser.id,

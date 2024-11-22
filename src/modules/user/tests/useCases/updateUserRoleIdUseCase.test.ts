@@ -46,9 +46,11 @@ describe("UpdateUserRoleIdUseCase", () => {
 	});
 
 	it("should throw NotFoundError if user does not exist", async () => {
+		const seededRole = await seedRole({});
+
 		const request: UpdateUserRoleIdDTO = {
 			userId: "non-existent-user-id",
-			roleId: faker.string.uuid(),
+			roleId: seededRole.id,
 			requestedById: faker.string.uuid(),
 		};
 
@@ -63,21 +65,23 @@ describe("UpdateUserRoleIdUseCase", () => {
 		expect(errorMessage).toBe(`User ${request.userId} not found`);
 	});
 
-	it("should not throw error if roleId is null", async () => {
+	it("should update the user roleId to null", async () => {
 		const seededRole = await seedRole({});
 		const seededUser = await seedUser({ roleId: seededRole.id });
 		const requestedByUser = await seedUser({});
-		
+
 		const request: UpdateUserRoleIdDTO = {
-		  userId: seededUser.id,
-		  roleId: null,
-		  requestedById: requestedByUser.id,
+			userId: seededUser.id,
+			roleId: null,
+			requestedById: requestedByUser.id,
 		};
-	  
+
 		const updatedUserId = await updateUserRoleIdUseCase.execute(request);
-	  
 		expect(updatedUserId).toBe(seededUser.id);
-	  });	  
+
+		const updatedUser = await userRepository.getUserById(updatedUserId);
+		expect(updatedUser!.roleId).toBeNull();
+	});
 
 	it("should throw NotFoundError if role does not exist", async () => {
 		const seededUser = await seedUser({});

@@ -20,14 +20,10 @@ export class UpdateUserRoleIdUseCase {
 	}
 
 	public async execute(request: UpdateUserRoleIdDTO): Promise<string> {
+		await this._ensureRoleIdExists(request.roleId);
+
 		const user = await this._getUserById(request.userId);
-
-		if (request.roleId !== null) {
-			await this._ensureRoleIdExists(request.roleId);
-		}
-
-		user.updateRoleId(request.roleId);
-		const updatedUser = await this._updateUser(user);
+		const updatedUser = await this._updateUser(user, request.roleId);
 
 		return updatedUser.id;
 	}
@@ -40,14 +36,18 @@ export class UpdateUserRoleIdUseCase {
 		return user;
 	}
 
-	private async _ensureRoleIdExists(roleId: string) {
+	private async _ensureRoleIdExists(roleId: string | null): Promise<void> {
+		if (roleId === null) return;
+
 		const role = await this._roleRepository.getRoleById(roleId);
 		if (role === null) {
 			throw new NotFoundError(`Role ${roleId} not found`);
 		}
 	}
 
-	private async _updateUser(user: IUser) {
+	private async _updateUser(user: IUser, roleId: string | null): Promise<IUser> {
+		user.updateRoleId(roleId);
+
 		const updatedUser = await this._userRepository.updateUser(user);
 		if (updatedUser === null) {
 			throw new Error("Unexpected error occurred while saving the updated user");
