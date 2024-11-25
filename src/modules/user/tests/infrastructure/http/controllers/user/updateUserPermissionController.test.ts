@@ -1,7 +1,7 @@
 import type { UpdateUserPermissionDTO } from "@/modules/user/src/dtos/userDTO";
 import {
   UpdateUserPermissionController
-} from "@/modules/user/src/infrastructure/http/controllers/updateUserPermissionController";
+} from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { faker } from "@faker-js/faker";

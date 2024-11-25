@@ -1,5 +1,5 @@
 import type { UpdateUserRoleIdDTO } from "@/modules/user/src/dtos/userDTO";
-import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/updateUserRoleIdController";
+import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
