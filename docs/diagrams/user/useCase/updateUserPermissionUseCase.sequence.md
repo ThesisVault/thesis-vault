@@ -15,7 +15,7 @@ sequenceDiagram
     UpdateUserPermissionController ->> UserPermissionService: hasPermission(userId, "MANAGE_PERMISSION")
     UserPermissionService -->> UpdateUserPermissionController: hasPermission?
     alt user does not have UpdateUser permission
-        UpdateUserPermissionController -->> Client: 401 Unauthorized
+        UpdateUserPermissionController -->> Client: 403 Forbidden
     end
 
     UpdateUserPermissionController ->> UpdateUserPermissionUseCase: execute

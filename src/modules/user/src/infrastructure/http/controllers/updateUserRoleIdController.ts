@@ -4,7 +4,7 @@ import {
 } from "@/modules/user/src/domain/services/userPermissionService";
 import type { UpdateUserRoleIdDTO } from "@/modules/user/src/dtos/userDTO";
 import { UpdateUserRoleIdUseCase } from "@/modules/user/src/useCases/updateUserRoleIdUseCase";
-import { UnauthorizedError } from "@/shared/core/errors";
+import { ForbiddenError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 
 export class UpdateUserRoleIdController extends BaseController<UpdateUserRoleIdDTO, string> {
@@ -26,7 +26,7 @@ export class UpdateUserRoleIdController extends BaseController<UpdateUserRoleIdD
 			"MANAGE_PERMISSION",
 		);
 		if (!hasManagePermission) {
-			throw new UnauthorizedError(
+			throw new ForbiddenError(
 				`User ${request.requestedById} does not have MANAGE_PERMISSION permission`,
 			);
 		}

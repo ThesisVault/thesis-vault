@@ -13,7 +13,7 @@ describe("updateUserPermissionController", () => {
     updateUserPermissionController = new UpdateUserPermissionController()
   })
   
-  it("should throw an UnauthorizedError when the user who requested does not have a required permissions", async () => {
+  it("should throw an ForbiddenError when the user who requested does not have a required permissions", async () => {
     const request: UpdateUserPermissionDTO = {
       allowPermission: 0,
       denyPermission: 0,

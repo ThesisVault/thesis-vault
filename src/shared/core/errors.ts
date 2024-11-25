@@ -18,8 +18,8 @@ export class UnexpectedError extends TRPCError {
   }
 }
 
-export class UnauthorizedError extends TRPCError {
+export class ForbiddenError extends TRPCError {
   constructor(message: string) {
-    super({ message, code: "UNAUTHORIZED" });
+    super({ message, code: "FORBIDDEN" });
   }
 }
