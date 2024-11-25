@@ -1,25 +1,25 @@
 import { TRPCError } from "@trpc/server";
 
 export class NotFoundError extends TRPCError {
-  constructor(message: string) {
-    super({ message, code: "NOT_FOUND" });
-  }
+	constructor(message: string) {
+		super({ message, code: "NOT_FOUND" });
+	}
 }
 
 export class BadRequestError extends TRPCError {
-  constructor(message: string) {
-    super({ message, code: "BAD_REQUEST" });
-  }
+	constructor(message: string) {
+		super({ message, code: "BAD_REQUEST" });
+	}
 }
 
 export class UnexpectedError extends TRPCError {
-  constructor(message: string) {
-    super({ message, code: "INTERNAL_SERVER_ERROR" });
-  }
+	constructor(message: string) {
+		super({ message, code: "INTERNAL_SERVER_ERROR" });
+	}
 }
 
 export class UnauthorizedError extends TRPCError {
-  constructor(message: string) {
-    super({ message, code: "UNAUTHORIZED" });
-  }
+	constructor(message: string) {
+		super({ message, code: "UNAUTHORIZED" });
+	}
 }

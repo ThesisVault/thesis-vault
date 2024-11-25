@@ -134,7 +134,7 @@ export class User implements IUser {
 	get updatedAt(): Date {
 		return this._updatedAt;
 	}
-	
+
 	public updatePermission(allowPermissions: UserPermission, denyPermissions: UserPermission): void {
 		this._allowPermissions = allowPermissions;
 		this._denyPermissions = denyPermissions;

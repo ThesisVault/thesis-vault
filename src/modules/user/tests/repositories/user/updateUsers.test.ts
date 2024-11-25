@@ -2,7 +2,10 @@ import { Permissions } from "@/modules/user/src/shared/permissions";
 import { db } from "@/shared/infrastructure/database";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
-import { type IUserRepository, UserRepository } from "@/modules/user/src/repositories/userRepository";
+import {
+	type IUserRepository,
+	UserRepository,
+} from "@/modules/user/src/repositories/userRepository";
 import { createUserDomainObject } from "@/modules/user/tests/utils/user/createUserDomainObject";
 import { faker } from "@faker-js/faker";
 
@@ -25,7 +28,7 @@ describe("UserRepository.updateUsers", () => {
 			allowPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
 			denyPermissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
 		});
-  
+
 		const seededUserTwo = await seedUser({});
 		const domainUserTwo = UserMapper.toDomain({
 			...seededUserTwo,
@@ -35,7 +38,7 @@ describe("UserRepository.updateUsers", () => {
 		});
 
 		const updatedUsers = await userRepository.updateUsers([domainUser, domainUserTwo]);
-  
+
 		expect(updatedUsers.length).toBe(2);
 		expect(updatedUsers[0].nameValue).toBe(domainUser.nameValue);
 		expect(updatedUsers[0].allowPermissionsValue).toBe(domainUser.allowPermissionsValue);
