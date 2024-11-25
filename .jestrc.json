@@ -1,22 +1,20 @@
 {
 	"preset": "ts-jest",
 	"verbose": true,
-	"projects": [
-		{
-			"displayName": "node-tests",
-			"testEnvironment": "node",
-			"testMatch": [
-				"<rootDir>/**/**/tests/**/*.(spec|test).js?(x)",
-				"<rootDir>/**/**/tests/**/*.(spec|test).ts?(x)"
-			],
-			"transform": {
-				"^.+\\.(ts|tsx)$": "ts-jest"
-			},
-			"transformIgnorePatterns": ["<rootDir>/node_modules/"],
-			"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-			"moduleNameMapper": {
-				"^@/(.*)$": "<rootDir>/src/$1"
-			}
-		}
-	]
+	"testEnvironment": "node",
+	"transform": {
+		"^.+\\.ts$": "ts-jest",
+		"^.+\\.js$": "babel-jest"
+	},
+	"transformIgnorePatterns": [
+		"/node_modules/(?!superjson)/"
+	],
+	"moduleNameMapper": {
+		"^@/(.*)$": "<rootDir>/src/$1"
+	},
+	"testMatch": [
+		"<rootDir>/**/**/tests/**/*.(spec|test).js?(x)",
+		"<rootDir>/**/**/tests/**/*.(spec|test).ts?(x)"
+	],
+	"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
 }

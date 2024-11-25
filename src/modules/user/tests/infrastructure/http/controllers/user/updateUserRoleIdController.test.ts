@@ -1,5 +1,5 @@
 import type { UpdateUserRoleIdDTO } from "@/modules/user/src/dtos/userDTO";
-import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/updateUserRoleIdController";
+import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
@@ -29,10 +29,13 @@ describe("UpdateUserRoleIdController", () => {
 		expect(userId).toBe(request.userId);
 	});
 
-	it("should throw an UnauthorizedError when the user who requested does not have the required permissions", async () => {
+	it("should throw an ForbiddenError when the user who requested does not have the required permissions", async () => {
 		const seededUser = await seedUser({});
 		const seededRole = await seedRole({});
-		const seededUserRequestedBy = await seedUser({});
+		const seededUserRequestedBy = await seedUser({
+			allowPermissions: 0,
+			denyPermissions: Permissions.MANAGE_PERMISSION
+		});
 
 		const request: UpdateUserRoleIdDTO = {
 			userId: seededUser.id,

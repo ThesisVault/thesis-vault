@@ -2,7 +2,7 @@ import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
 import {
   UpdateUserPermissionController
-} from "@/modules/user/src/infrastructure/http/controllers/updateUserPermissionController";
+} from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
 
 export const userRouter = router({
   updateUserPermissions: protectedProcedure.input(z.object({
