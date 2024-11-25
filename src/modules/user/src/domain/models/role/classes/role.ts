@@ -6,6 +6,7 @@ export interface IRole {
 	name: RoleName;
 	nameValue: string;
 	permissions: RolePermission;
+	color: string;
 	permissionsValue: number;
 	createdAt: Date;
 	updatedAt: Date;
@@ -15,6 +16,7 @@ export class Role implements IRole {
 	private readonly _id: string;
 	private readonly _name: RoleName;
 	private readonly _permissions: RolePermission;
+	private readonly _color: string;
 	private readonly _createdAt: Date;
 	private readonly _updatedAt: Date;
 
@@ -22,18 +24,21 @@ export class Role implements IRole {
 		id,
 		name,
 		permissions,
+		color,
 		createdAt,
 		updatedAt,
 	}: {
 		id: string;
 		name: RoleName;
 		permissions: RolePermission;
+		color: string,
 		createdAt: Date;
 		updatedAt: Date;
 	}) {
 		this._id = id;
 		this._name = name;
 		this._permissions = permissions;
+		this._color = color;
 		this._createdAt = createdAt;
 		this._updatedAt = updatedAt;
 	}
@@ -58,6 +63,11 @@ export class Role implements IRole {
 		return this._permissions.value;
 	}
 
+	get color(): string { 
+		return this._color;
+	}
+
+
 	get createdAt(): Date {
 		return this._createdAt;
 	}
@@ -70,6 +80,7 @@ export class Role implements IRole {
 		id: string;
 		name: RoleName;
 		permissions: RolePermission;
+		color: string;
 		createdAt: Date;
 		updatedAt: Date;
 	}): Role {

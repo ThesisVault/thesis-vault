@@ -8,6 +8,7 @@ export const seedRole = async ({
 	id = uuid(),
 	name = faker.lorem.word(),
 	permissions = faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+	color = faker.color.rgb(),
 	createdAt = faker.date.past(),
 	updatedAt = faker.date.past(),
 }: Partial<IRoleRawObject>): Promise<IRoleRawObject> => {
@@ -16,6 +17,7 @@ export const seedRole = async ({
 			id,
 			name,
 			permissions,
+			color,
 			createdAt,
 			updatedAt,
 		},
