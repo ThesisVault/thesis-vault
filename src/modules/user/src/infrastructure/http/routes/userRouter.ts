@@ -3,7 +3,7 @@ import { GetUsersByPaginationController } from "@/modules/user/src/infrastructur
 import { HasPermissionByUserIdController } from "@/modules/user/src/infrastructure/http/controllers/user/hasPermissionByUserIdController";
 import { UpdateUserPermissionController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
 import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
-import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
+import { protectedProcedure, publicProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
 
 export const userRouter = router({

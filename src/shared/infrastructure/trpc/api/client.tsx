@@ -8,11 +8,11 @@ import { TRPCUtils } from "../../../../utils/TRPCUtils";
 import type { AppRouter } from "../routes";
 import { queryClient } from "./queryClient";
 
-export const trpc = createTRPCReact<AppRouter>();
+export const api = createTRPCReact<AppRouter>();
 
 export function TRPCProvider({ children }: Readonly<{ children: ReactNode }>) {
 	const [trpcClient] = useState(() =>
-		trpc.createClient({
+		api.createClient({
 			links: [
 				httpBatchLink({
 					transformer: superjson,
@@ -23,8 +23,8 @@ export function TRPCProvider({ children }: Readonly<{ children: ReactNode }>) {
 	);
 
 	return (
-		<trpc.Provider client={trpcClient} queryClient={queryClient()}>
+		<api.Provider client={trpcClient} queryClient={queryClient()}>
 			<QueryClientProvider client={queryClient()}>{children}</QueryClientProvider>
-		</trpc.Provider>
+		</api.Provider>
 	);
 }

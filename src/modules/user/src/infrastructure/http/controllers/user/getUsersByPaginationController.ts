@@ -33,11 +33,11 @@ export class GetUsersByPaginationController extends BaseController<
 			request.requestedById,
 			"MANAGE_USER",
 		);
-		if (!hasManageUserPermission) {
-			throw new ForbiddenError(
-				`User ${request.requestedById} does not have MANAGE_USER permission`,
-			);
-		}
+		// if (!hasManageUserPermission) {
+		// 	throw new ForbiddenError(
+		// 		`User ${request.requestedById} does not have MANAGE_USER permission`,
+		// 	);
+		// }
 
 		const response = await this._getUsersByPaginationUseCase.execute(request);
 		return this.ok(response);
