@@ -1,6 +1,6 @@
 import {
-  type IUserPermissionService,
-  UserPermissionService
+	type IUserPermissionService,
+	UserPermissionService,
 } from "@/modules/user/src/domain/services/userPermissionService";
 import type { UpdateUserPermissionDTO } from "@/modules/user/src/dtos/userDTO";
 import { UpdateUserPermissionUseCase } from "@/modules/user/src/useCases/updateUserPermissionUseCase";

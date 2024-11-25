@@ -41,7 +41,7 @@ export class UserRepository implements IUserRepository {
 
 		return usersRaw.map((user) => this._userMapper.toDomain(user));
 	}
-	
+
 	async updateUser(data: IUser): Promise<IUser | null> {
 		const updatedUser = await this.updateUsers([data]);
 
@@ -70,10 +70,10 @@ export class UserRepository implements IUserRepository {
 			return [];
 		}
 	}
-	
+
 	private _deletedUserFilter(includeDeleted?: boolean) {
 		if (includeDeleted) return {};
-		
+
 		return {
 			isDeleted: false,
 		};
