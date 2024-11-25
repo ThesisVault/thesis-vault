@@ -7,6 +7,7 @@ export interface IRoleFactory {
 	id: string;
 	name: string;
 	permissions: number;
+	color: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -24,6 +25,7 @@ export class RoleFactory {
 				...props,
 				name: nameOrError.getValue(),
 				permissions: permissionOrError.getValue(),
+				color: props.color,
 			}),
 		);
 	}

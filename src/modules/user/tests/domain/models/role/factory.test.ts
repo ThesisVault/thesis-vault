@@ -12,6 +12,7 @@ describe("RoleFactory", () => {
 			id: faker.string.uuid(),
 			name: faker.lorem.word(),
 			permissions: faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
+			color: faker.color.rgb(),
 			createdAt: faker.date.past(),
 			updatedAt: faker.date.past(),
 		};
@@ -27,6 +28,7 @@ describe("RoleFactory", () => {
 		expect(role.id).toBe(mockRoleData.id);
 		expect(role.nameValue).toBe(mockRoleData.name);
 		expect(role.permissionsValue).toBe(mockRoleData.permissions);
+		expect(role.color).toBe(mockRoleData.color);
 		expect(role.createdAt).toBe(mockRoleData.createdAt);
 		expect(role.updatedAt).toBe(mockRoleData.updatedAt);
 	});

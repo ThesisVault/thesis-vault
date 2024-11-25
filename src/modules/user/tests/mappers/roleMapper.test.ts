@@ -12,6 +12,7 @@ describe("RoleMapper", () => {
 		expect(roleDomainObject.id).toBe(roleSchemaObject.id);
 		expect(roleDomainObject.nameValue).toBe(roleSchemaObject.name);
 		expect(roleDomainObject.permissionsValue).toBe(roleSchemaObject.permissions);
+		expect(roleDomainObject.color).toBe(roleSchemaObject.color);
 	});
 
 	it("should map to persistence from domain", () => {
@@ -23,5 +24,6 @@ describe("RoleMapper", () => {
 		expect(roleSchemaObject.permissions).toBe(roleDomainObject.permissionsValue);
 		expect(roleSchemaObject.createdAt).toBe(roleDomainObject.createdAt);
 		expect(roleSchemaObject.updatedAt).toBe(roleDomainObject.updatedAt);
+		expect(roleSchemaObject.color).toBe(roleDomainObject.color);
 	});
 });

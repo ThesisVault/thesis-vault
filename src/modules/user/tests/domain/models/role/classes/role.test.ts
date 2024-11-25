@@ -11,6 +11,7 @@ describe("Role", () => {
 		permissions: RolePermission.create(
 			faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
 		).getValue(),
+		color: faker.color.rgb(),
 		createdAt: faker.date.past(),
 		updatedAt: faker.date.past(),
 	};
@@ -21,6 +22,7 @@ describe("Role", () => {
 		expect(role).toBeInstanceOf(Role);
 		expect(role.id).toBe(mockRoleData.id);
 		expect(role.nameValue).toBe(mockRoleData.name.value);
+		expect(role.color).toBe(mockRoleData.color);
 		expect(role.createdAt.toString()).toBe(mockRoleData.createdAt.toString());
 		expect(role.updatedAt.toString()).toBe(mockRoleData.updatedAt.toString());
 	});

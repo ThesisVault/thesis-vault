@@ -15,6 +15,7 @@ export class RoleMapper {
 			id: role.id,
 			name: role.name.value,
 			permissions: role.permissionsValue,
+			color: role.color,
 			createdAt: role.createdAt,
 			updatedAt: role.updatedAt,
 		};
