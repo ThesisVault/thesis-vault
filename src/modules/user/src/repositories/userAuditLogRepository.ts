@@ -1,12 +1,10 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
-import { UserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
 import { UserAuditLogMapper } from "@/modules/user/src/mappers/userAuditLogMapper";
-import type { QueryOptions } from "@/shared/constant";
 import { db } from "@/shared/infrastructure/database";
 
 export interface IUserAuditLogRepository {
-	getUserAuditLogById(auditLogId: string, options?: QueryOptions): Promise<IUserAuditLog | null>;
-	getUserAuditLogsByUserId(userId: string, options?: QueryOptions): Promise<IUserAuditLog[]>;
+	getUserAuditLogById(auditLogId: string): Promise<IUserAuditLog | null>;
+	getUserAuditLogsByUserId(userId: string): Promise<IUserAuditLog[]>;
 	createUserAuditLog(data: IUserAuditLog): Promise<IUserAuditLog | null>;
 	createUserAuditLogs(auditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]>;
 }
@@ -20,19 +18,21 @@ export class UserAuditLogRepository implements IUserAuditLogRepository {
 		this._auditLogMapper = auditLogMapper;
 	}
 
-	async getUserAuditLogById(
-		auditLogId: string,
-		options?: QueryOptions,
-	): Promise<IUserAuditLog | null> {
-		const auditLog = await db.userAuditLog.findUnique({
+	async getUserAuditLogById(auditLogId: string): Promise<IUserAuditLog | null> {
+		const auditLog = await this._auditLogDatabase.findUnique({
 			where: {
 				id: auditLogId,
 			},
 		});
-		return auditLog;
+
+		if (!auditLog) {
+			return null;
+		}
+
+		return this._auditLogMapper.toDomain(auditLog);
 	}
 
-	async getUserAuditLogsByUserId(userId: string, options?: QueryOptions): Promise<IUserAuditLog[]> {
+	async getUserAuditLogsByUserId(userId: string): Promise<IUserAuditLog[]> {
 		const auditLogsRaw = await this._auditLogDatabase.findMany({
 			where: {
 				userId: userId,
@@ -42,62 +42,50 @@ export class UserAuditLogRepository implements IUserAuditLogRepository {
 		return auditLogsRaw.map((auditLog) => this._auditLogMapper.toDomain(auditLog));
 	}
 
-	async createUserAuditLog(data: IUserAuditLog): Promise<IUserAuditLog | null> {
+	async createUserAuditLog(auditLog: IUserAuditLog): Promise<IUserAuditLog | null> {
+		if (!auditLog.userId || auditLog.userId.trim() === "") {
+			throw new Error("User ID cannot be empty");
+		}
+
 		try {
-			const userExists = await db.user.findUnique({
-				where: { id: data.userId },
+			const createdAuditLog = await this._auditLogDatabase.create({
+				data: {
+					id: auditLog.id,
+					userId: auditLog.userId,
+					type: auditLog.type.value,
+					description: auditLog.description.value,
+					createdAt: auditLog.createdAt,
+				},
 			});
 
-			const userAuditLogInstance = UserAuditLog.create({
-				id: data.id,
-				userId: data.userId,
-				type: data.type,
-				description: data.description,
-				createdAt: data.createdAt,
-			});
-
-			const createdAuditLog = await this.createUserAuditLogs([userAuditLogInstance]);
-
-			return createdAuditLog.length > 0 ? createdAuditLog[0] : null;
+			return this._auditLogMapper.toDomain(createdAuditLog);
 		} catch (error) {
-			console.error("Error creating user audit log:", error);
 			return null;
 		}
 	}
 
 	async createUserAuditLogs(auditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]> {
-		const userAuditLogs = auditLogs.map((auditLog) =>
-			UserAuditLog.create({
+		try {
+			const mappedAuditLogs = auditLogs.map((auditLog) => ({
 				id: auditLog.id,
 				userId: auditLog.userId,
-				type: auditLog.type,
-				description: auditLog.description,
+				type: auditLog.type.value,
+				description: auditLog.description.value,
 				createdAt: auditLog.createdAt,
-			}),
-		);
+			}));
 
-		try {
-			for (const auditLog of userAuditLogs) {
-				const userExists = await db.user.findUnique({
-					where: { id: auditLog.userId },
-				});
+			await this._auditLogDatabase.createMany({
+				data: mappedAuditLogs,
+			});
 
-				if (!userExists) {
-					return [];
-				}
-			}
+			const createdAuditLogs = await this._auditLogDatabase.findMany({
+				where: {
+					id: { in: auditLogs.map((log) => log.id) },
+				},
+			});
 
-			const createdAuditLogsPersistence = await db.$transaction(
-				userAuditLogs.map((auditLog) => {
-					return this._auditLogDatabase.create({
-						data: UserAuditLogMapper.toPersistence(auditLog),
-					});
-				}),
-			);
-
-			return createdAuditLogsPersistence.map((auditLog) => UserAuditLogMapper.toDomain(auditLog));
+			return createdAuditLogs.map((auditLog) => UserAuditLogMapper.toDomain(auditLog));
 		} catch (error) {
-			console.error("Error creating user audit logs:", error);
 			return [];
 		}
 	}

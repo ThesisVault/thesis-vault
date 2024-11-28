@@ -1,16 +1,19 @@
+import type { UserAuditLogDescription } from "./userAuditLogDescription";
+import type { UserAuditLogType } from "./userAuditLogType";
+
 export interface IUserAuditLog {
 	id: string;
 	userId: string;
-	type: string;
-	description: string;
+	type: UserAuditLogType;
+	description: UserAuditLogDescription;
 	createdAt: Date;
 }
 
 export class UserAuditLog implements IUserAuditLog {
 	private readonly _id: string;
 	private readonly _userId: string;
-	private readonly _type: string;
-	private readonly _description: string;
+	private readonly _type: UserAuditLogType;
+	private readonly _description: UserAuditLogDescription;
 	private readonly _createdAt: Date;
 
 	private constructor({
@@ -22,8 +25,8 @@ export class UserAuditLog implements IUserAuditLog {
 	}: {
 		id: string;
 		userId: string;
-		type: string;
-		description: string;
+		type: UserAuditLogType;
+		description: UserAuditLogDescription;
 		createdAt: Date;
 	}) {
 		this._id = id;
@@ -41,11 +44,11 @@ export class UserAuditLog implements IUserAuditLog {
 		return this._userId;
 	}
 
-	get type(): string {
+	get type(): UserAuditLogType {
 		return this._type;
 	}
 
-	get description(): string {
+	get description(): UserAuditLogDescription {
 		return this._description;
 	}
 
@@ -56,8 +59,8 @@ export class UserAuditLog implements IUserAuditLog {
 	public static create(props: {
 		id: string;
 		userId: string;
-		type: string;
-		description: string;
+		type: UserAuditLogType;
+		description: UserAuditLogDescription;
 		createdAt: Date;
 	}): UserAuditLog {
 		return new UserAuditLog(props);

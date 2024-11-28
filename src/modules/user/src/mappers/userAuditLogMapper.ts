@@ -1,21 +1,21 @@
-import type { UserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
+import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
 import type {
 	IAuditLogRawObject,
-	IAuditLogSchemaObject,
 } from "@/modules/user/src/domain/models/userAuditLog/constant";
 import { UserAuditLogFactory } from "@/modules/user/src/domain/models/userAuditLog/factory";
+import type { Prisma } from "@prisma/client";
 
 export class UserAuditLogMapper {
-	public static toDomain(rawData: IAuditLogRawObject): UserAuditLog {
+	public static toDomain(rawData: IAuditLogRawObject): IUserAuditLog {
 		return UserAuditLogFactory.create(rawData).getValue();
 	}
 
-	public static toPersistence(userAuditLog: UserAuditLog): IAuditLogSchemaObject {
+	public static toPersistence(userAuditLog: IUserAuditLog): Prisma.UserAuditLogUncheckedCreateInput {
 		return {
 			id: userAuditLog.id,
-			user: { connect: { id: userAuditLog.userId } },
-			type: userAuditLog.type,
-			description: userAuditLog.description,
+			userId: userAuditLog.userId,
+			type: userAuditLog.type.value,
+			description: userAuditLog.description.value,
 			createdAt: userAuditLog.createdAt,
 		};
 	}

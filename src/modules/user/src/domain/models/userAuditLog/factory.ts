@@ -1,5 +1,7 @@
 import { Result } from "@/shared/core/result";
 import { UserAuditLog } from "./classes/userAuditLog";
+import { UserAuditLogDescription } from "./classes/userAuditLogDescription";
+import { UserAuditLogType } from "./classes/userAuditLogType";
 
 export interface IUserAuditLogFactory {
 	id: string;
@@ -11,21 +13,17 @@ export interface IUserAuditLogFactory {
 
 export class UserAuditLogFactory {
 	public static create(userAuditLogFactoryProps: IUserAuditLogFactory): Result<UserAuditLog> {
-		if (!userAuditLogFactoryProps.type) {
-			return Result.fail<UserAuditLog>("type is required.");
-		}
+		const typeOrError = UserAuditLogType.create(userAuditLogFactoryProps.type);
+		const descriptionOrError = UserAuditLogDescription.create(userAuditLogFactoryProps.description);
 
-		if (!userAuditLogFactoryProps.description) {
-			return Result.fail<UserAuditLog>("description is required.");
-		}
-
-		if (!(userAuditLogFactoryProps.createdAt instanceof Date)) {
-			return Result.fail<UserAuditLog>("createdAt must be a valid Date.");
-		}
+		const guardResult = Result.combine([typeOrError, descriptionOrError]);
+		if (guardResult.isFailure) return guardResult;
 
 		return Result.ok<UserAuditLog>(
 			UserAuditLog.create({
 				...userAuditLogFactoryProps,
+				type: typeOrError.getValue(),
+				description: descriptionOrError.getValue(),
 			}),
 		);
 	}

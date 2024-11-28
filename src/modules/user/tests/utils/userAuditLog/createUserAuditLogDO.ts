@@ -6,8 +6,8 @@ import { v4 as uuid } from "uuid";
 export const createUserAuditLogDomainObject = ({
 	id = uuid(),
 	userId = uuid(),
-	type = "LOGIN",
-	description = "User logged in successfully",
+	type = faker.lorem.word(),
+	description = faker.lorem.sentence(),
 	createdAt = faker.date.past(),
 }: Partial<IAuditLogRawObject>) => {
 	return UserAuditLogFactory.create({

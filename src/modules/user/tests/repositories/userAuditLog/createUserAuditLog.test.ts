@@ -1,24 +1,26 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
+import { UserAuditLogDescription } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogDescription";
+import { UserAuditLogType } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogType";
 import { UserAuditLogRepository } from "@/modules/user/src/repositories/userAuditLogRepository";
-import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { db } from "@/shared/infrastructure/database";
-import { v4 as uuidv4 } from "uuid";
-//
+import { v4 as uuid } from "uuid";
+import { seedUserAuditLog } from "../../utils/userAuditLog/seedUserAuditLog";
+
 const assertAuditLog = (auditLog: IUserAuditLog, expectedLog: IUserAuditLog) => {
 	expect(auditLog.id).toBe(expectedLog.id);
 	expect(auditLog.userId).toBe(expectedLog.userId);
-	expect(auditLog.type).toBe(expectedLog.type);
-	expect(auditLog.description).toBe(expectedLog.description);
+	expect(auditLog.type.value).toBe(expectedLog.type.value);
+	expect(auditLog.description.value).toBe(expectedLog.description.value);
 	expect(auditLog.createdAt.toISOString()).toBe(expectedLog.createdAt.toISOString());
 };
 
 describe("UserAuditLogRepository Tests", () => {
 	let userAuditLogRepository: UserAuditLogRepository;
-	let seededUser: { id: string };
+	let seededLog: { userId: string; type: string; description: string; createdAt: Date };
 
 	beforeAll(async () => {
 		userAuditLogRepository = new UserAuditLogRepository();
-		seededUser = await seedUser({});
+		seededLog = await seedUserAuditLog({});
 	});
 
 	afterAll(async () => {
@@ -26,45 +28,67 @@ describe("UserAuditLogRepository Tests", () => {
 	});
 
 	it("should create a user audit log successfully", async () => {
+		const descriptionResult = UserAuditLogDescription.create(seededLog.description);
+		expect(descriptionResult.isSuccess).toBe(true);
+		const descriptionInstance = descriptionResult.getValue();
+
+		const typeResult = UserAuditLogType.create(seededLog.type);
+		expect(typeResult.isSuccess).toBe(true);
+		const typeInstance = typeResult.getValue();
+
 		const newAuditLog: IUserAuditLog = {
-			id: uuidv4(),
-			userId: seededUser.id,
-			type: "LOGIN",
-			description: "User logged in successfully",
-			createdAt: new Date(),
+			id: uuid(),
+			userId: seededLog.userId,
+			type: typeInstance,
+			description: descriptionInstance,
+			createdAt: seededLog.createdAt,
 		};
 
 		const createdAuditLog = await userAuditLogRepository.createUserAuditLog(newAuditLog);
-
 		expect(createdAuditLog).not.toBeNull();
-		if (createdAuditLog) {
-			assertAuditLog(createdAuditLog, newAuditLog);
-		}
-	}, 10000);
+		assertAuditLog(createdAuditLog!, newAuditLog);
+	});
 
 	it("should return null if the user audit log creation fails due to invalid user", async () => {
+		const descriptionResult = UserAuditLogDescription.create(seededLog.description);
+		expect(descriptionResult.isSuccess).toBe(true);
+		const descriptionInstance = descriptionResult.getValue();
+
+		const typeResult = UserAuditLogType.create(seededLog.type);
+		expect(typeResult.isSuccess).toBe(true);
+		const typeInstance = typeResult.getValue();
+
 		const invalidAuditLog: IUserAuditLog = {
-			id: uuidv4(),
+			id: uuid(),
 			userId: "non-existing-user-id",
-			type: "LOGIN",
-			description: "Invalid user attempt",
-			createdAt: new Date(),
+			type: typeInstance,
+			description: descriptionInstance,
+			createdAt: seededLog.createdAt,
 		};
 
 		const createdAuditLog = await userAuditLogRepository.createUserAuditLog(invalidAuditLog);
-
 		expect(createdAuditLog).toBeNull();
 	});
 
 	it("should throw an error if required fields are missing", async () => {
+		const descriptionResult = UserAuditLogDescription.create(seededLog.description);
+		expect(descriptionResult.isSuccess).toBe(true);
+		const descriptionInstance = descriptionResult.getValue();
+
+		const typeResult = UserAuditLogType.create(seededLog.type);
+		expect(typeResult.isSuccess).toBe(true);
+		const typeInstance = typeResult.getValue();
+
 		const invalidAuditLog: IUserAuditLog = {
-			id: uuidv4(),
+			id: uuid(),
 			userId: "",
-			type: "LOGIN",
-			description: "Attempt with missing user ID",
-			createdAt: new Date(),
+			type: typeInstance,
+			description: descriptionInstance,
+			createdAt: seededLog.createdAt,
 		};
 
-		await expect(userAuditLogRepository.createUserAuditLog(invalidAuditLog)).rejects;
+		await expect(userAuditLogRepository.createUserAuditLog(invalidAuditLog)).rejects.toThrowError(
+			"User ID cannot be empty",
+		);
 	});
 });

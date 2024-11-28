@@ -1,105 +1,103 @@
-import {
-	type IUserAuditLogService,
-	UserAuditLogService,
-} from "@/modules/user/src/domain/services/userAuditLogService";
-import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
-import { createUserAuditLogDomainObject } from "@/modules/user/tests/utils/userAuditLog/createUserAuditLogDO"; // Import the utility
-import { seedUserAuditLog } from "@/modules/user/tests/utils/userAuditLog/seedUserAuditLog";
-import { db } from "@/shared/infrastructure/database";
+import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
+import { UserAuditLogDescription } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogDescription";
+import { UserAuditLogType } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogType";
+import { UserAuditLogService } from "@/modules/user/src/domain/services/userAuditLogService";
+import type { IUserAuditLogRepository } from "@/modules/user/src/repositories/userAuditLogRepository";
+import { faker } from "@faker-js/faker";
 
-describe("Test UserAuditLogService", () => {
-	let userAuditLogService: IUserAuditLogService;
+const mockRepository: jest.Mocked<IUserAuditLogRepository> = {
+	getUserAuditLogById: jest.fn(),
+	getUserAuditLogsByUserId: jest.fn(),
+	createUserAuditLog: jest.fn(),
+	createUserAuditLogs: jest.fn(),
+};
 
-	beforeAll(() => {
-		userAuditLogService = new UserAuditLogService();
-	});
+const userAuditLogService = new UserAuditLogService(mockRepository);
 
-	afterAll(async () => {
-		await db.$disconnect();
-	});
+describe("UserAuditLogService", () => {
+	const mockAuditLog: IUserAuditLog = {
+		id: faker.string.uuid(),
+		userId: faker.string.uuid(),
+		type: UserAuditLogType.create("CREATE").getValue(),
+		description: UserAuditLogDescription.create("User created successfully").getValue(),
+		createdAt: new Date(),
+	};
 
 	describe("getUserAuditLogById", () => {
-		it("should return an audit log when it exists", async () => {
-			const seededLog = await seedUserAuditLog({});
-			const fetchedLog = await userAuditLogService.getUserAuditLogById(seededLog.id);
-			expect(fetchedLog).toBeTruthy();
-			expect(fetchedLog?.id).toBe(seededLog.id);
+		it("should return an audit log when found", async () => {
+			mockRepository.getUserAuditLogById.mockResolvedValue(mockAuditLog);
+
+			const result = await userAuditLogService.getUserAuditLogById(mockAuditLog.id);
+
+			expect(mockRepository.getUserAuditLogById).toHaveBeenCalledWith(mockAuditLog.id);
+			expect(result).toEqual(mockAuditLog);
 		});
 
-		it("should return null if no audit log exists with the given ID", async () => {
-			const fetchedLog = await userAuditLogService.getUserAuditLogById("non-existent-id");
-			expect(fetchedLog).toBeNull();
+		it("should return null when no audit log is found", async () => {
+			mockRepository.getUserAuditLogById.mockResolvedValue(null);
+
+			const result = await userAuditLogService.getUserAuditLogById(faker.string.uuid());
+
+			expect(result).toBeNull();
 		});
 	});
 
 	describe("getUserAuditLogsByUserId", () => {
-		it("should return audit logs for a specific user", async () => {
-			const seededUser = await seedUser({});
-			const logs = [
-				await seedUserAuditLog({ userId: seededUser.id }),
-				await seedUserAuditLog({ userId: seededUser.id }),
-			];
+		it("should return an array of audit logs for a user", async () => {
+			const mockLogs = [mockAuditLog, { ...mockAuditLog, id: faker.string.uuid() }];
+			mockRepository.getUserAuditLogsByUserId.mockResolvedValue(mockLogs);
 
-			const fetchedLogs = await userAuditLogService.getUserAuditLogsByUserId(seededUser.id);
-			expect(fetchedLogs).toHaveLength(logs.length);
+			const result = await userAuditLogService.getUserAuditLogsByUserId(mockAuditLog.userId);
 
-			for (const log of logs) {
-				expect(fetchedLogs).toContainEqual(expect.objectContaining({ id: log.id }));
-			}
+			expect(mockRepository.getUserAuditLogsByUserId).toHaveBeenCalledWith(mockAuditLog.userId);
+			expect(result).toEqual(mockLogs);
 		});
 
-		it("should return an empty array if no logs exist for a user", async () => {
-			const fetchedLogs =
-				await userAuditLogService.getUserAuditLogsByUserId("non-existent-user-id");
-			expect(fetchedLogs).toHaveLength(0);
+		it("should return an empty array when no logs are found", async () => {
+			mockRepository.getUserAuditLogsByUserId.mockResolvedValue([]);
+
+			const result = await userAuditLogService.getUserAuditLogsByUserId(faker.string.uuid());
+
+			expect(result).toEqual([]);
 		});
 	});
 
 	describe("createUserAuditLog", () => {
-		it("should create and return a new audit log", async () => {
-			const seededUser = await seedUser({});
+		it("should create and return the created audit log", async () => {
+			mockRepository.createUserAuditLog.mockResolvedValue(mockAuditLog);
 
-			const newLog = createUserAuditLogDomainObject({
-				userId: seededUser.id,
-				type: "LOGIN",
-				description: "User logged in",
-			});
+			const result = await userAuditLogService.createUserAuditLog(mockAuditLog);
 
-			const createdLog = await userAuditLogService.createUserAuditLog(newLog);
+			expect(mockRepository.createUserAuditLog).toHaveBeenCalledWith(mockAuditLog);
+			expect(result).toEqual(mockAuditLog);
+		});
 
-			expect(createdLog).toBeTruthy();
-			expect(createdLog?.id).toBeDefined();
-			expect(createdLog?.userId).toBe(newLog.userId);
-			expect(createdLog?.type).toBe(newLog.type);
-			expect(createdLog?.description).toBe(newLog.description);
+		it("should return null when creation fails", async () => {
+			mockRepository.createUserAuditLog.mockResolvedValue(null);
+
+			const result = await userAuditLogService.createUserAuditLog(mockAuditLog);
+
+			expect(result).toBeNull();
 		});
 	});
 
 	describe("createUserAuditLogs", () => {
-		it("should create multiple audit logs", async () => {
-			const seededUser = await seedUser({});
-			const logs = [
-				createUserAuditLogDomainObject({
-					userId: seededUser.id,
-					type: "LOGIN",
-					description: "User logged in",
-				}),
-				createUserAuditLogDomainObject({
-					userId: seededUser.id,
-					type: "LOGOUT",
-					description: "User logged out",
-				}),
-			];
+		it("should create and return an array of audit logs", async () => {
+			const mockLogs = [mockAuditLog, { ...mockAuditLog, id: faker.string.uuid() }];
+			mockRepository.createUserAuditLogs.mockResolvedValue(mockLogs);
 
-			const createdLogs = await userAuditLogService.createUserAuditLogs(logs);
+			const result = await userAuditLogService.createUserAuditLogs(mockLogs);
 
-			expect(createdLogs).toHaveLength(logs.length);
+			expect(mockRepository.createUserAuditLogs).toHaveBeenCalledWith(mockLogs);
+			expect(result).toEqual(mockLogs);
+		});
 
-			for (const log of logs) {
-				expect(createdLogs).toContainEqual(
-					expect.objectContaining({ description: log.description }),
-				);
-			}
+		it("should return an empty array when creation fails", async () => {
+			mockRepository.createUserAuditLogs.mockResolvedValue([]);
+
+			const result = await userAuditLogService.createUserAuditLogs([]);
+
+			expect(result).toEqual([]);
 		});
 	});
 });
