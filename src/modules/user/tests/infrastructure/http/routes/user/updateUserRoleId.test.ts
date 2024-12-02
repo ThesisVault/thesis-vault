@@ -1,26 +1,27 @@
 import { userRouter } from "@/modules/user/src/infrastructure/http/routes/user/userRouter";
 import { Permissions } from "@/modules/user/src/shared/permissions";
+import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { ForbiddenError } from "@/shared/core/errors";
 import { db } from "@/shared/infrastructure/database";
 import { createCallerFactory } from "@/shared/infrastructure/trpc";
+import { faker } from "@faker-js/faker";
 import type { TRPCError } from "@trpc/server";
-import { v4 as uuid } from "uuid";
 
-describe("updateUserPermissionEndPoint", () => {
+describe("updateUserRoleIdEndPoint", () => {
 	describe("User is authenticated", () => {
-		it("should successfully update user permission and return user id", async () => {
+		it("should successfully update user roleId when user is authorized", async () => {
 			const seededUser = await seedUser({
-				allowPermissions: 0,
-				denyPermissions: 0,
+				roleId: null,
 			});
 			const seededUserWithPermission = await seedUser({
 				allowPermissions: Permissions.MANAGE_PERMISSION,
+				denyPermissions: 0,
 			});
+			const seededRole = await seedRole({});
 			const request = {
 				userId: seededUser.id,
-				allowPermission: Permissions.UPLOAD_THESIS,
-				denyPermission: Permissions.MANAGE_PERMISSION,
+				roleId: seededRole.id,
 			};
 
 			const createdCaller = createCallerFactory(userRouter);
@@ -34,26 +35,26 @@ describe("updateUserPermissionEndPoint", () => {
 				db: db,
 			});
 
-			const userId = await caller.updateUserPermissions(request);
+			const userId = await caller.updateUserRoleId(request);
 
 			expect(userId).toBe(seededUser.id);
 		});
 
-		it("should return an error if user does not have MANAGE_USER permission", async () => {
-			const seededUser = await seedUser({
+		it("should throw an error if user is unauthorized", async () => {
+			const seededUserWithoutPermission = await seedUser({
 				allowPermissions: 0,
+				denyPermissions: Permissions.MANAGE_PERMISSION,
 			});
 			const request = {
-				userId: uuid(),
-				allowPermission: 0,
-				denyPermission: 0,
+				userId: faker.string.uuid(),
+				roleId: faker.string.uuid(),
 			};
 
 			const createdCaller = createCallerFactory(userRouter);
 			const caller = createdCaller({
 				session: {
 					user: {
-						id: seededUser.id,
+						id: seededUserWithoutPermission.id,
 					},
 					expires: new Date().toString(),
 				},
@@ -62,23 +63,24 @@ describe("updateUserPermissionEndPoint", () => {
 
 			let errorMessage = "";
 			try {
-				await caller.updateUserPermissions(request);
+				await caller.updateUserRoleId(request);
 			} catch (error) {
 				errorMessage = (error as Error).message;
 
 				expect(error).toBeInstanceOf(ForbiddenError);
 			}
 
-			expect(errorMessage).toBe(`User ${seededUser.id} does not have MANAGE_PERMISSION permission`);
+			expect(errorMessage).toBe(
+				`User ${seededUserWithoutPermission.id} does not have MANAGE_PERMISSION permission`,
+			);
 		});
 	});
 
 	describe("User is unauthenticated", () => {
 		it("should return an unauthorized error if user is not authenticated", async () => {
 			const request = {
-				userId: uuid(),
-				allowPermission: 0,
-				denyPermission: 0,
+				userId: faker.string.uuid(),
+				roleId: faker.string.uuid(),
 			};
 
 			const createdCaller = createCallerFactory(userRouter);
@@ -89,7 +91,7 @@ describe("updateUserPermissionEndPoint", () => {
 
 			let errorMessage = "";
 			try {
-				await caller.updateUserPermissions(request);
+				await caller.updateUserRoleId(request);
 			} catch (error) {
 				errorMessage = (error as TRPCError).message;
 			}
