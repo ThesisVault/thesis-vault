@@ -1,3 +1,5 @@
+import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
+
 export interface UpdateUserPermissionDTO {
   userId: string;
   allowPermission: number;

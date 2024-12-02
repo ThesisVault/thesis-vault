@@ -8,6 +8,10 @@ export interface IUserRepository {
 	getUsersByIds(userIds: string[], options?: QueryOptions): Promise<IUser[]>;
 	updateUser(data: IUser): Promise<IUser | null>;
 	updateUsers(users: IUser[]): Promise<IUser[]>;
+	getUsers(options: { skip: number; take: number }): Promise<{
+		users: IUser[];
+		totalPages: number;
+	}>;
 }
 
 export class UserRepository implements IUserRepository {
