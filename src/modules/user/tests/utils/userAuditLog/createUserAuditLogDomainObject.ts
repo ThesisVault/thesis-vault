@@ -1,4 +1,4 @@
-import type { IAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
+import type { IUserAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
 import { UserAuditLogFactory } from "@/modules/user/src/domain/models/userAuditLog/factory";
 import { faker } from "@faker-js/faker";
 import { v4 as uuid } from "uuid";
@@ -6,10 +6,10 @@ import { v4 as uuid } from "uuid";
 export const createUserAuditLogDomainObject = ({
 	id = uuid(),
 	userId = uuid(),
-	type = faker.lorem.word(),
+	type = "CREATE",
 	description = faker.lorem.sentence(),
 	createdAt = faker.date.past(),
-}: Partial<IAuditLogRawObject>) => {
+}: Partial<IUserAuditLogRawObject>) => {
 	return UserAuditLogFactory.create({
 		id,
 		userId,

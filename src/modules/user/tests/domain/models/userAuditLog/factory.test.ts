@@ -7,7 +7,7 @@ describe("UserAuditLogFactory", () => {
 		id: faker.string.uuid(),
 		userId: faker.string.uuid(),
 		type: "CREATE",
-		description: "User created successfully",
+		description: faker.lorem.sentences(),
 		createdAt: faker.date.past(),
 	};
 
@@ -21,8 +21,8 @@ describe("UserAuditLogFactory", () => {
 		expect(userAuditLog.id).toBe(validUserAuditLogFactoryProps.id);
 		expect(userAuditLog.userId).toBe(validUserAuditLogFactoryProps.userId);
 		expect(userAuditLog.type.value).toBe(validUserAuditLogFactoryProps.type);
-		expect(userAuditLog.description.value).toBe(validUserAuditLogFactoryProps.description);
-		expect(userAuditLog.createdAt).toBeInstanceOf(Date);
+		expect(userAuditLog.description).toBe(validUserAuditLogFactoryProps.description);
+		expect(userAuditLog.createdAt).toBe(validUserAuditLogFactoryProps.createdAt);
 	});
 
 	it("should fail if the type is invalid", () => {
@@ -32,17 +32,6 @@ describe("UserAuditLogFactory", () => {
 		};
 
 		const result = UserAuditLogFactory.create(invalidTypeProps);
-
-		expect(result.isFailure).toBe(true);
-	});
-
-	it("should fail if the description is invalid", () => {
-		const invalidDescriptionProps = {
-			...validUserAuditLogFactoryProps,
-			description: "",
-		};
-
-		const result = UserAuditLogFactory.create(invalidDescriptionProps);
 
 		expect(result.isFailure).toBe(true);
 	});

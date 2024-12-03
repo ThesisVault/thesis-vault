@@ -20,11 +20,11 @@ describe("Test UserAuditLogRepository getUserAuditLogById", () => {
 		const seededLog = await seedUserAuditLog({});
 		const auditLog = await auditLogRepository.getUserAuditLogById(seededLog.id);
 
-		expect(auditLog?.id).toBe(seededLog.id);
-		expect(auditLog?.userId).toBe(seededLog.userId);
-		expect(auditLog?.type.value).toBe(seededLog.type);
-		expect(auditLog?.description.value).toBe(seededLog.description);
-		expect(auditLog?.createdAt.toISOString()).toBe(seededLog.createdAt.toISOString());
+		expect(auditLog!.id).toBe(seededLog.id);
+		expect(auditLog!.userId).toBe(seededLog.userId);
+		expect(auditLog!.type.value).toBe(seededLog.type);
+		expect(auditLog!.description).toBe(seededLog.description);
+		expect(auditLog!.createdAt.toISOString()).toBe(seededLog.createdAt.toISOString());
 	});
 
 	it("should return null when audit log does not exist", async () => {

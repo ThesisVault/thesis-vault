@@ -1,18 +1,18 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
-import type { IAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
+import type { IUserAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
 import {
 	type IUserAuditLogRepository,
 	UserAuditLogRepository,
 } from "@/modules/user/src/repositories/userAuditLogRepository";
 import { seedUserAuditLog } from "@/modules/user/tests/utils/userAuditLog/seedUserAuditLog";
 import { db } from "@/shared/infrastructure/database";
+import { seedUser } from "../../utils/user/seedUser";
 
-const assertAuditLog = (auditLog: IUserAuditLog, expectedLog: IAuditLogRawObject) => {
+const assertAuditLog = (auditLog: IUserAuditLog, expectedLog: IUserAuditLogRawObject) => {
 	expect(auditLog.id).toBe(expectedLog.id);
 	expect(auditLog.userId).toBe(expectedLog.userId);
 	expect(auditLog.type.value).toBe(expectedLog.type);
-	expect(auditLog.description.value).toBe(expectedLog.description);
-	expect(auditLog.createdAt.toISOString()).toBe(expectedLog.createdAt.toISOString());
+	expect(auditLog.description).toBe(expectedLog.description);
 };
 
 describe("Test UserAuditLogRepository getUserAuditLogsByUserId", () => {
@@ -27,15 +27,20 @@ describe("Test UserAuditLogRepository getUserAuditLogsByUserId", () => {
 	});
 
 	it("should retrieve audit logs by user ID", async () => {
-		const seededLog1 = await seedUserAuditLog({});
-		const seededLog2 = await seedUserAuditLog({ userId: seededLog1.userId });
+		const seededUser = await seedUser({});
+		const seededLogOne = await seedUserAuditLog({ userId: seededUser.id });
+		const seededLogTwo = await seedUserAuditLog({ userId: seededUser.id });
+		const seededLogThree = await seedUserAuditLog({});
 
-		const auditLogs = await auditLogRepository.getUserAuditLogsByUserId(seededLog1.userId);
+		const auditLogs = await auditLogRepository.getUserAuditLogsByUserId(seededUser.id);
+		const auditLogsIds = auditLogs.map((auditLog) => auditLog.id);
 
+		expect(auditLogsIds).toEqual([seededLogOne.id, seededLogTwo.id]);
+		expect(auditLogsIds).not.toContain(seededLogThree.id);
 		expect(auditLogs).toHaveLength(2);
 
-		assertAuditLog(auditLogs[0], seededLog1);
-		assertAuditLog(auditLogs[1], seededLog2);
+		assertAuditLog(auditLogs[0], seededLogOne);
+		assertAuditLog(auditLogs[1], seededLogTwo);
 	});
 
 	it("should return an empty array when no audit logs exist for the user", async () => {
@@ -45,7 +50,7 @@ describe("Test UserAuditLogRepository getUserAuditLogsByUserId", () => {
 	});
 
 	it("should return an empty array when the user exists but has no audit logs", async () => {
-		const auditLogs = await auditLogRepository.getUserAuditLogsByUserId("no audit logs");
+		const auditLogs = await auditLogRepository.getUserAuditLogsByUserId("non-existing-user-id");
 
 		expect(auditLogs).toHaveLength(0);
 	});

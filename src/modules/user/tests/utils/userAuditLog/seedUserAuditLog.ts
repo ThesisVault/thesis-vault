@@ -1,4 +1,4 @@
-import type { IAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
+import type { IUserAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { db } from "@/shared/infrastructure/database";
 import { faker } from "@faker-js/faker";
@@ -10,7 +10,7 @@ export const seedUserAuditLog = async ({
 	type = "CREATE",
 	description = faker.lorem.sentence(),
 	createdAt = faker.date.past(),
-}: Partial<IAuditLogRawObject>): Promise<IAuditLogRawObject> => {
+}: Partial<IUserAuditLogRawObject>): Promise<IUserAuditLogRawObject> => {
 	const user = userId ? { id: userId } : await seedUser({});
 
 	return db.userAuditLog.create({

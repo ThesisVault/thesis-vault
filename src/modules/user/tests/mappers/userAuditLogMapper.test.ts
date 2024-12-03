@@ -1,42 +1,27 @@
-import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
-import type { IAuditLogRawObject } from "@/modules/user/src/domain/models/userAuditLog/constant";
-import { UserAuditLogFactory } from "@/modules/user/src/domain/models/userAuditLog/factory";
 import { UserAuditLogMapper } from "@/modules/user/src/mappers/userAuditLogMapper";
-import { faker } from "@faker-js/faker";
-import type { Prisma } from "@prisma/client";
+import { createUserAuditLogDomainObject } from "../utils/userAuditLog/createUserAuditLogDomainObject";
+import { seedUserAuditLog } from "../utils/userAuditLog/seedUserAuditLog";
 
 describe("UserAuditLogMapper", () => {
-	const RawData: IAuditLogRawObject = {
-		id: faker.string.uuid(),
-		userId: faker.string.uuid(),
-		type: "CREATE",
-		description: faker.lorem.sentence(),
-		createdAt: faker.date.past(),
-	};
+	it("should map to domain from persistence data", async () => {
+		const userAuditLogSchemaObject = await seedUserAuditLog({});
+		const userAuditLogDomainObject = UserAuditLogMapper.toDomain(userAuditLogSchemaObject);
 
-	const DomainData: IUserAuditLog = UserAuditLogFactory.create(RawData).getValue();
-
-	it("should map raw data to a domain object", () => {
-		const domainObject = UserAuditLogMapper.toDomain(RawData);
-
-		expect(domainObject.id).toBe(RawData.id);
-		expect(domainObject.userId).toBe(RawData.userId);
-		expect(domainObject.type.value).toBe(RawData.type);
-		expect(domainObject.description.value).toBe(RawData.description);
-		expect(domainObject.createdAt).toStrictEqual(RawData.createdAt);
+		expect(userAuditLogSchemaObject.id).toBe(userAuditLogDomainObject.id);
+		expect(userAuditLogSchemaObject.userId).toBe(userAuditLogDomainObject.userId);
+		expect(userAuditLogSchemaObject.type).toBe(userAuditLogDomainObject.type.value);
+		expect(userAuditLogSchemaObject.description).toBe(userAuditLogDomainObject.description);
+		expect(userAuditLogSchemaObject.createdAt).toStrictEqual(userAuditLogDomainObject.createdAt);
 	});
 
-	it("should map a domain object to persistence format", () => {
-		const persistenceObject = UserAuditLogMapper.toPersistence(DomainData);
+	it("should map to persistence from domain", () => {
+		const userAuditLogDomainObject = createUserAuditLogDomainObject({});
+		const userAuditLogSchemaObject = UserAuditLogMapper.toPersistence(userAuditLogDomainObject);
 
-		const expectedPersistence: Prisma.UserAuditLogUncheckedCreateInput = {
-			id: DomainData.id,
-			userId: DomainData.userId,
-			type: DomainData.type.value,
-			description: DomainData.description.value,
-			createdAt: DomainData.createdAt,
-		};
-
-		expect(persistenceObject).toEqual(expectedPersistence);
+		expect(userAuditLogDomainObject.id).toBe(userAuditLogSchemaObject.id);
+		expect(userAuditLogDomainObject.userId).toBe(userAuditLogSchemaObject.userId);
+		expect(userAuditLogDomainObject.type.value).toBe(userAuditLogSchemaObject.type);
+		expect(userAuditLogDomainObject.description).toBe(userAuditLogSchemaObject.description);
+		expect(userAuditLogDomainObject.createdAt).toStrictEqual(userAuditLogSchemaObject.createdAt);
 	});
 });

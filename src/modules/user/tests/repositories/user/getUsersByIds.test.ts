@@ -38,7 +38,7 @@ describe("Test User Repository getUsersByIds", () => {
 		assertUser(users[1], seededUserTwo);
 	});
 
-	it("should only retrieve existing roles", async () => {
+	it("should only retrieve existing users", async () => {
 		const seededUserOne = await seedUser({});
 		const seededUserTwo = await seedUser({});
 		const seededUserIdThree = "non-existing-user-id";
@@ -54,7 +54,7 @@ describe("Test User Repository getUsersByIds", () => {
 		expect(users[2]).toBeUndefined();
 	});
 
-	it("should retrieve deleted roles when includeDeleted is true", async () => {
+	it("should retrieve deleted users when includeDeleted is true", async () => {
 		const seededUserOne = await seedUser({});
 		const seededUserTwo = await seedUser({});
 		const seededUserThree = await seedUser({ isDeleted: true, deletedAt: new Date() });
