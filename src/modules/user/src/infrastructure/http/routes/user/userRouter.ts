@@ -22,4 +22,18 @@ export const userRouter = router({
 				requestedById: ctx.session.user.id,
 			});
 		}),
+	
+	updateUserRoleId: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+				roleId: z.string(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			return new UpdateUserRoleIdController().executeImpl({
+				...input,
+				requestedById: ctx.session.user.id
+			});
+		}),
 });
