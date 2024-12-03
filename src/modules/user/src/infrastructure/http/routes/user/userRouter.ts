@@ -1,3 +1,6 @@
+import {
+  UpdateUserRoleIdController
+} from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
 import {
@@ -14,5 +17,19 @@ export const userRouter = router({
       ...input,
       requestedById: ctx.session.user.id
     });
-  })
+  }),
+  
+  updateUserRoleId: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        roleId: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      return new UpdateUserRoleIdController().executeImpl({
+        ...input,
+        requestedById: ctx.session.user.id
+      });
+    }),
 })
