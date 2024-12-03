@@ -1,10 +1,8 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
-import { UserAuditLogType } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogType";
 import { UserAuditLogRepository } from "@/modules/user/src/repositories/userAuditLogRepository";
 import { db } from "@/shared/infrastructure/database";
-import { v4 as uuid } from "uuid";
-import { createUserAuditLogDomainObject } from "../../utils/userAuditLog/createUserAuditLogDomainObject";
 import { seedUser } from "../../utils/user/seedUser";
+import { createUserAuditLogDomainObject } from "../../utils/userAuditLog/createUserAuditLogDomainObject";
 
 const assertAuditLog = (auditLog: IUserAuditLog, expectedLog: IUserAuditLog) => {
 	expect(auditLog.id).toBe(expectedLog.id);
@@ -29,9 +27,15 @@ describe("Test User Audit Log Repository createUserAuditLogs", () => {
 		const seededUserAuditLogOne = createUserAuditLogDomainObject({ userId: seededUser.id });
 		const seededUserAuditLogTwo = createUserAuditLogDomainObject({ userId: seededUser.id });
 
-		await userAuditLogRepository.createUserAuditLogs([seededUserAuditLogOne, seededUserAuditLogTwo]);
+		await userAuditLogRepository.createUserAuditLogs([
+			seededUserAuditLogOne,
+			seededUserAuditLogTwo,
+		]);
 
-		const userAuditLogs = await userAuditLogRepository.getUserAuditLogsByIds([seededUserAuditLogOne.id, seededUserAuditLogTwo.id]);
+		const userAuditLogs = await userAuditLogRepository.getUserAuditLogsByIds([
+			seededUserAuditLogOne.id,
+			seededUserAuditLogTwo.id,
+		]);
 
 		assertAuditLog(userAuditLogs[0], seededUserAuditLogOne);
 		assertAuditLog(userAuditLogs[1], seededUserAuditLogTwo);
