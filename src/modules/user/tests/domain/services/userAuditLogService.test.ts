@@ -19,13 +19,13 @@ describe("UserAuditLogService", () => {
 			description: "User account deleted",
 		};
 
-		await userAuditLogService.addUserAuditRecord(params);
+		await userAuditLogService.createAndSaveUserAuditLog(params);
 
 		const userAuditLogs = await userAuditLogRepository.getUserAuditLogsByUserId(seededUser.id);
 
 		expect(userAuditLogs).toHaveLength(1);
 		expect(userAuditLogs[0].userId).toBe(params.userId);
-		expect(userAuditLogs[0].type._value).toBe(params.type);
+		expect(userAuditLogs[0].typeValue).toBe(params.type);
 		expect(userAuditLogs[0].description).toBe(params.description);
 		expect(userAuditLogs[0].createdAt).toBeInstanceOf(Date);
 	});

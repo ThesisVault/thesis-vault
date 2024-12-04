@@ -1,10 +1,8 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
-import { UserAuditLogType } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogType";
 import { UserAuditLogRepository } from "@/modules/user/src/repositories/userAuditLogRepository";
 import { db } from "@/shared/infrastructure/database";
-import { v4 as uuid } from "uuid";
-import { createUserAuditLogDomainObject } from "../../utils/userAuditLog/createUserAuditLogDomainObject";
 import { seedUser } from "../../utils/user/seedUser";
+import { createUserAuditLogDomainObject } from "../../utils/userAuditLog/createUserAuditLogDomainObject";
 
 const assertAuditLog = (auditLog: IUserAuditLog, expectedLog: IUserAuditLog) => {
 	expect(auditLog.id).toBe(expectedLog.id);
@@ -13,7 +11,7 @@ const assertAuditLog = (auditLog: IUserAuditLog, expectedLog: IUserAuditLog) => 
 	expect(auditLog.description).toBe(expectedLog.description);
 };
 
-describe("Test User Audit Log Repository createUserAuditLog", () => {
+describe("UserAuditLog Repository createUserAuditLog", () => {
 	let userAuditLogRepository: UserAuditLogRepository;
 
 	beforeAll(async () => {
@@ -27,11 +25,13 @@ describe("Test User Audit Log Repository createUserAuditLog", () => {
 	it("should create multiple user audit logs successfully", async () => {
 		const seededUser = await seedUser({});
 		const seededUserAuditLogOne = createUserAuditLogDomainObject({ userId: seededUser.id });
-
-		await userAuditLogRepository.createUserAuditLog(seededUserAuditLogOne);
+		
+		const createdUserAuditLog = await userAuditLogRepository.createUserAuditLog(seededUserAuditLogOne);
+		
+		assertAuditLog(createdUserAuditLog!, seededUserAuditLogOne);
 
 		const userAuditLog = await userAuditLogRepository.getUserAuditLogById(seededUserAuditLogOne.id);
-
+		
 		assertAuditLog(userAuditLog!, seededUserAuditLogOne);
 	});
 });

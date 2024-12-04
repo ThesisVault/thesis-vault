@@ -26,11 +26,14 @@ describe("Test User Audit Log Repository createUserAuditLogs", () => {
 		const seededUser = await seedUser({});
 		const seededUserAuditLogOne = createUserAuditLogDomainObject({ userId: seededUser.id });
 		const seededUserAuditLogTwo = createUserAuditLogDomainObject({ userId: seededUser.id });
-
-		await userAuditLogRepository.createUserAuditLogs([
+		
+		const createdUserAuditLog = await userAuditLogRepository.createUserAuditLogs([
 			seededUserAuditLogOne,
 			seededUserAuditLogTwo,
 		]);
+		
+		assertAuditLog(createdUserAuditLog[0], seededUserAuditLogOne);
+		assertAuditLog(createdUserAuditLog[1], seededUserAuditLogTwo);
 
 		const userAuditLogs = await userAuditLogRepository.getUserAuditLogsByIds([
 			seededUserAuditLogOne.id,

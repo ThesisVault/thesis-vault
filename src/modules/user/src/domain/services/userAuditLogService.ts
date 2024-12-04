@@ -1,4 +1,5 @@
 import { UserAuditLogFactory } from "@/modules/user/src/domain/models/userAuditLog/factory";
+import type { CreateAndSaveUserAuditLogDTO } from "@/modules/user/src/dtos/userAuditLogDTO";
 import {
 	type IUserAuditLogRepository,
 	UserAuditLogRepository,
@@ -6,14 +7,8 @@ import {
 import { UnexpectedError } from "@/shared/core/errors";
 import { v4 as uuid } from "uuid";
 
-interface ICreateUserAuditLogParams {
-	userId: string;
-	type: string;
-	description: string;
-}
-
 export interface IUserAuditLogService {
-	addUserAuditRecord(params: ICreateUserAuditLogParams): Promise<void>;
+	createAndSaveUserAuditLog(params: CreateAndSaveUserAuditLogDTO ): Promise<void>;
 }
 
 export class UserAuditLogService implements IUserAuditLogService {
@@ -23,7 +18,7 @@ export class UserAuditLogService implements IUserAuditLogService {
 		this._userAuditLogRepository = userAuditLogRepository;
 	}
 
-	public async addUserAuditRecord(params: ICreateUserAuditLogParams): Promise<void> {
+	public async createAndSaveUserAuditLog(params: CreateAndSaveUserAuditLogDTO ): Promise<void> {
 		const auditLogOrError = UserAuditLogFactory.create({
 			id: uuid(),
 			userId: params.userId,
@@ -31,7 +26,6 @@ export class UserAuditLogService implements IUserAuditLogService {
 			createdAt: new Date(),
 			description: params.description,
 		});
-
 		if (auditLogOrError.isFailure) {
 			throw new UnexpectedError("Unexpected error occurred while creating auditLog");
 		}

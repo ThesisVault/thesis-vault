@@ -18,20 +18,27 @@ describe("DeleteUserUseCase", () => {
 
 	it("should successfully soft delete a user", async () => {
 		const seededUser = await seedUser({});
-		const request = { userId: seededUser.id };
+		const seededUserWithPermission = await seedUser({});
+		const request = {
+			userId: seededUser.id,
+			requestedById: seededUserWithPermission.id
+		};
 		const result = await deleteUserUseCase.execute(request);
 
 		expect(result).toBe(request.userId);
 
 		const deletedUser = await userRepository.getUserById(seededUser.id, { includeDeleted: true });
 
-		expect(deletedUser?.id).toBe(seededUser.id);
-		expect(deletedUser?.isDeleted).toBe(true);
-		expect(deletedUser?.deletedAt).toBeInstanceOf(Date);
+		expect(deletedUser!.id).toBe(seededUser.id);
+		expect(deletedUser!.isDeleted).toBe(true);
+		expect(deletedUser!.deletedAt).toBeInstanceOf(Date);
 	});
 
 	it("should throw NotFoundError when the user does not exist", async () => {
-		const request = { userId: faker.string.uuid() };
+		const request = {
+			userId: faker.string.uuid(),
+			requestedById: faker.string.uuid()
+		};
 
 		let errorMessage = "";
 		try {

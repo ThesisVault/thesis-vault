@@ -4,6 +4,7 @@ export interface IUserAuditLog {
 	id: string;
 	userId: string;
 	type: UserAuditLogType;
+	typeValue: string;
 	description: string;
 	createdAt: Date;
 }

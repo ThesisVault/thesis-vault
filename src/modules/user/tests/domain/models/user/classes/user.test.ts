@@ -74,7 +74,7 @@ describe("User", () => {
 			user.softDelete();
 			
 			expect(user.isDeleted).toBe(true);
-			expect(user.deletedAt).toBeTruthy();
+			expect(user.deletedAt).not.toBeNull();
 		});
 	});
 });
