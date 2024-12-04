@@ -1,15 +1,17 @@
-import { UserRepository } from "@/modules/user/src/repositories/userRepository";
-import { GetUsersWithPaginationUseCase } from "@/modules/user/src/useCases/getUsersWithPaginationUseCase";
+import { GetUsersByPaginationUseCase } from "@/modules/user/src/useCases/getUsersByPaginationUseCase";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
+import { db } from "@/shared/infrastructure/database";
 
-describe("GetUsersWithPaginationUseCase", () => {
-	let getUsersWithPaginationUseCase: GetUsersWithPaginationUseCase;
-	let userRepository: UserRepository;
+describe("GetUsersByPaginationUseCase", () => {
+	let getUsersByPaginationUseCase: GetUsersByPaginationUseCase;
 
 	beforeAll(() => {
-		userRepository = new UserRepository();
-		getUsersWithPaginationUseCase = new GetUsersWithPaginationUseCase(userRepository);
+		getUsersByPaginationUseCase = new GetUsersByPaginationUseCase();
 	});
+
+	beforeEach(async () => {
+		await db.user.deleteMany();
+	  });
 
 	it("should return paginated users and pagination information", async () => {
 		const seededUserOne = await seedUser({});
@@ -25,17 +27,20 @@ describe("GetUsersWithPaginationUseCase", () => {
 			requestedById: seededUserRequestedBy.id,
 		};
 
-		const result = await getUsersWithPaginationUseCase.execute(request);
+		const result = await getUsersByPaginationUseCase.execute(request);
 
 		expect(result.users.length).toBe(6);
 
 		const userIds = result.users.map((user) => user.id);
-
-		expect(userIds).toContain(seededUserOne.id);
-		expect(userIds).toContain(seededUserTwo.id);
-		expect(userIds).toContain(seededUserThree.id);
-		expect(userIds).toContain(seededUserFour.id);
-		expect(userIds).toContain(seededUserFive.id);
+		expect(userIds).toEqual(
+			expect.arrayContaining([
+				seededUserOne.id,
+				seededUserTwo.id,
+				seededUserThree.id,
+				seededUserFour.id,
+				seededUserFive.id,
+			]),
+		);
 
 		expect(result.page).toBe(1);
 		expect(result.hasNextPage).toBe(false);
@@ -50,7 +55,7 @@ describe("GetUsersWithPaginationUseCase", () => {
 			requestedById: "non-existent-id",
 		};
 
-		const result = await getUsersWithPaginationUseCase.execute(request);
+		const result = await getUsersByPaginationUseCase.execute(request);
 
 		expect(result.users).toEqual([]);
 		expect(result.hasNextPage).toBe(false);

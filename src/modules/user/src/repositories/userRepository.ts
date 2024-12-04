@@ -1,6 +1,7 @@
 import type { IUser } from "@/modules/user/src/domain/models/user/classes/user";
 import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import type { QueryOptions } from "@/shared/constant";
+import type { Pagination } from "@/shared/constant";
 import { db } from "@/shared/infrastructure/database";
 
 export interface IUserRepository {
@@ -8,7 +9,13 @@ export interface IUserRepository {
 	getUsersByIds(userIds: string[], options?: QueryOptions): Promise<IUser[]>;
 	updateUser(data: IUser): Promise<IUser | null>;
 	updateUsers(users: IUser[]): Promise<IUser[]>;
-	getUsersByPagination(options: { skip: number; size: number }): Promise<IUser[]>;
+	getUsersByPagination({
+		pagination,
+		options,
+	}: {
+		pagination: Pagination;
+		options?: QueryOptions;
+	}): Promise<IUser[]>;
 	getUsersTotalPages(perPage: number): Promise<number>;
 }
 
@@ -73,11 +80,14 @@ export class UserRepository implements IUserRepository {
 		}
 	}
 
-	async getUsersByPagination(options: { skip: number; size: number }): Promise<IUser[]> {
+	async getUsersByPagination({
+		pagination,
+		options,
+	}: { pagination: Pagination; options?: QueryOptions }): Promise<IUser[]> {
 		const usersRaw = await this._userDatabase.findMany({
-			skip: options.skip,
-			take: options.size,
-			where: this._deletedUserFilter(false),
+			skip: pagination.skip,
+			take: pagination.size,
+			where: this._deletedUserFilter(options?.includeDeleted),
 		});
 
 		return usersRaw.map((user) => this._userMapper.toDomain(user));

@@ -1,6 +1,6 @@
 import { UserRepository } from "@/modules/user/src/repositories/userRepository";
-import { GetUsersWithPaginationUseCase } from "@/modules/user/src/useCases/getUsersWithPaginationUseCase";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
+import type { Pagination } from "@/shared/constant";
 import { db } from "@/shared/infrastructure/database";
 
 describe("Test User Repository getUsersByPagination", () => {
@@ -8,6 +8,10 @@ describe("Test User Repository getUsersByPagination", () => {
 
 	beforeAll(async () => {
 		userRepository = new UserRepository();
+	});
+
+	beforeEach(async () => {
+		await db.user.deleteMany();
 	});
 
 	afterAll(async () => {
@@ -18,7 +22,11 @@ describe("Test User Repository getUsersByPagination", () => {
 		const seededUserOne = await seedUser({});
 		const seededUserTwo = await seedUser({});
 
-		const result = await userRepository.getUsersByPagination({ skip: 0, size: 2 });
+		const pagination: Pagination = { skip: 0, size: 2 };
+		const result = await userRepository.getUsersByPagination({
+			pagination,
+			options: {},
+		});
 
 		expect(result).toEqual(
 			expect.arrayContaining([
@@ -29,7 +37,11 @@ describe("Test User Repository getUsersByPagination", () => {
 	});
 
 	it("should return an empty list if no users are found", async () => {
-		const users = await userRepository.getUsersByPagination({ skip: 0, size: 2 });
+		const pagination: Pagination = { skip: 0, size: 2 };
+		const users = await userRepository.getUsersByPagination({
+			pagination,
+			options: {},
+		});
 		expect(users).toEqual([]);
 	});
 });
