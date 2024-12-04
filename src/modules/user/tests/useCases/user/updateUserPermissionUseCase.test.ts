@@ -4,7 +4,7 @@ import {
 	UserRepository,
 } from "@/modules/user/src/repositories/userRepository";
 import { Permissions } from "@/modules/user/src/shared/permissions";
-import { UpdateUserPermissionUseCase } from "@/modules/user/src/useCases/updateUserPermissionUseCase";
+import { UpdateUserPermissionUseCase } from "@/modules/user/src/useCases/user/updateUserPermissionUseCase";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { BadRequestError, NotFoundError } from "@/shared/core/errors";
 import { faker } from "@faker-js/faker";

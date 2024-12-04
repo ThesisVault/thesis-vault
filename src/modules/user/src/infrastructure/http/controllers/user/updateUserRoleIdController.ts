@@ -3,7 +3,7 @@ import {
 	UserPermissionService,
 } from "@/modules/user/src/domain/services/userPermissionService";
 import type { UpdateUserRoleIdDTO } from "@/modules/user/src/dtos/userDTO";
-import { UpdateUserRoleIdUseCase } from "@/modules/user/src/useCases/updateUserRoleIdUseCase";
+import { UpdateUserRoleIdUseCase } from "@/modules/user/src/useCases/user/updateUserRoleIdUseCase";
 import { ForbiddenError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 
