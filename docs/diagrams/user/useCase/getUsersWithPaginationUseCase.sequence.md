@@ -4,14 +4,23 @@
 sequenceDiagram
     participant Client
 
-    participant GetUsersWithPaginationController
-    participant GetUsersWithPaginationUseCase
-    participant UserRepository
+    box User Module
+        participant GetUsersWithPaginationController
+        participant UserPermissionService
+        participant GetUsersWithPaginationUseCase
+        participant UserRepository
+    end
 
-    Client->>GetUsersWithPaginationController: Sends { perPage, page }
-    GetUsersWithPaginationController->>GetUsersWithPaginationUseCase: Calls execute({ perPage, page })
-    GetUsersWithPaginationUseCase->>UserRepository: Queries with { skip: (page-1)*perPage, take: perPage }
-    UserRepository-->>GetUsersWithPaginationUseCase: Returns { users, totalPages }
-    GetUsersWithPaginationUseCase->>GetUsersWithPaginationController: Returns { users, hasNextPage, page, totalPages }
-    GetUsersWithPaginationController->>Client: Sends { users, hasNextPage, page, totalPages }
+    Client ->> GetUsersWithPaginationController: Request for paginated users <br/> { perPage, page, requestedById }
+    GetUsersWithPaginationController ->> UserPermissionService: hasManageUserPermission(requestedById, "MANAGE_USER")
+    UserPermissionService -->> GetUsersWithPaginationController: hasManageUserPermission?
+    alt user does not have MANAGE_USER permission
+        GetUsersWithPaginationController -->> Client: 403 Forbidden
+    end
+
+    GetUsersWithPaginationController ->> GetUsersWithPaginationUseCase: execute({ perPage, page, requestedById })
+    GetUsersWithPaginationUseCase ->> UserRepository: getUsersByPagination({ skip, size })
+    UserRepository -->> GetUsersWithPaginationUseCase: { users, totalPages }
+    GetUsersWithPaginationUseCase ->> GetUsersWithPaginationController: { users, hasNextPage, hasPreviousPage, page, totalPages }
+    GetUsersWithPaginationController -->> Client: { users, hasNextPage, hasPreviousPage, page, totalPages }
 ```

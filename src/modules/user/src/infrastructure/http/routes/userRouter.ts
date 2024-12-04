@@ -4,9 +4,6 @@ import {
 } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
-import {
-  UpdateUserPermissionController
-} from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
 
 export const userRouter = router({
 	updateUserPermissions: protectedProcedure
@@ -23,7 +20,7 @@ export const userRouter = router({
 				requestedById: ctx.session.user.id,
 			});
 		}),
-	
+
 	updateUserRoleId: protectedProcedure
 		.input(
 			z.object({
@@ -34,7 +31,21 @@ export const userRouter = router({
 		.mutation(async ({ input, ctx }) => {
 			return new UpdateUserRoleIdController().executeImpl({
 				...input,
-				requestedById: ctx.session.user.id
+				requestedById: ctx.session.user.id,
+			});
+		}),
+
+	getPaginatedUsers: protectedProcedure
+		.input(
+			z.object({
+				page: z.number(),
+				perPage: z.number(),
+			}),
+		)
+		.query(async ({ input, ctx }) => {
+			return new GetUsersWithPaginationController().executeImpl({
+				...input,
+				requestedById: ctx.session.user.id,
 			});
 		}),
 	

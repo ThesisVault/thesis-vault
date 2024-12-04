@@ -8,10 +8,8 @@ export interface IUserRepository {
 	getUsersByIds(userIds: string[], options?: QueryOptions): Promise<IUser[]>;
 	updateUser(data: IUser): Promise<IUser | null>;
 	updateUsers(users: IUser[]): Promise<IUser[]>;
-	getUsers(options: { skip: number; take: number }): Promise<{
-		users: IUser[];
-		totalPages: number;
-	}>;
+	getUsersByPagination(options: { skip: number; size: number }): Promise<IUser[]>;
+	getUsersTotalPages(perPage: number): Promise<number>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -73,6 +71,23 @@ export class UserRepository implements IUserRepository {
 		} catch {
 			return [];
 		}
+	}
+
+	async getUsersByPagination(options: { skip: number; size: number }): Promise<IUser[]> {
+		const usersRaw = await this._userDatabase.findMany({
+			skip: options.skip,
+			take: options.size,
+			where: this._deletedUserFilter(false),
+		});
+
+		return usersRaw.map((user) => this._userMapper.toDomain(user));
+	}
+
+	public async getUsersTotalPages(perPage: number): Promise<number> {
+		const totalCount = await this._userDatabase.count({
+			where: this._deletedUserFilter(false),
+		});
+		return Math.ceil(totalCount / perPage);
 	}
 
 	private _deletedUserFilter(includeDeleted?: boolean) {
