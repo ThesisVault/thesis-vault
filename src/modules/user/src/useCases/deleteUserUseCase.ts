@@ -14,7 +14,7 @@ export class DeleteUserUseCase {
 
 	public constructor(
 		userRepository = new UserRepository(),
-		userAuditLogService = new UserAuditLogService(),
+		userAuditLogService = new UserAuditLogService()
 	) {
 		this.userRepository = userRepository;
 		this.userAuditLogService = userAuditLogService;
