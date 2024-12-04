@@ -1,3 +1,4 @@
+import { DeleteUserController } from "@/modules/user/src/infrastructure/http/controllers/user/deleteUserController";
 import {
   UpdateUserRoleIdController
 } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
@@ -36,4 +37,17 @@ export const userRouter = router({
 				requestedById: ctx.session.user.id
 			});
 		}),
+	
+	deleteUser: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			return new DeleteUserController().executeImpl({
+				...input,
+				requestedById: ctx.session.user.id
+			})
+		})
 });

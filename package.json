@@ -11,7 +11,7 @@
 		"db:push": "prisma db push",
 		"db:studio": "prisma studio",
 		"test": "jest --config .jestrc.json --runInBand",
-		"format": "biome format --write ./src",
+		"format": "biome format --write",
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {

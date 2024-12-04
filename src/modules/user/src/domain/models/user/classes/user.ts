@@ -19,6 +19,7 @@ export interface IUser {
 	updatedAt: Date;
 	updatePermission: (allowPermissions: UserPermission, denyPermissions: UserPermission) => void;
 	updateRoleId: (roleId: string | null) => void;
+	softDelete: () => void;
 }
 
 export class User implements IUser {
@@ -30,8 +31,8 @@ export class User implements IUser {
 	private readonly _isSuperAdmin: boolean;
 	private _allowPermissions: UserPermission;
 	private _denyPermissions: UserPermission;
-	private readonly _isDeleted: boolean;
-	private readonly _deletedAt: Date | null;
+	private _isDeleted: boolean;
+	private _deletedAt: Date | null;
 	private readonly _createdAt: Date;
 	private readonly _updatedAt: Date;
 
@@ -143,6 +144,11 @@ export class User implements IUser {
 
 	public updateRoleId(roleId: string | null): void {
 		this._roleId = roleId;
+	}
+	
+	public softDelete(): void {
+		this._isDeleted = true;
+		this._deletedAt = new Date();
 	}
 
 	public static create(props: {
