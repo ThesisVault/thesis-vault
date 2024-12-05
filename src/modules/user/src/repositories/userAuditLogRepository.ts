@@ -1,14 +1,13 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
 import { UserAuditLogMapper } from "@/modules/user/src/mappers/userAuditLogMapper";
-import { UserMapper } from "@/modules/user/src/mappers/userMapper";
 import { db } from "@/shared/infrastructure/database";
 
 export interface IUserAuditLogRepository {
 	getUserAuditLogById(auditLogId: string): Promise<IUserAuditLog | null>;
 	getUserAuditLogsByIds(auditLogIds: string[]): Promise<IUserAuditLog[]>;
 	getUserAuditLogsByUserId(userId: string): Promise<IUserAuditLog[]>;
-	createUserAuditLog(data: IUserAuditLog): Promise<IUserAuditLog | null>;
-	createUserAuditLogs(auditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]>;
+	createUserAuditLog(userAuditLog: IUserAuditLog): Promise<IUserAuditLog | null>;
+	createUserAuditLogs(userAuditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]>;
 }
 
 export class UserAuditLogRepository implements IUserAuditLogRepository {
@@ -52,8 +51,8 @@ export class UserAuditLogRepository implements IUserAuditLogRepository {
 		return auditLogsRaw.map((auditLog) => this._auditLogMapper.toDomain(auditLog));
 	}
 
-	async createUserAuditLog(auditLog: IUserAuditLog): Promise<IUserAuditLog | null> {
-		const userAuditLogDomain = await this.createUserAuditLogs([auditLog]);
+	async createUserAuditLog(userAuditLog: IUserAuditLog): Promise<IUserAuditLog | null> {
+		const userAuditLogDomain = await this.createUserAuditLogs([userAuditLog]);
 		
 		if (userAuditLogDomain.length === 0) {
 			return null;

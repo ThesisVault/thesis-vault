@@ -63,13 +63,10 @@ describe("User", () => {
 	
 	describe("softDelete", () => {
 		it("should soft delete user", () => {
-			const user = createUserDomainObject({
-				isDeleted: false,
-				deletedAt: null
-			});
+			const user = createUserDomainObject({});
 			
 			expect(user.isDeleted).toBe(false);
-			expect(user.deletedAt).toBe(null);
+			expect(user.deletedAt).toBeNull();
 			
 			user.softDelete();
 			

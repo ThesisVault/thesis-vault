@@ -8,7 +8,7 @@ import { UnexpectedError } from "@/shared/core/errors";
 import { v4 as uuid } from "uuid";
 
 export interface IUserAuditLogService {
-	createAndSaveUserAuditLog(params: CreateAndSaveUserAuditLogDTO ): Promise<void>;
+	createAndSaveUserAuditLog(params: CreateAndSaveUserAuditLogDTO): Promise<void>;
 }
 
 export class UserAuditLogService implements IUserAuditLogService {
@@ -18,7 +18,7 @@ export class UserAuditLogService implements IUserAuditLogService {
 		this._userAuditLogRepository = userAuditLogRepository;
 	}
 
-	public async createAndSaveUserAuditLog(params: CreateAndSaveUserAuditLogDTO ): Promise<void> {
+	public async createAndSaveUserAuditLog(params: CreateAndSaveUserAuditLogDTO): Promise<void> {
 		const auditLogOrError = UserAuditLogFactory.create({
 			id: uuid(),
 			userId: params.userId,

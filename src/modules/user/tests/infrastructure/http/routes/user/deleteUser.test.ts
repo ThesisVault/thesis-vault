@@ -1,5 +1,5 @@
 import type { DeleteUserDTO } from "@/modules/user/src/dtos/userDTO";
-import { userRouter } from "@/modules/user/src/infrastructure/http/routes/user/userRouter";
+import { userRouter } from "@/modules/user/src/infrastructure/http/routes/userRouter";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { ForbiddenError } from "@/shared/core/errors";
