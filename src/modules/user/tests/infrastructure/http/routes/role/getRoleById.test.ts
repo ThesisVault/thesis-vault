@@ -1,102 +1,84 @@
-import { roleRouter } from "@/modules/user/src/infrastructure/http/routes/role/roleRouter";
-import { Permissions } from "@/modules/user/src/shared/permissions";
+import { roleRouter } from "@/modules/user/src/infrastructure/http/routes/roleRouter";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
-import { ForbiddenError } from "@/shared/core/errors";
 import { db } from "@/shared/infrastructure/database";
 import { createCallerFactory } from "@/shared/infrastructure/trpc";
 import { faker } from "@faker-js/faker";
 import type { TRPCError } from "@trpc/server";
 
 describe("getRoleByIdEndPoint", () => {
-	describe("User is authenticated", () => {
-		it("should successfully fetch role details when user is authorized", async () => {
-			const seededUserWithPermission = await seedUser({
-				allowPermissions: Permissions.MANAGE_ROLE,
-				denyPermissions: 0,
-			});
-			const seededRole = await seedRole({});
-			const request = {
-				roleId: seededRole.id,
-				name: seededRole.name,
-			};
+  describe("User is authenticated", () => {
+    it("should return role when roleId exist", async () => {
+      const seededAuthenticatedUser = await seedUser({});
 
-			const createdCaller = createCallerFactory(roleRouter);
-			const caller = createdCaller({
-				session: {
-					user: {
-						id: seededUserWithPermission.id,
-					},
-					expires: new Date().toString(),
-				},
-				db: db,
-			});
+      const seededRole = await seedRole({});
+      const request = {
+        roleId: seededRole.id,
+      };
 
-			const roleDetails = await caller.getRoleById(request);
+      const createdCaller = createCallerFactory(roleRouter);
+      const caller = createdCaller({
+        session: {
+          user: {
+            id: seededAuthenticatedUser.id,
+          },
+          expires: new Date().toString(),
+        },
+        db: db,
+      });
 
-			expect(roleDetails).toBeDefined();
-			expect(roleDetails).toBe(seededRole.name);
-		});
+      const roleDetails = await caller.getRoleById(request);
 
-		it("should throw an error if user is unauthorized", async () => {
-			const seededRole = await seedRole({});
-			const seededUserWithoutPermission = await seedUser({
-				allowPermissions: 0,
-				denyPermissions: Permissions.MANAGE_ROLE,
-			});
-			const request = {
-				roleId: faker.string.uuid(),
-				name: seededRole.name,
-			};
+      expect(roleDetails).toBeDefined();
+      expect(roleDetails!.id).toBe(seededRole.id);
+    });
 
-			const createdCaller = createCallerFactory(roleRouter);
-			const caller = createdCaller({
-				session: {
-					user: {
-						id: seededUserWithoutPermission.id,
-					},
-					expires: new Date().toString(),
-				},
-				db: db,
-			});
+    it("should return null when roleId does not exist", async () => {
+      const seededAuthenticatedUser = await seedUser({});
 
-			let errorMessage = "";
-			try {
-				await caller.getRoleById(request);
-			} catch (error) {
-				errorMessage = (error as Error).message;
+      const request = {
+        roleId: "un-existing-id",
+      };
 
-				expect(error).toBeInstanceOf(ForbiddenError);
-			}
+      const createdCaller = createCallerFactory(roleRouter);
+      const caller = createdCaller({
+        session: {
+          user: {
+            id: seededAuthenticatedUser.id,
+          },
+          expires: new Date().toString(),
+        },
+        db: db,
+      });
 
-			expect(errorMessage).toBe(
-				`User ${seededUserWithoutPermission.id} does not have MANAGE_ROLE permission`,
-			);
-		});
-	});
+      const roleDetails = await caller.getRoleById(request);
 
-	describe("User is unauthenticated", () => {
-		it("should return an unauthorized error if user is not authenticated", async () => {
-			const seededRole = await seedRole({});
-			const request = {
-				roleId: faker.string.uuid(),
-				name: seededRole.name,
-			};
+      expect(roleDetails).toBeNull();
+    });
+  });
 
-			const createdCaller = createCallerFactory(roleRouter);
-			const caller = createdCaller({
-				session: null,
-				db: db,
-			});
+  describe("User is unauthenticated", () => {
+    it("should return an unauthorized error if user is not authenticated", async () => {
+      const seededRole = await seedRole({});
+      const request = {
+        roleId: faker.string.uuid(),
+        name: seededRole.name,
+      };
 
-			let errorMessage = "";
-			try {
-				await caller.getRoleById(request);
-			} catch (error) {
-				errorMessage = (error as TRPCError).message;
-			}
+      const createdCaller = createCallerFactory(roleRouter);
+      const caller = createdCaller({
+        session: null,
+        db: db,
+      });
 
-			expect(errorMessage).toBe("UNAUTHORIZED");
-		});
-	});
+      let errorMessage = "";
+      try {
+        await caller.getRoleById(request);
+      } catch (error) {
+        errorMessage = (error as TRPCError).message;
+      }
+
+      expect(errorMessage).toBe("UNAUTHORIZED");
+    });
+  });
 });

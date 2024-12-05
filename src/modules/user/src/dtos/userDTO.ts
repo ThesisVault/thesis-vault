@@ -13,6 +13,5 @@ export interface UpdateUserRoleIdDTO {
 
 export interface GetRoleByIdDTO {
 	roleId: string;
-	name: string;
 	requestedById: string;
 }

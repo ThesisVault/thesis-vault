@@ -16,29 +16,28 @@ describe("GetRoleByIdUseCase", () => {
 		getRoleByIdUseCase = new GetRoleByIdUseCase();
 	});
 
-	it("should successfully retrieve the role by roleId", async () => {
+	it("should return role when roleId exist", async () => {
 		const seededRole = await seedRole({});
 		const requestedByUser = await seedUser({});
 
 		const request: GetRoleByIdDTO = {
 			roleId: seededRole.id,
-			name: seededRole.name,
 			requestedById: requestedByUser.id,
 		};
 
 		const role = await getRoleByIdUseCase.execute(request);
 
-		expect(role).toBeDefined();
-		expect(role).toBe(request.name);
+		expect(role!.id).toBe(request.roleId);
+    expect(role!.nameValue).toBe(seededRole.name);
+    expect(role!.color).toBe(seededRole.color);
+    expect(role!.permissionsValue).toBe(seededRole.permissions);
 	});
 
-	it("should null if role does not exists", async () => {
-		const seededRole = await seedRole({});
+	it("should null when roleId does not exist", async () => {
 		const requestedByUser = await seedUser({});
 
 		const request: GetRoleByIdDTO = {
 			roleId: "non-existing-id",
-			name: seededRole.name,
 			requestedById: requestedByUser.id,
 		};
 
