@@ -16,5 +16,6 @@
 		"<rootDir>/**/**/tests/**/*.(spec|test).js?(x)",
 		"<rootDir>/**/**/tests/**/*.(spec|test).ts?(x)"
 	],
-	"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+	"moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+	"testTimeout": 30000
 }

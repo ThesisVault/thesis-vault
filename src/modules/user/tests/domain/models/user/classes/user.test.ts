@@ -60,4 +60,18 @@ describe("User", () => {
 			expect(user.denyPermissionsValue).toBe(Permissions.MANAGE_PERMISSION);
 		});
 	});
+	
+	describe("softDelete", () => {
+		it("should soft delete user", () => {
+			const user = createUserDomainObject({});
+			
+			expect(user.isDeleted).toBe(false);
+			expect(user.deletedAt).toBeNull();
+			
+			user.softDelete();
+			
+			expect(user.isDeleted).toBe(true);
+			expect(user.deletedAt).not.toBeNull();
+		});
+	});
 });

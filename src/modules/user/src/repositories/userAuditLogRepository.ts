@@ -6,8 +6,8 @@ export interface IUserAuditLogRepository {
 	getUserAuditLogById(auditLogId: string): Promise<IUserAuditLog | null>;
 	getUserAuditLogsByIds(auditLogIds: string[]): Promise<IUserAuditLog[]>;
 	getUserAuditLogsByUserId(userId: string): Promise<IUserAuditLog[]>;
-	createUserAuditLog(data: IUserAuditLog): Promise<void>;
-	createUserAuditLogs(auditLogs: IUserAuditLog[]): Promise<void>;
+	createUserAuditLog(userAuditLog: IUserAuditLog): Promise<IUserAuditLog | null>;
+	createUserAuditLogs(userAuditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]>;
 }
 
 export class UserAuditLogRepository implements IUserAuditLogRepository {
@@ -51,13 +51,29 @@ export class UserAuditLogRepository implements IUserAuditLogRepository {
 		return auditLogsRaw.map((auditLog) => this._auditLogMapper.toDomain(auditLog));
 	}
 
-	async createUserAuditLog(auditLog: IUserAuditLog): Promise<void> {
-		await this.createUserAuditLogs([auditLog]);
+	async createUserAuditLog(userAuditLog: IUserAuditLog): Promise<IUserAuditLog | null> {
+		const userAuditLogDomain = await this.createUserAuditLogs([userAuditLog]);
+		
+		if (userAuditLogDomain.length === 0) {
+			return null;
+		}
+		
+		return userAuditLogDomain[0];
 	}
 
-	async createUserAuditLogs(auditLogs: IUserAuditLog[]): Promise<void> {
-		await this._auditLogDatabase.createMany({
-			data: auditLogs.map((auditLog) => this._auditLogMapper.toPersistence(auditLog)),
-		});
+	async createUserAuditLogs(userAuditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]> {
+		try {
+			const userAuditLogPersistence = await db.$transaction(
+				userAuditLogs.map((userAuditLog) => {
+					return this._auditLogDatabase.create({
+						data: UserAuditLogMapper.toPersistence(userAuditLog),
+					});
+				}),
+			);
+			
+			return userAuditLogPersistence.map(userAuditLog => UserAuditLogMapper.toDomain(userAuditLog));
+		} catch {
+			return [];
+		}
 	}
 }
