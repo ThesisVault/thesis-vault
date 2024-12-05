@@ -1,4 +1,6 @@
 import { DeleteUserController } from "@/modules/user/src/infrastructure/http/controllers/user/deleteUserController";
+import { GetUsersByPaginationController } from "@/modules/user/src/infrastructure/http/controllers/user/getUsersByPaginationController";
+import { UpdateUserPermissionController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
 import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";

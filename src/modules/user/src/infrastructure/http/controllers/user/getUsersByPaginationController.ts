@@ -6,7 +6,7 @@ import type { GetUsersByPaginationDTO } from "@/modules/user/src/dtos/userDTO";
 import {
 	type GetUsersByPaginationResponseDTO,
 	GetUsersByPaginationUseCase,
-} from "@/modules/user/src/useCases/getUsersByPaginationUseCase";
+} from "@/modules/user/src/useCases/user/getUsersByPaginationUseCase";
 import { ForbiddenError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 

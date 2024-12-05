@@ -20,3 +20,10 @@ export interface DeleteUserDTO {
   userId: string;
   requestedById: string;
 }
+
+export interface GetUsersByPaginationDTO {
+  perPage: number;
+  page: number;
+  requestedById: string;
+  includeDeleted?: boolean;
+}
