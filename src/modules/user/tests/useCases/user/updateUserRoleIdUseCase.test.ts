@@ -7,7 +7,7 @@ import {
 	type IUserRepository,
 	UserRepository,
 } from "@/modules/user/src/repositories/userRepository";
-import { UpdateUserRoleIdUseCase } from "@/modules/user/src/useCases/updateUserRoleIdUseCase";
+import { UpdateUserRoleIdUseCase } from "@/modules/user/src/useCases/user/updateUserRoleIdUseCase";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { NotFoundError } from "@/shared/core/errors";

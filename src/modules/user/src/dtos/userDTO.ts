@@ -6,7 +6,12 @@ export interface UpdateUserPermissionDTO {
 }
 
 export interface UpdateUserRoleIdDTO {
-  userId: string
-  roleId: string | null
-  requestedById: string
+	userId: string;
+	roleId: string | null;
+	requestedById: string;
+}
+
+export interface GetRoleByIdDTO {
+	roleId: string;
+	requestedById: string;
 }
