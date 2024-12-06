@@ -1,12 +1,9 @@
 import { DeleteUserController } from "@/modules/user/src/infrastructure/http/controllers/user/deleteUserController";
-import {
-  UpdateUserRoleIdController
-} from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
+import { UpdateUserPermissionController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
+import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
-import {
-  UpdateUserPermissionController
-} from "@/modules/user/src/infrastructure/http/controllers/user/updateUserPermissionController";
+import { HasPermissionController } from "../controllers/hasPermissionService/hasPermissionController";
 
 export const userRouter = router({
 	updateUserPermissions: protectedProcedure
@@ -23,7 +20,7 @@ export const userRouter = router({
 				requestedById: ctx.session.user.id,
 			});
 		}),
-	
+
 	updateUserRoleId: protectedProcedure
 		.input(
 			z.object({
@@ -34,20 +31,35 @@ export const userRouter = router({
 		.mutation(async ({ input, ctx }) => {
 			return new UpdateUserRoleIdController().executeImpl({
 				...input,
-				requestedById: ctx.session.user.id
+				requestedById: ctx.session.user.id,
 			});
 		}),
-	
+
 	deleteUser: protectedProcedure
 		.input(
 			z.object({
 				userId: z.string(),
-			})
+			}),
 		)
 		.mutation(async ({ input, ctx }) => {
 			return new DeleteUserController().executeImpl({
 				...input,
-				requestedById: ctx.session.user.id
-			})
-		})
+				requestedById: ctx.session.user.id,
+			});
+		}),
+
+	hasPermission: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+				permission: z.number(),
+			}),
+		)
+		.query(async ({ input, ctx }) => {
+			const hasPermissionController = new HasPermissionController();
+			return hasPermissionController.executeImpl({
+				...input,
+				requestedById: ctx.session.user.id,
+			});
+		}),
 });
