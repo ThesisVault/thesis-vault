@@ -12,25 +12,6 @@ The system calculates total permissions by applying bitwise OR (`|`) operations 
 checks specific permissions using the AND (`&`) operation. This ensures precise and efficient permission control, 
 facilitating secure and structured user interactions.
 
-
-The table below outlines the list of available permissions and specifies who each permission applies to.
-
-| Permission              | Admin | Librarian | Student | Guest |
-|-------------------------|-------|-----------|---------|-------|
-| Search Resources        |       |           | ✓       | ✓     |
-| View Resources          |       |           | ✓       | ✓     |
-| Upload Thesis           | ✓     |           | ✓       |       |
-| View Submitted Thesis   | ✓     | ✓         | ✓       |       |
-| Modify Thesis           |       |           | ✓       |       |
-| Manage Submitted Theses |       | ✓         |         |       |
-| Delete Thesis           |       | ✓         |         |       |
-| View User Audit Log     | ✓     | ✓         |         |       |
-| View Thesis Audit Log   |       | ✓         |         |       |
-| Update User             | ✓     | ✓         |         |       |
-| Delete User             | ✓     |           |         |       |
-| Manage Permission       |       |           |         |       |
-
-
 Below is a table of all current permissions, their integer values in hexadecimal, and brief descriptions of 
 the privileges that they grant.
 
@@ -48,3 +29,6 @@ the privileges that they grant.
 | Update User             | `0x0000000000000200` `(1 << 9)`  | Allows updating user details.                                |
 | Delete User             | `0x0000000000000400` `(1 << 10)` | Allows deleting users.                                       |
 | Manage Permission       | `0x0000000000000800` `(1 << 11)` | Allows granting or revoking permissions and roles for users. |
+| Manage User             | `0x0000000000001000` `(1 << 12)` | Allows managing user.                                        |
+| Manage Role             | `0x0000000000002000` `(1 << 13)` | Allows managing roles and role assignments.                  |
+
