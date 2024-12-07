@@ -84,9 +84,19 @@ export const PermissionsDetail = {
 		description:"Allows granting or revoking permissions and roles for users.",
 		value: Permissions.MANAGE_PERMISSION,
 	},
-
-	// ! UPDATE THIS WHENEVER YOU ADD NEW PERMISSION
+	MANAGE_USER: {
+		name:"Manage User",
+		description:"Allows managing user.",
+		value: Permissions.MANAGE_USER,
+	},
+	MANAGE_ROLE: {
+		name:"Manage Role",
+		description:"Allows managing roles and role assignments.",
+		value: Permissions.MANAGE_ROLE,
+	},
+	
 	ALL: Permissions.ALL,
 } as const;
 
 export type PermissionKeys = keyof typeof Permissions;
+export type PermissionsDetailType = typeof PermissionsDetail;
