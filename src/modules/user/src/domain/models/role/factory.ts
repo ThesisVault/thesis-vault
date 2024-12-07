@@ -10,6 +10,8 @@ export interface IRoleFactory {
 	color: string;
 	createdAt: Date;
 	updatedAt: Date;
+	isDeleted: boolean; 
+	deletedAt: Date | null;
 }
 
 export class RoleFactory {

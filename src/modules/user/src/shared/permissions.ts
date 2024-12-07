@@ -18,8 +18,9 @@ export const Permissions = {
   MANAGE_PERMISSION: 1 << 11,
   MANAGE_USER: 1 << 12,
   MANAGE_ROLE: 1 << 13,
+  DELETE_ROLE: 1 << 14,
 
   // ! UPDATE THIS WHENEVER YOU ADD NEW PERMISSION
-  ALL: (1 << 14) - 1,
+  ALL: (1 << 15) - 1,
 } as const;
 export type PermissionKeys = keyof typeof Permissions;

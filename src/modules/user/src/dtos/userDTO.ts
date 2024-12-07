@@ -27,3 +27,9 @@ export interface GetUsersByPaginationDTO {
   requestedById: string;
   includeDeleted?: boolean;
 }
+
+export interface DeleteRoleDTO {
+  roleId: string;
+  requestedById: string;
+}
+

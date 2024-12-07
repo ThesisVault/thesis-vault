@@ -6,9 +6,11 @@ import { db } from "@/shared/infrastructure/database";
 export interface IRoleRepository {
 	getRoleById(roleId: string, options?: QueryOptions): Promise<IRole | null>;
 	getRolesByIds(roleIds: string[], options?: QueryOptions): Promise<IRole[]>;
+	updateRole(data: IRole): Promise<IRole | null>;
+	updateRoles(roles: IRole[]): Promise<IRole[]>;
 }
 
-export class RoleRepository {
+export class RoleRepository implements IRoleRepository {
 	private _roleDatabase;
 	private _roleMapper;
 
@@ -28,7 +30,7 @@ export class RoleRepository {
 	}
 
 	async getRolesByIds(roleIds: string[], options?: QueryOptions): Promise<IRole[]> {
-		const usersRaw = await this._roleDatabase.findMany({
+		const rolesRaw = await this._roleDatabase.findMany({
 			where: {
 				id: {
 					in: roleIds,
@@ -37,7 +39,36 @@ export class RoleRepository {
 			},
 		});
 
-		return usersRaw.map((user) => this._roleMapper.toDomain(user));
+		return rolesRaw.map((role) => this._roleMapper.toDomain(role));
+	}
+
+	async updateRole(data: IRole): Promise<IRole | null> {
+		const updatedRole = await this.updateRoles([data]);
+
+		if (updatedRole.length === 0) {
+			return null;
+		}
+
+		return updatedRole[0];
+	}
+
+	async updateRoles(roles: IRole[]): Promise<IRole[]> {
+		try {
+			const updatedRolesPersistence = await db.$transaction(
+				roles.map((role) => {
+					return this._roleDatabase.update({
+						data: RoleMapper.toPersistence(role),
+						where: {
+							id: role.id,
+						},
+					});
+				}),
+			);
+
+			return updatedRolesPersistence.map((role) => RoleMapper.toDomain(role));
+		} catch {
+			return [];
+		}
 	}
 
 	private _deletedRoleFilter(includeDeleted?: boolean) {

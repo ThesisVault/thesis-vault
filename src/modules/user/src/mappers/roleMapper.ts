@@ -16,6 +16,8 @@ export class RoleMapper {
 			name: role.name.value,
 			permissions: role.permissionsValue,
 			color: role.color,
+			isDeleted: role.isDeleted,
+			deletedAt: role.deletedAt,
 			createdAt: role.createdAt,
 			updatedAt: role.updatedAt,
 		};
