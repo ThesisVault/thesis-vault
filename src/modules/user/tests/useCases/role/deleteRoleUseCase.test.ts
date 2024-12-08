@@ -1,8 +1,4 @@
 import {
-	type IRoleAuditLogService,
-	RoleAuditLogService,
-} from "@/modules/user/src/domain/services/roleAuditLogService";
-import {
 	type IRoleRepository,
 	RoleRepository,
 } from "@/modules/user/src/repositories/roleRepository";
@@ -14,41 +10,37 @@ import { faker } from "@faker-js/faker";
 describe("DeleteRoleUseCase", () => {
 	let deleteRoleUseCase: DeleteRoleUseCase;
 	let roleRepository: IRoleRepository;
-	let roleAuditLogService: IRoleAuditLogService;
+	// let roleAuditLogRepository: IRoleAuditLogRepository; TODO: apply roleAuditLog here when RoleAuditLog is done
 
 	beforeEach(() => {
 		roleRepository = new RoleRepository();
-		roleAuditLogService = new RoleAuditLogService();
-		deleteRoleUseCase = new DeleteRoleUseCase(roleRepository, roleAuditLogService);
+	//	roleAuditLogRepository = new roleAuditLogRepository(); TODO: apply roleAuditLog here when RoleAuditLog is done
+		deleteRoleUseCase = new DeleteRoleUseCase();
 	});
 
 	it("should successfully soft delete a role", async () => {
 		const seededRole = await seedRole({});
-		const seededAdminUser = await seedRole({
-			roleId: faker.string.uuid(),
-		});
+		const seededUserWithPermission = await seedRole({});
 
 		const request = {
 			roleId: seededRole.id,
-			requestedById: seededAdminUser.id,
+			requestedById: seededUserWithPermission.id,
 		};
 
 		const result = await deleteRoleUseCase.execute(request);
 
 		expect(result).toBe(request.roleId);
 
-		const deletedRole = await roleRepository.getRoleById(seededRole.id);
+		const deletedRole = await roleRepository.getRoleById(seededRole.id, {
+			includeDeleted: true,
+		});
+
 		expect(deletedRole).not.toBeNull();
 		expect(deletedRole!.isDeleted).toBe(true);
 		expect(deletedRole!.deletedAt).toBeInstanceOf(Date);
 
-		expect(
-			await roleAuditLogService.createAndSaveRoleAuditLog({
-				userId: request.requestedById,
-				description: `Deleted Role with ID: ${seededRole.id}`,
-				type: "DELETE",
-			}),
-		).toBeDefined();
+		// TODO: apply roleAuditLog here when RoleAuditLog is done
+
 	});
 
 	it("should throw NotFoundError when the role does not exist", async () => {
