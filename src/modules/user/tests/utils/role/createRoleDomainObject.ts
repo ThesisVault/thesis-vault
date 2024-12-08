@@ -11,6 +11,8 @@ export const createRoleDomainObject = ({
 	color = faker.color.rgb(),
 	createdAt = faker.date.past(),
 	updatedAt = faker.date.past(),
+	isDeleted = false,
+	deletedAt = null,
 }: Partial<IRoleRawObject>) => {
 	return RoleFactory.create({
 		id,
@@ -19,5 +21,7 @@ export const createRoleDomainObject = ({
 		color,
 		createdAt,
 		updatedAt,
+		isDeleted,
+		deletedAt,
 	}).getValue();
 };

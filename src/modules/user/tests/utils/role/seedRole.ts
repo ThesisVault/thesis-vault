@@ -11,6 +11,8 @@ export const seedRole = async ({
 	color = faker.color.rgb(),
 	createdAt = faker.date.past(),
 	updatedAt = faker.date.past(),
+	isDeleted = false,
+	deletedAt = null,
 }: Partial<IRoleRawObject>): Promise<IRoleRawObject> => {
 	return db.role.create({
 		data: {
@@ -20,6 +22,8 @@ export const seedRole = async ({
 			color,
 			createdAt,
 			updatedAt,
+			isDeleted,
+			deletedAt,
 		},
 	});
 };

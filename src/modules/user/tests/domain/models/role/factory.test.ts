@@ -15,6 +15,8 @@ describe("RoleFactory", () => {
 			color: faker.color.rgb(),
 			createdAt: faker.date.past(),
 			updatedAt: faker.date.past(),
+			isDeleted: false,
+			deletedAt: null,
 		};
 	});
 

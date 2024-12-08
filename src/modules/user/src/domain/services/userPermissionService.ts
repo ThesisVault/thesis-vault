@@ -52,5 +52,5 @@ export class UserPermissionService {
 		}
 
 		return user.isSuperAdmin;
-	}
+	}	
 }
