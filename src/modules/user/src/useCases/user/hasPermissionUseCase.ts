@@ -8,6 +8,7 @@ import {
 	UserPermissionService,
 } from "../../domain/services/userPermissionService";
 import type { HasPermissionDTO } from "../../dtos/userDTO";
+import { NotFoundError } from "@/shared/core/errors";
 
 export class HasPermissionUseCase {
 	private _userRepository: IUserRepository;
@@ -24,7 +25,7 @@ export class HasPermissionUseCase {
 	async execute(request: HasPermissionDTO): Promise<boolean> {
 		const user = await this._userRepository.getUserById(request.userId);
 		if (user == null) {
-			return false;
+			 throw new NotFoundError(`User with ID ${request.userId} not found`);
 		}
 
 		const permissionKey = this.getPermissionKey(request.permission);

@@ -3,7 +3,7 @@ import { UpdateUserPermissionController } from "@/modules/user/src/infrastructur
 import { UpdateUserRoleIdController } from "@/modules/user/src/infrastructure/http/controllers/user/updateUserRoleIdController";
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
-import { HasPermissionController } from "../controllers/hasPermissionService/hasPermissionController";
+import { HasPermissionController } from "../controllers/user/hasPermissionController";
 
 export const userRouter = router({
 	updateUserPermissions: protectedProcedure
