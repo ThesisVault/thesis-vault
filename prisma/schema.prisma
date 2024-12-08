@@ -53,6 +53,7 @@ model User {
   accounts         Account[]
   auditLog         UserAuditLog[]
   roleAuditLog     RoleAuditLog[]
+  roleAuditLog     RoleAuditLog[]
 }
 
 model Role {
@@ -63,7 +64,24 @@ model Role {
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   isDeleted   Boolean        @default(false)
+  color       String         @default("#FFFFFF")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  isDeleted   Boolean        @default(false)
   deletedAt   DateTime?
+  users       User[]         @relation
+  auditLog    RoleAuditLog[]
+}
+
+model RoleAuditLog {
+  id          String   @id
+  type        String
+  description String
+  createdAt   DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId      String
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
   users       User[]         @relation
   auditLog    RoleAuditLog[]
 }
