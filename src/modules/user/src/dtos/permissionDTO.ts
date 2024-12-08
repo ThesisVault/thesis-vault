@@ -1,3 +1,3 @@
-export interface GetPermissionsDTO{
+export interface getPermissionsDTO{
     requestedById: string;
   }

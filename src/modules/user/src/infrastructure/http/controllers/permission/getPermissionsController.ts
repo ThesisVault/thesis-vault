@@ -5,27 +5,27 @@ import {
 	type IUserPermissionService,
 	UserPermissionService,
 } from "../../../../domain/services/userPermissionService";
-import type { GetPermissionsDTO } from "../../../../dtos/permissionDTO";
+import type { getPermissionsDTO } from "../../../../dtos/permissionDTO";
 import { GetPermissionsUseCase } from "../../../../useCases/permission/getPermissionsUseCase";
 
 export class GetPermissionsController extends BaseController<
-	GetPermissionsDTO,
+	getPermissionsDTO,
 	PermissionsDetailType
 > {
-	private _getPermissionsUseCase: GetPermissionsUseCase;
-	private _userPermissionService: IUserPermissionService;
+	private getPermissionsUseCase: GetPermissionsUseCase;
+	private userPermissionService: IUserPermissionService;
 
 	constructor(
 		getPermissionsUseCase = new GetPermissionsUseCase(),
-		_userPermissonService = new UserPermissionService(),
+		userPermissonService = new UserPermissionService(),
 	) {
 		super();
-		this._userPermissionService = _userPermissonService;
-		this._getPermissionsUseCase = getPermissionsUseCase;
+		this.userPermissionService = userPermissonService;
+		this.getPermissionsUseCase = getPermissionsUseCase;
 	}
 
-	public async executeImpl(request: GetPermissionsDTO): Promise<PermissionsDetailType> {
-		const hasManageUserPermission = await this._userPermissionService.hasPermission(
+	public async executeImpl(request: getPermissionsDTO): Promise<PermissionsDetailType> {
+		const hasManageUserPermission = await this.userPermissionService.hasPermission(
 			request.requestedById,
 			"MANAGE_PERMISSION",
 		);
@@ -35,7 +35,7 @@ export class GetPermissionsController extends BaseController<
 			);
 		}
 
-		const permission = await this._getPermissionsUseCase.execute();
+		const permission = await this.getPermissionsUseCase.execute();
 		return this.ok(permission);
 	}
 }
