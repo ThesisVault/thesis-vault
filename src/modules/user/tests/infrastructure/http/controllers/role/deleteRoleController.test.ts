@@ -2,6 +2,7 @@ import type { DeleteRoleDTO } from "@/modules/user/src/dtos/userDTO";
 import { DeleteRoleController } from "@/modules/user/src/infrastructure/http/controllers/role/deleteRoleController";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
+import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { faker } from "@faker-js/faker";
 
 describe("DeleteRoleController", () => {
@@ -14,13 +15,14 @@ describe("DeleteRoleController", () => {
 	it("should return role id when all request is valid", async () => {
 		const seededRole = await seedRole({});
 
-		const rolePermission = await seedRole({
-			permissions: Permissions.MANAGE_ROLE,
+		const seededUser = await seedUser({
+			allowPermissions: Permissions.MANAGE_ROLE,
+			denyPermissions: 0,
 		});
 
 		const request: DeleteRoleDTO = {
 			roleId: seededRole.id,
-			requestedById: rolePermission.id,
+			requestedById: seededUser.id,
 		};
 
 		const roleId = await deleteRoleController.executeImpl(request);
