@@ -69,7 +69,7 @@ describe("deleteRoleEndpoint", () => {
 			}
 
 			expect(errorMessage).toBe(
-				`User ${request.requestedById} does not have DELETE_ROLE permission`,
+				`User ${request.requestedById} does not have MANAGE_ROLE permission`,
 			);
 		});
 	});

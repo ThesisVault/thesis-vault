@@ -24,10 +24,10 @@ describe("DeleteUserUseCase", () => {
 
   it("should successfully soft delete a user", async () => {
     const seededUser = await seedUser({});
-    const seededUserWithPermission = await seedUser({});
+    const seededUserRequestedBy = await seedUser({});
     const request = {
       userId: seededUser.id,
-      requestedById: seededUserWithPermission.id,
+      requestedById: seededUserRequestedBy.id,
     };
     const result = await deleteUserUseCase.execute(request);
 
@@ -42,7 +42,7 @@ describe("DeleteUserUseCase", () => {
     expect(deletedUser!.deletedAt).toBeInstanceOf(Date);
 
     const userAuditLog = await userAuditLogRepository.getUserAuditLogsByUserId(
-      seededUserWithPermission.id
+      seededUserRequestedBy.id
     );
 
     expect(userAuditLog.length).toBe(1);

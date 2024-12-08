@@ -4,6 +4,7 @@ import {
 } from "@/modules/user/src/repositories/roleRepository";
 import { DeleteRoleUseCase } from "@/modules/user/src/useCases/role/deleteRoleUseCase";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
+import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { NotFoundError } from "@/shared/core/errors";
 import { faker } from "@faker-js/faker";
 
@@ -18,11 +19,11 @@ describe("DeleteRoleUseCase", () => {
 
 	it("should successfully soft delete a role", async () => {
 		const seededRole = await seedRole({});
-		const seededUserWithPermission = await seedRole({});
+		const seededUserRequestedBy = await seedUser({});
 
 		const request = {
 			roleId: seededRole.id,
-			requestedById: seededUserWithPermission.id,
+			requestedById: seededUserRequestedBy.id,
 		};
 
 		const result = await deleteRoleUseCase.execute(request);
@@ -43,7 +44,7 @@ describe("DeleteRoleUseCase", () => {
 	it("should throw NotFoundError when the role does not exist", async () => {
 		const request = {
 			roleId: faker.string.uuid(),
-			requestedById: faker.string.uuid(),
+			requestedById: (await seedUser({})).id,
 		};
 
 		let errorMessage = "";
