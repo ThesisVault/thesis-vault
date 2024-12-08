@@ -10,7 +10,7 @@ export interface IRoleFactory {
 	color: string;
 	createdAt: Date;
 	updatedAt: Date;
-	isDeleted: boolean; 
+	isDeleted: boolean;
 	deletedAt: Date | null;
 }
 

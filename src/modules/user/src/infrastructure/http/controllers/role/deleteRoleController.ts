@@ -1,31 +1,31 @@
-import { UserPermissionService } from "@/modules/user/src/domain/services/userPermissionService";
+import { RolePermissionService } from "@/modules/user/src/domain/services/rolePermissionService";
 import type { DeleteRoleDTO } from "@/modules/user/src/dtos/userDTO";
 import { DeleteRoleUseCase } from "@/modules/user/src/useCases/role/deleteRoleUseCase";
 import { ForbiddenError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";
 
 export class DeleteRoleController extends BaseController<DeleteRoleDTO, string> {
-	private _userPermissionService: UserPermissionService;
+	private _rolePermissionService: RolePermissionService;
 	private _deleteRoleUseCase: DeleteRoleUseCase;
 
 	constructor(
-		userPermissionService = new UserPermissionService(),
+		rolePermissionService = new RolePermissionService(),
 		deleteRoleUseCase = new DeleteRoleUseCase(),
 	) {
 		super();
-		this._userPermissionService = userPermissionService;
+		this._rolePermissionService = rolePermissionService;
 		this._deleteRoleUseCase = deleteRoleUseCase;
 	}
 
 	public async executeImpl(request: DeleteRoleDTO): Promise<string> {
-		const hasManageRolePermission = await this._userPermissionService.hasPermission(
+		const hasManageRolePermission = await this._rolePermissionService.hasPermission(
 			request.requestedById,
-			"DELETE_ROLE",
+			"MANAGE_ROLE",
 		);
 
 		if (!hasManageRolePermission) {
 			throw new ForbiddenError(
-				`User ${request.requestedById} does not have DELETE_ROLE permission`,
+				`User ${request.requestedById} does not have MANAGE_ROLE permission`,
 			);
 		}
 

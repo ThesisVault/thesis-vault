@@ -10,11 +10,9 @@ import { faker } from "@faker-js/faker";
 describe("DeleteRoleUseCase", () => {
 	let deleteRoleUseCase: DeleteRoleUseCase;
 	let roleRepository: IRoleRepository;
-	// let roleAuditLogRepository: IRoleAuditLogRepository; TODO: apply roleAuditLog here when RoleAuditLog is done
 
 	beforeEach(() => {
 		roleRepository = new RoleRepository();
-	//	roleAuditLogRepository = new roleAuditLogRepository(); TODO: apply roleAuditLog here when RoleAuditLog is done
 		deleteRoleUseCase = new DeleteRoleUseCase();
 	});
 
@@ -39,8 +37,7 @@ describe("DeleteRoleUseCase", () => {
 		expect(deletedRole!.isDeleted).toBe(true);
 		expect(deletedRole!.deletedAt).toBeInstanceOf(Date);
 
-		// TODO: apply roleAuditLog here when RoleAuditLog is done
-
+		// TODO: assert role audit log when RoleAuditLog is implemented
 	});
 
 	it("should throw NotFoundError when the role does not exist", async () => {
