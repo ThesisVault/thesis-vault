@@ -43,7 +43,7 @@ model User {
   allowPermissions Int            @default(0)
   denyPermissions  Int            @default(0)
   roleId           String?
-  Role             Role?          @relation(fields: [roleId], references: [id])
+  role             Role?          @relation(fields: [roleId], references: [id])
   isDeleted        Boolean        @default(false)
   deletedAt        DateTime?
   createdAt        DateTime       @default(now())

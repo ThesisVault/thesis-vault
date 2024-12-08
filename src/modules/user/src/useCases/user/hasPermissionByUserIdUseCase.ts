@@ -3,13 +3,14 @@ import {
 	UserRepository,
 } from "@/modules/user/src/repositories/userRepository";
 import { type PermissionKeys, Permissions } from "@/modules/user/src/shared/permissions";
+import { NotFoundError } from "@/shared/core/errors";
 import {
 	type IUserPermissionService,
 	UserPermissionService,
 } from "../../domain/services/userPermissionService";
-import type { HasPermissionDTO } from "../../dtos/userDTO";
+import type { HasPermissionByUserIdDTO } from "../../dtos/userDTO";
 
-export class HasPermissionUseCase {
+export class HasPermissionByUserIdUseCase {
 	private _userRepository: IUserRepository;
 	private _userPermissionService: IUserPermissionService;
 
@@ -21,14 +22,13 @@ export class HasPermissionUseCase {
 		this._userPermissionService = userPermissionService;
 	}
 
-	async execute(request: HasPermissionDTO): Promise<boolean> {
+	async execute(request: HasPermissionByUserIdDTO): Promise<boolean> {
 		const user = await this._userRepository.getUserById(request.userId);
-		if (user == null) {
-			return false;
+		if (user === null) {
+			throw new NotFoundError(`User with ID ${request.userId} not found`);
 		}
 
 		const permissionKey = this.getPermissionKey(request.permission);
-
 		const hasPermission = await this._userPermissionService.hasPermission(user.id, permissionKey);
 
 		return hasPermission;
