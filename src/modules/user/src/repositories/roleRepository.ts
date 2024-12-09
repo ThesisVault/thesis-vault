@@ -9,6 +9,8 @@ export interface IRoleRepository {
 	getRolesByIds(roleIds: string[], options?: QueryOptions): Promise<IRole[]>;
 	updateRole(data: IRole): Promise<IRole | null>;
 	updateRoles(roles: IRole[]): Promise<IRole[]>;
+	createRole(role: IRole): Promise<IRole | null>;
+	createRoles(roles: IRole[]): Promise<IRole[]>
 }
 
 export class RoleRepository implements IRoleRepository {
@@ -77,6 +79,33 @@ export class RoleRepository implements IRoleRepository {
 			return [];
 		}
 	}
+
+	async createRole(role: IRole): Promise<IRole | null> {
+		const roleDomain = await this.createRoles([role]);
+		
+		if (roleDomain.length === 0) {
+			return null;
+		}
+		
+		return roleDomain[0];
+	}
+
+	async createRoles(roles: IRole[]): Promise<IRole[]> {
+		try {
+			const rolesPersistence = await db.$transaction(
+				roles.map((role) => {
+					return this._roleDatabase.create({
+						data: RoleMapper.toPersistence(role),
+					});
+				}),
+			);
+			
+			return rolesPersistence.map(role => RoleMapper.toDomain(role));
+		} catch {
+			return [];
+		}
+	}
+
 
 	private _deletedRoleFilter(includeDeleted?: boolean) {
 		if (includeDeleted) return {};
