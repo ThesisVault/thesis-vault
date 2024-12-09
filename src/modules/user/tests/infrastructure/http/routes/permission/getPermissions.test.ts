@@ -5,7 +5,6 @@ import { ForbiddenError } from "@/shared/core/errors";
 import { db } from "@/shared/infrastructure/database";
 import { createCallerFactory } from "@/shared/infrastructure/trpc";
 import type { TRPCError } from "@trpc/server";
-import { v4 as uuid } from "uuid";
 
 describe("getPermissionsEndPoint", () => {
 	describe("User is authenticated", () => {
@@ -13,9 +12,6 @@ describe("getPermissionsEndPoint", () => {
 			const seededUserWithPermission = await seedUser({
 				allowPermissions: Permissions.MANAGE_PERMISSION,
 			});
-			const request = {
-				userId: seededUserWithPermission.id,
-			};
 
 			const createdCaller = createCallerFactory(permissionRouter);
 			const caller = createdCaller({
@@ -28,7 +24,7 @@ describe("getPermissionsEndPoint", () => {
 				db: db,
 			});
 
-			const userId = await caller.getPermissions(request);
+			const userId = await caller.getPermissions();
 			expect(userId).toBe(PermissionsDetail);
 		});
 
@@ -36,9 +32,6 @@ describe("getPermissionsEndPoint", () => {
 			const seededUserWithPermission = await seedUser({
 				allowPermissions: 0,
 			});
-			const request = {
-				userId: seededUserWithPermission.id,
-			};
 
 			const createdCaller = createCallerFactory(permissionRouter);
 			const caller = createdCaller({
@@ -53,7 +46,7 @@ describe("getPermissionsEndPoint", () => {
 
 			let errorMessage = "";
 			try {
-				await caller.getPermissions(request);
+				await caller.getPermissions();
 			} catch (error) {
 				errorMessage = (error as Error).message;
 
@@ -68,12 +61,6 @@ describe("getPermissionsEndPoint", () => {
 
 	describe("User is Unauthenticated", () => {
 		it("should return an unauthorized error if user is not authenticated", async () => {
-			const request = {
-				userId: uuid(),
-				allowPermission: 0,
-				denyPermission: 0,
-			};
-
 			const createdCaller = createCallerFactory(permissionRouter);
 			const caller = createdCaller({
 				session: null,
@@ -82,7 +69,7 @@ describe("getPermissionsEndPoint", () => {
 
 			let errorMessage = "";
 			try {
-				await caller.getPermissions(request);
+				await caller.getPermissions();
 			} catch (error) {
 				errorMessage = (error as TRPCError).message;
 			}

@@ -26,7 +26,7 @@ export const Permissions = {
 export const PermissionsDetail = {
 	SEARCH_RESOURCES: {
 		name: "Search Resources",
-		desciption: "Allows searching resources in the system.",
+		description: "Allows searching resources in the system.",
 		value: Permissions.SEARCH_RESOURCES,
 	},
 	VIEW_RESOURCES: {

@@ -38,5 +38,3 @@ export interface HasPermissionByUserIdDTO {
 	permission: number;
 	requestedById: string;
 }
-
-
