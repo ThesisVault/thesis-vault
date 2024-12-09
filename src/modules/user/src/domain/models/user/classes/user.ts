@@ -1,5 +1,6 @@
 import type { UserName } from "@/modules/user/src/domain/models/user/classes/userName";
 import type { UserPermission } from "@/modules/user/src/domain/models/user/classes/userPermission";
+import type { IUserJSONData } from "@/modules/user/src/domain/models/user/constant";
 
 export interface IUser {
 	id: string;
@@ -20,6 +21,7 @@ export interface IUser {
 	updatePermission: (allowPermissions: UserPermission, denyPermissions: UserPermission) => void;
 	updateRoleId: (roleId: string | null) => void;
 	softDelete: () => void;
+	toJSON: () => IUserJSONData;
 }
 
 export class User implements IUser {
@@ -34,9 +36,9 @@ export class User implements IUser {
 	private _isDeleted: boolean;
 	private _deletedAt: Date | null;
 	private readonly _createdAt: Date;
-	private readonly _updatedAt: Date;
+	private _updatedAt: Date;
 
-	private constructor({
+	constructor({
 		id,
 		name,
 		email,
@@ -145,7 +147,7 @@ export class User implements IUser {
 	public updateRoleId(roleId: string | null): void {
 		this._roleId = roleId;
 	}
-	
+
 	public softDelete(): void {
 		this._isDeleted = true;
 		this._deletedAt = new Date();
@@ -166,5 +168,22 @@ export class User implements IUser {
 		updatedAt: Date;
 	}): User {
 		return new User(props);
+	}
+
+	public toJSON(): IUserJSONData {
+		return {
+			id: this.id,
+			name: this.nameValue,
+			email: this.email,
+			image: this.image,
+			roleId: this.roleId,
+			isSuperAdmin: this.isSuperAdmin,
+			allowPermissions: this.allowPermissionsValue,
+			denyPermissions: this.denyPermissionsValue,
+			isDeleted: this.isDeleted,
+			deletedAt: this.deletedAt,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+		};
 	}
 }

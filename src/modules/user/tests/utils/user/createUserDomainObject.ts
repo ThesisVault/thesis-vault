@@ -15,8 +15,8 @@ export const createUserDomainObject = ({
 	denyPermissions = faker.number.int({ min: 0, max: Permissions.ALL, multipleOf: 2 }),
 	isDeleted = false,
 	deletedAt = null,
-	createdAt = faker.date.past(),
-	updatedAt = faker.date.past(),
+	createdAt = new Date(),
+	updatedAt = new Date(),
 }: Partial<IUserRawObject>) => {
 	return UserFactory.create({
 		id,

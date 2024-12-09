@@ -5,6 +5,7 @@
 		"source.organizeImports.biome": "explicit",
 		"source.removeUnusedImports": "always"
 	},
+	"editor.tabSize": 2,
 	"[typescript]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	}

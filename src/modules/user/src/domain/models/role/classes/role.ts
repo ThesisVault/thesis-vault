@@ -111,4 +111,15 @@ export class Role implements IRole {
 	}): Role {
 		return new Role(props);
 	}
+
+	public toJSON() {
+		return {
+			id: this.id,
+			name: this.nameValue,
+			permissions: this.permissionsValue,
+			color: this.color,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+		};
+	}
 }

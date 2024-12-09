@@ -5,6 +5,6 @@ import TailwindUI from "./plugins/ui";
 const config: Config = {
 	darkMode: ["class"],
 	content: ["./src/**/*.tsx"],
-	plugins: [TailwindAnimate, TailwindUI],
+	plugins: [TailwindAnimate, TailwindUI]
 };
 export default config;

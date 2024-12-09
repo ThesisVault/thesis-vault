@@ -1,11 +1,17 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": "node 20",
-        "modules": "commonjs"
-      }
-    ]
-  ]
+	"presets": [
+		[
+			"@babel/preset-env",
+			{
+				"targets": "node 20",
+				"modules": "commonjs"
+			}
+		]
+	],
+	"overrides": [
+		{
+			"test": ["**/*.ts", "**/*.tsx"],
+			"presets": []
+		}
+	]
 }
