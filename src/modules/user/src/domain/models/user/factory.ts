@@ -1,10 +1,12 @@
 import { UserName } from "@/modules/user/src/domain/models/user/classes/userName";
 import { UserPermission } from "@/modules/user/src/domain/models/user/classes/userPermission";
 import { Result } from "@/shared/core/result";
+import { defaultTo } from "rambda";
+import { v4 as uuid } from "uuid";
 import { User } from "./classes/user";
 
 export interface IUserFactory {
-	id: string;
+	id?: string;
 	name: string;
 	email: string;
 	image: string;
@@ -34,6 +36,7 @@ export class UserFactory {
 		return Result.ok<User>(
 			User.create({
 				...userFactoryProps,
+				id: defaultTo(uuid(), userFactoryProps.id),
 				name: userNameOrError.getValue(),
 				allowPermissions: userAllowPermissionOrError.getValue(),
 				denyPermissions: userDenyPermissionOrError.getValue(),

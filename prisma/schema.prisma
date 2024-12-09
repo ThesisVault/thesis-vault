@@ -34,7 +34,7 @@ model Session {
 }
 
 model User {
-  id               String         @id @default(uuid())
+  id               String         @id
   name             String
   email            String         @unique
   emailVerified    DateTime?
@@ -52,22 +52,35 @@ model User {
   sessions         Session[]
   accounts         Account[]
   auditLog         UserAuditLog[]
+  roleAuditLog     RoleAuditLog[]
 }
 
 model Role {
-  id          String    @id @default(uuid())
+  id          String         @id
   name        String
   permissions Int
-  color       String    @default("#FFFFFF")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  isDeleted   Boolean   @default(false)
+  color       String         @default("#FFFFFF")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  isDeleted   Boolean        @default(false)
   deletedAt   DateTime?
-  users       User[]    @relation
+  users       User[]         @relation
+  auditLog    RoleAuditLog[]
+}
+
+model RoleAuditLog {
+  id          String   @id
+  type        String
+  description String
+  createdAt   DateTime
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId      String
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
 }
 
 model UserAuditLog {
-  id          String   @id @default(uuid())
+  id          String   @id
   type        String
   description String
   createdAt   DateTime @default(now())
@@ -88,7 +101,7 @@ model Thesis {
 }
 
 model ThesisAuditLog {
-  id       String @id @default(uuid())
+  id       String @id
   thesisId String
   thesis   Thesis @relation(fields: [thesisId], references: [id])
 }

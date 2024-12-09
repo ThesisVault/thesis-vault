@@ -1,4 +1,8 @@
 import {
+	type IRoleAuditLogRepository,
+	RoleAuditLogRepository
+} from "@/modules/user/src/repositories/roleAuditLogRepository";
+import {
 	type IRoleRepository,
 	RoleRepository,
 } from "@/modules/user/src/repositories/roleRepository";
@@ -11,10 +15,12 @@ import { faker } from "@faker-js/faker";
 describe("DeleteRoleUseCase", () => {
 	let deleteRoleUseCase: DeleteRoleUseCase;
 	let roleRepository: IRoleRepository;
+	let roleAuditLogRepository: IRoleAuditLogRepository;
 
 	beforeEach(() => {
 		roleRepository = new RoleRepository();
 		deleteRoleUseCase = new DeleteRoleUseCase();
+		roleAuditLogRepository = new RoleAuditLogRepository();
 	});
 
 	it("should successfully soft delete a role", async () => {
@@ -37,8 +43,17 @@ describe("DeleteRoleUseCase", () => {
 		expect(deletedRole).not.toBeNull();
 		expect(deletedRole!.isDeleted).toBe(true);
 		expect(deletedRole!.deletedAt).toBeInstanceOf(Date);
-
-		// TODO: assert role audit log when RoleAuditLog is implemented
+		
+		const roleAuditLog = await roleAuditLogRepository.getRoleAuditLogByRoleId(
+			seededRole.id
+		);
+		
+		expect(roleAuditLog).not.toBeNull();
+		expect(roleAuditLog!.userId).toBe(request.requestedById);
+		expect(roleAuditLog!.description).toBe(
+			`Deleted Role with ID: ${seededRole.id}`
+		);
+		expect(roleAuditLog!.createdAt).toBeInstanceOf(Date);
 	});
 
 	it("should throw NotFoundError when the role does not exist", async () => {
