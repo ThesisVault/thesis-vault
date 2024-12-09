@@ -32,3 +32,9 @@ export interface DeleteRoleDTO {
 	roleId: string;
 	requestedById: string;
 }
+
+export interface HasPermissionByUserIdDTO {
+	userId: string;
+	permission: number;
+	requestedById: string;
+}
