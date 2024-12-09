@@ -2,9 +2,11 @@ import { Role } from "@/modules/user/src/domain/models/role/classes/role";
 import { RoleName } from "@/modules/user/src/domain/models/role/classes/roleName";
 import { RolePermission } from "@/modules/user/src/domain/models/role/classes/rolePermission";
 import { Result } from "@/shared/core/result";
+import { defaultTo } from "rambda";
+import { v4 as uuid } from "uuid";
 
 export interface IRoleFactory {
-	id: string;
+	id?: string;
 	name: string;
 	permissions: number;
 	color: string;
@@ -25,6 +27,7 @@ export class RoleFactory {
 		return Result.ok<Role>(
 			Role.create({
 				...props,
+				id: defaultTo(uuid(), props.id),
 				name: nameOrError.getValue(),
 				permissions: permissionOrError.getValue(),
 				color: props.color,

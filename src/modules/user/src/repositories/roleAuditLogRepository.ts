@@ -53,13 +53,12 @@ export class RoleAuditLogRepository implements IRoleAuditLogRepository {
 	}
 
 	async createRoleAuditLog(roleAuditLog: IRoleAuditLog): Promise<IRoleAuditLog | null> {
-		const roleAuditLogsDomain = await this.createRoleAuditLogs([roleAuditLog]);
-
-		if (roleAuditLogsDomain.length === 0) {
+		const roleAuditLogDomains = await this.createRoleAuditLogs([roleAuditLog]);
+		if (roleAuditLogDomains.length === 0) {
 			return null;
 		}
 
-		return roleAuditLogsDomain[0];
+		return roleAuditLogDomains[0];
 	}
 
 	async createRoleAuditLogs(roleAuditLogs: IRoleAuditLog[]): Promise<IRoleAuditLog[]> {

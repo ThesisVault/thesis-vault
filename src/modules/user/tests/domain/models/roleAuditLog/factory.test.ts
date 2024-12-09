@@ -3,7 +3,7 @@ import { RoleAuditLogTypes } from "@/modules/user/src/domain/models/roleAuditLog
 import { RoleAuditLogFactory } from "@/modules/user/src/domain/models/roleAuditLog/factory";
 import { faker } from "@faker-js/faker";
 
-describe("UserAuditLogFactory", () => {
+describe("RoleAuditLogFactory", () => {
 	const validRoleAuditLogProps = {
 		id: faker.string.uuid(),
 		userId: faker.string.uuid(),

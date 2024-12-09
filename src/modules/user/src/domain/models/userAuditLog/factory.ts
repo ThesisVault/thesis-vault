@@ -1,9 +1,11 @@
 import { Result } from "@/shared/core/result";
+import { defaultTo } from "rambda";
+import { v4 as uuid } from "uuid";
 import { UserAuditLog } from "./classes/userAuditLog";
 import { UserAuditLogType } from "./classes/userAuditLogType";
 
 export interface IUserAuditLogFactory {
-	id: string;
+	id?: string;
 	userId: string;
 	type: string;
 	description: string;
@@ -20,6 +22,7 @@ export class UserAuditLogFactory {
 		return Result.ok<UserAuditLog>(
 			UserAuditLog.create({
 				...userAuditLogFactoryProps,
+				id: defaultTo(uuid(), userAuditLogFactoryProps.id),
 				type: typeOrError.getValue(),
 			}),
 		);

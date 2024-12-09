@@ -73,6 +73,8 @@ describe("HasPermissionUseCase", () => {
 			});
 			const seededUser = await seedUser({
 				roleId: seededRole.id,
+				allowPermissions: 0,
+				denyPermissions: 0
 			});
 
 			const request: HasPermissionByUserIdDTO = {
@@ -91,6 +93,8 @@ describe("HasPermissionUseCase", () => {
 			});
 			const seededUser = await seedUser({
 				roleId: seededRole.id,
+				allowPermissions: 0,
+				denyPermissions: 0
 			});
 
 			const request: HasPermissionByUserIdDTO = {

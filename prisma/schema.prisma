@@ -34,7 +34,7 @@ model Session {
 }
 
 model User {
-  id               String         @id @default(uuid())
+  id               String         @id
   name             String
   email            String         @unique
   emailVerified    DateTime?
@@ -56,7 +56,7 @@ model User {
 }
 
 model Role {
-  id          String         @id @default(uuid())
+  id          String         @id
   name        String
   permissions Int
   color       String         @default("#FFFFFF")
@@ -69,7 +69,7 @@ model Role {
 }
 
 model RoleAuditLog {
-  id          String   @id @default(uuid())
+  id          String   @id
   type        String
   description String
   createdAt   DateTime
@@ -80,7 +80,7 @@ model RoleAuditLog {
 }
 
 model UserAuditLog {
-  id          String   @id @default(uuid())
+  id          String   @id
   type        String
   description String
   createdAt   DateTime @default(now())
@@ -101,7 +101,7 @@ model Thesis {
 }
 
 model ThesisAuditLog {
-  id       String @id @default(uuid())
+  id       String @id
   thesisId String
   thesis   Thesis @relation(fields: [thesisId], references: [id])
 }

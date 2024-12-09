@@ -1,4 +1,5 @@
 import { Result } from "@/shared/core/result";
+import { defaultTo } from "rambda";
 import { type IRoleAuditLog, RoleAuditLog } from "./classes/roleAuditLog";
 import { RoleAuditLogType } from "./classes/roleAuditLogType";
 import { v4 as uuid } from "uuid";
@@ -14,8 +15,6 @@ export interface IRoleAuditLogFactory {
 
 export class RoleAuditLogFactory {
 	public static create(roleAuditLogProps: IRoleAuditLogFactory): Result<IRoleAuditLog> {
-		const id = roleAuditLogProps.id ? roleAuditLogProps.id : uuid();
-
 		const roleAuditLogTypeOrError = RoleAuditLogType.create(roleAuditLogProps.type);
 		if (roleAuditLogTypeOrError.isFailure) {
 			return Result.fail(roleAuditLogTypeOrError.getErrorMessage()!);
@@ -24,7 +23,7 @@ export class RoleAuditLogFactory {
 		return Result.ok<IRoleAuditLog>(
 			RoleAuditLog.create({
 				...roleAuditLogProps,
-				id: id,
+				id: defaultTo(uuid(), roleAuditLogProps.id),
 				type: roleAuditLogTypeOrError.getValue(),
 			}),
 		);

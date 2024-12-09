@@ -20,7 +20,7 @@ export class RoleAuditLogType {
 		return this._value;
 	}
 	
-	private static _isRoleAuditLogTypeValid(type: string): boolean {
+	private static _isRoleAuditLogTypeValid(type: string): type is IRoleAuditLogType {
 		return Object.values(RoleAuditLogTypes).includes(type as IRoleAuditLogType);
 	}
 }
