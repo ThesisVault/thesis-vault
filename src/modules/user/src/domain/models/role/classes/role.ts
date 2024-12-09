@@ -11,7 +11,7 @@ export interface IRole {
 	isDeleted: boolean;
 	deletedAt: Date | null;
 	createdAt: Date;
-	updatedAt: Date;
+	updatedAt: Date | null;
 	softDelete: () => void;
 }
 
@@ -23,7 +23,7 @@ export class Role implements IRole {
 	private _isDeleted: boolean;
 	private _deletedAt: Date | null;
 	private readonly _createdAt: Date;
-	private readonly _updatedAt: Date;
+	private readonly _updatedAt: Date | null;
 
 	private constructor({
 		id,
@@ -42,7 +42,7 @@ export class Role implements IRole {
 		isDeleted: boolean;
 		deletedAt: Date | null;
 		createdAt: Date;
-		updatedAt: Date;
+		updatedAt: Date | null;
 	}) {
 		this._id = id;
 		this._name = name;
@@ -90,7 +90,7 @@ export class Role implements IRole {
 		return this._createdAt;
 	}
 
-	get updatedAt(): Date {
+	get updatedAt(): Date | null {
 		return this._updatedAt;
 	}
 
@@ -107,7 +107,7 @@ export class Role implements IRole {
 		isDeleted: boolean;
 		deletedAt: Date | null;
 		createdAt: Date;
-		updatedAt: Date;
+		updatedAt: Date | null;
 	}): Role {
 		return new Role(props);
 	}
