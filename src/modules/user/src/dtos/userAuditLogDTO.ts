@@ -8,3 +8,9 @@ export interface GetUserAuditLogsByUserIdDTO {
 	userId: string;
 	requestedById: string;
 }
+
+export interface GetUserAuditLogsWithPaginationDTO {
+	perPage: number;
+	page: number;
+	requestedById: string;
+}

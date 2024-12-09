@@ -9,7 +9,7 @@ export const seedUserAuditLog = async ({
 	userId,
 	type = "CREATE",
 	description = faker.lorem.sentence(),
-	createdAt = faker.date.past(),
+	createdAt = new Date(),
 }: Partial<IUserAuditLogRawObject>): Promise<IUserAuditLogRawObject> => {
 	const user = userId ? { id: userId } : await seedUser({});
 
