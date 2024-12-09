@@ -69,7 +69,7 @@ model Role {
 }
 
 model RoleAuditLog {
-  id          String   @id
+  id          String   @id @default(uuid())
   type        String
   description String
   createdAt   DateTime

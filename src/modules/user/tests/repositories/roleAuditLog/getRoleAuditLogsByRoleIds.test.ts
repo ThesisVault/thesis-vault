@@ -6,7 +6,6 @@ import {
 } from "@/modules/user/src/repositories/roleAuditLogRepository";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedRoleAuditLog } from "@/modules/user/tests/utils/roleAuditLog/seedRoleAuditLog";
-import { db } from "@/shared/infrastructure/database";
 
 const assertRoleAuditLog = (
 	roleAuditLog: IRoleAuditLog,
@@ -27,10 +26,6 @@ describe("RoleAuditLogRepository.getRoleAuditLogsByRoleIds", () => {
 		roleAuditLogRepository = new RoleAuditLogRepository();
 	});
 
-	afterAll(async () => {
-		await db.$disconnect();
-	});
-
 	it("should retrieve a roleAuditLogs by roleIds", async () => {
 		const seededRoleOne = await seedRole({});
 		const seededRoleTwo = await seedRole({});
@@ -45,6 +40,30 @@ describe("RoleAuditLogRepository.getRoleAuditLogsByRoleIds", () => {
 		expect(roleAuditLogs.length).toBe(2);
 		assertRoleAuditLog(roleAuditLogs[0], seededRoleAuditLogOne);
 		assertRoleAuditLog(roleAuditLogs[1], seededRoleAuditLogTwo);
+	});
+	
+	it("should retrieve a roleAuditLogs by roleIds where role have a lot of changes", async () => {
+		const seededRoleOne = await seedRole({});
+		const seededRoleTwo = await seedRole({});
+		const seededRoleAuditLogOne = await seedRoleAuditLog({ roleId: seededRoleOne.id });
+		const seededRoleAuditLogTwo = await seedRoleAuditLog({ roleId: seededRoleOne.id });
+		const seededRoleAuditLogThree = await seedRoleAuditLog({ roleId: seededRoleOne.id });
+		const seededRoleAuditLogFour = await seedRoleAuditLog({ roleId: seededRoleTwo.id });
+		const seededRoleAuditLogFive = await seedRoleAuditLog({ roleId: seededRoleTwo.id });
+		const seededRoleAuditLogSix = await seedRoleAuditLog({ roleId: seededRoleTwo.id });
+		
+		const roleAuditLogs = await roleAuditLogRepository.getRoleAuditLogsByRoleIds([
+			seededRoleOne.id,
+			seededRoleTwo.id,
+		]);
+		
+		expect(roleAuditLogs.length).toBe(6);
+		assertRoleAuditLog(roleAuditLogs[0], seededRoleAuditLogOne);
+		assertRoleAuditLog(roleAuditLogs[1], seededRoleAuditLogTwo);
+		assertRoleAuditLog(roleAuditLogs[2], seededRoleAuditLogThree);
+		assertRoleAuditLog(roleAuditLogs[3], seededRoleAuditLogFour);
+		assertRoleAuditLog(roleAuditLogs[4], seededRoleAuditLogFive);
+		assertRoleAuditLog(roleAuditLogs[5], seededRoleAuditLogSix);
 	});
 
 	it("should only retrieve 1 roleAuditLog", async () => {

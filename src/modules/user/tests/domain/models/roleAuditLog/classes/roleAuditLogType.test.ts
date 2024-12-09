@@ -1,8 +1,10 @@
 import { RoleAuditLogType } from "@/modules/user/src/domain/models/roleAuditLog/classes/roleAuditLogType";
+import { RoleAuditLogTypes } from "@/modules/user/src/domain/models/roleAuditLog/constant";
+import { faker } from "@faker-js/faker";
 
 describe("RoleAuditLogType", () => {
 	it("should create a valid RoleAuditLogType for a valid type", () => {
-		const validType = "CREATE";
+		const validType = faker.helpers.arrayElement(Object.values(RoleAuditLogTypes));
 		const result = RoleAuditLogType.create(validType);
 
 		expect(result.isSuccess).toBe(true);

@@ -1,15 +1,15 @@
+import { type IRoleAuditLogType, RoleAuditLogTypes } from "@/modules/user/src/domain/models/roleAuditLog/constant";
 import { Result } from "@/shared/core/result";
 
 export class RoleAuditLogType {
 	public readonly _value: string;
-	public static readonly ROLE_AUDIT_LOG_TYPES = ["UPDATE", "CREATE", "DELETE"];
 
 	private constructor(value: string) {
 		this._value = value;
 	}
 
 	public static create(type: string): Result<RoleAuditLogType> {
-		if (!RoleAuditLogType.ROLE_AUDIT_LOG_TYPES.includes(type)) {
+		if (!RoleAuditLogType._isRoleAuditLogTypeValid(type)) {
 			return Result.fail<RoleAuditLogType>("Invalid audit log type.");
 		}
 
@@ -18,5 +18,9 @@ export class RoleAuditLogType {
 
 	public get value(): string {
 		return this._value;
+	}
+	
+	private static _isRoleAuditLogTypeValid(type: string): boolean {
+		return Object.values(RoleAuditLogTypes).includes(type as IRoleAuditLogType);
 	}
 }

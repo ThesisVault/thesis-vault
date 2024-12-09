@@ -1,6 +1,6 @@
-import type {
-	IRoleAuditLogRawObject,
-	IRoleAuditLogSchemaObject,
+import {
+	type IRoleAuditLogRawObject,
+	type IRoleAuditLogSchemaObject, RoleAuditLogTypes,
 } from "@/modules/user/src/domain/models/roleAuditLog/constant";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
@@ -11,9 +11,9 @@ import { v4 as uuid } from "uuid";
 export const seedRoleAuditLog = async ({
 	id = uuid(),
 	userId,
-	type = "CREATE",
+	type = faker.helpers.arrayElement(Object.values(RoleAuditLogTypes)),
 	description = faker.lorem.sentence(),
-	createdAt = faker.date.past(),
+	createdAt = new Date(),
 	roleId,
 }: Partial<IRoleAuditLogSchemaObject>): Promise<IRoleAuditLogRawObject> => {
 	const user = userId ? { id: userId } : await seedUser({});

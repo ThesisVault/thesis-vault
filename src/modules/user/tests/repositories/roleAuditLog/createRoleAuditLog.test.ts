@@ -2,7 +2,6 @@ import type { IRoleAuditLog } from "@/modules/user/src/domain/models/roleAuditLo
 import { RoleAuditLogRepository } from "@/modules/user/src/repositories/roleAuditLogRepository";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { createRoleAuditLogDomainObject } from "@/modules/user/tests/utils/roleAuditLog/createRoleAuditLogDomainObject";
-import { db } from "@/shared/infrastructure/database";
 import { seedUser } from "../../utils/user/seedUser";
 
 const assertRoleAuditLog = (roleAuditLog: IRoleAuditLog, expectedRoleAuditLog: IRoleAuditLog) => {
@@ -19,10 +18,6 @@ describe("RoleAuditLogRepository.createRoleAuditLog", () => {
 
 	beforeAll(async () => {
 		roleAuditLogRepository = new RoleAuditLogRepository();
-	});
-
-	afterAll(async () => {
-		await db.$disconnect();
 	});
 
 	it("should create role audit log successfully", async () => {

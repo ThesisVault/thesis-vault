@@ -1,16 +1,11 @@
 import { RoleAuditLogRepository } from "@/modules/user/src/repositories/roleAuditLogRepository";
 import { seedRoleAuditLog } from "@/modules/user/tests/utils/roleAuditLog/seedRoleAuditLog";
-import { db } from "@/shared/infrastructure/database";
 
 describe("RoleAuditLogRepository.getRoleAuditLogByRoleIds", () => {
 	let roleAuditLogRepository: RoleAuditLogRepository;
 
 	beforeAll(async () => {
 		roleAuditLogRepository = new RoleAuditLogRepository();
-	});
-
-	afterAll(async () => {
-		await db.$disconnect();
 	});
 
 	it("should retrieve an existing roleAuditLog by roleId", async () => {

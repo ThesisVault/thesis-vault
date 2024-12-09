@@ -1,12 +1,13 @@
-import { UserAuditLogType } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLogType";
-import { faker } from "@faker-js/faker";
 import { RoleAuditLog } from "@/modules/user/src/domain/models/roleAuditLog/classes/roleAuditLog";
+import { RoleAuditLogType } from "@/modules/user/src/domain/models/roleAuditLog/classes/roleAuditLogType";
+import { RoleAuditLogTypes } from "@/modules/user/src/domain/models/roleAuditLog/constant";
+import { faker } from "@faker-js/faker";
 
 describe("RoleAuditLog", () => {
 	const mockRoleAuditLogData = {
 		id: faker.string.uuid(),
 		userId: faker.string.uuid(),
-		type: UserAuditLogType.create("CREATE").getValue(),
+		type: RoleAuditLogType.create(faker.helpers.arrayElement(Object.values(RoleAuditLogTypes))).getValue(),
 		description: faker.lorem.sentences(),
 		createdAt: faker.date.past(),
 		roleId: faker.string.uuid(),

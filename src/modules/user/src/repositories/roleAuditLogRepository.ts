@@ -33,7 +33,6 @@ export class RoleAuditLogRepository implements IRoleAuditLogRepository {
 
 	async getRoleAuditLogById(roleAuditLogId: string): Promise<IRoleAuditLog | null> {
 		const auditLogs = await this.getRoleAuditLogsByIds([roleAuditLogId]);
-
 		if (auditLogs.length === 0) {
 			return null;
 		}
@@ -54,18 +53,18 @@ export class RoleAuditLogRepository implements IRoleAuditLogRepository {
 	}
 
 	async createRoleAuditLog(roleAuditLog: IRoleAuditLog): Promise<IRoleAuditLog | null> {
-		const roleAuditLogDomain = await this.createRoleAuditLogs([roleAuditLog]);
+		const roleAuditLogsDomain = await this.createRoleAuditLogs([roleAuditLog]);
 
-		if (roleAuditLogDomain.length === 0) {
+		if (roleAuditLogsDomain.length === 0) {
 			return null;
 		}
 
-		return roleAuditLogDomain[0];
+		return roleAuditLogsDomain[0];
 	}
 
 	async createRoleAuditLogs(roleAuditLogs: IRoleAuditLog[]): Promise<IRoleAuditLog[]> {
 		try {
-			const roleAuditLogPersistence = await db.$transaction(
+			const roleAuditLogsPersistence = await db.$transaction(
 				roleAuditLogs.map((roleAuditLog) => {
 					return this._roleAuditLogDatabase.create({
 						data: RoleAuditLogMapper.toPersistence(roleAuditLog),
@@ -73,7 +72,7 @@ export class RoleAuditLogRepository implements IRoleAuditLogRepository {
 				}),
 			);
 
-			return roleAuditLogPersistence.map((roleAuditLog) =>
+			return roleAuditLogsPersistence.map((roleAuditLog) =>
 				RoleAuditLogMapper.toDomain(roleAuditLog),
 			);
 		} catch {
@@ -82,12 +81,12 @@ export class RoleAuditLogRepository implements IRoleAuditLogRepository {
 	}
 
 	async getRoleAuditLogByRoleId(roleAuditLogId: string): Promise<IRoleAuditLog | null> {
-		const roleAuditLog = await this.getRoleAuditLogsByRoleIds([roleAuditLogId]);
-		if (roleAuditLog.length === 0) {
+		const roleAuditLogs = await this.getRoleAuditLogsByRoleIds([roleAuditLogId]);
+		if (roleAuditLogs.length === 0) {
 			return null;
 		}
 
-		return roleAuditLog[0];
+		return roleAuditLogs[0];
 	}
 
 	async getRoleAuditLogsByRoleIds(roleIds: string[]): Promise<IRoleAuditLog[]> {

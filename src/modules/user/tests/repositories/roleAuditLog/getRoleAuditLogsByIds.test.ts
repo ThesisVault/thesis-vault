@@ -5,7 +5,6 @@ import {
 	RoleAuditLogRepository,
 } from "@/modules/user/src/repositories/roleAuditLogRepository";
 import { seedRoleAuditLog } from "@/modules/user/tests/utils/roleAuditLog/seedRoleAuditLog";
-import { db } from "@/shared/infrastructure/database";
 
 const assertRoleAuditLog = (
 	roleAuditLog: IRoleAuditLog,
@@ -24,10 +23,6 @@ describe("RoleAuditLogRepository.getRoleAuditLogsByIds", () => {
 
 	beforeAll(() => {
 		roleAuditLogRepository = new RoleAuditLogRepository();
-	});
-
-	afterAll(async () => {
-		await db.$disconnect();
 	});
 
 	it("should retrieve a roleAuditLogs by Ids", async () => {

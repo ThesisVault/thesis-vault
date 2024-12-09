@@ -1,4 +1,5 @@
 import { RoleAuditLog } from "@/modules/user/src/domain/models/roleAuditLog/classes/roleAuditLog";
+import { RoleAuditLogTypes } from "@/modules/user/src/domain/models/roleAuditLog/constant";
 import { RoleAuditLogFactory } from "@/modules/user/src/domain/models/roleAuditLog/factory";
 import { faker } from "@faker-js/faker";
 
@@ -6,7 +7,7 @@ describe("UserAuditLogFactory", () => {
 	const validRoleAuditLogProps = {
 		id: faker.string.uuid(),
 		userId: faker.string.uuid(),
-		type: "CREATE",
+		type: faker.helpers.arrayElement(Object.values(RoleAuditLogTypes)),
 		description: faker.lorem.sentences(),
 		createdAt: faker.date.past(),
 		roleId: faker.string.uuid(),
