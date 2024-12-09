@@ -13,19 +13,19 @@ export class GetPermissionsController extends BaseController<
 	PermissionsDetailType
 > {
 	private _getPermissionsUseCase: GetPermissionsUseCase;
-	private userPermissionService: IUserPermissionService;
+	private _userPermissionService: IUserPermissionService;
 
 	constructor(
 		getPermissionsUseCase = new GetPermissionsUseCase(),
 		userPermissonService = new UserPermissionService(),
 	) {
 		super();
-		this.userPermissionService = userPermissonService;
+		this._userPermissionService = userPermissonService;
 		this._getPermissionsUseCase = getPermissionsUseCase;
 	}
 
 	public async executeImpl(request: GetPermissionsDTO): Promise<PermissionsDetailType> {
-		const hasManagePermissionPermission = await this.userPermissionService.hasPermission(
+		const hasManagePermissionPermission = await this._userPermissionService.hasPermission(
 			request.requestedById,
 			"MANAGE_PERMISSION",
 		);

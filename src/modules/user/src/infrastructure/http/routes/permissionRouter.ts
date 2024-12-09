@@ -9,7 +9,7 @@ export const permissionRouter = router({
 				userId: z.string(),
 			}),
 		)
-		.mutation(async ({ input, ctx }) => {
+		.query(async ({ input, ctx }) => {
 			return new GetPermissionsController().executeImpl({
 				...input,
 				requestedById: ctx.session.user.id,

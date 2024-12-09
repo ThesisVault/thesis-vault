@@ -1,6 +1,6 @@
 import type { GetPermissionsDTO } from "@/modules/user/src/dtos/permissionDTO";
 import { GetPermissionsController } from "@/modules/user/src/infrastructure/http/controllers/permission/getPermissionsController";
-import { Permissions } from "@/modules/user/src/shared/permissions";
+import { Permissions, PermissionsDetail } from "@/modules/user/src/shared/permissions";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 
 describe("GetPermissionsController", () => {
@@ -18,15 +18,8 @@ describe("GetPermissionsController", () => {
 			requestedById: requestedByUser.id,
 		};
 
-		let success = false;
-		try {
-			await getPermissionsController.executeImpl(request);
-			success = true;
-		} catch (error) {
-			success = false;
-		}
-
-		expect(success).toBe(true);
+		const result = await getPermissionsController.executeImpl(request);
+		expect(result).toBe(PermissionsDetail);
 	});
 
 	it("should throw ForbiddenError if the user does not have MANAGE_PERMISSION", async () => {

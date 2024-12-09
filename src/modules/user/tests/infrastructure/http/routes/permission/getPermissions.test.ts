@@ -9,7 +9,7 @@ import { v4 as uuid } from "uuid";
 
 describe("getPermissionsEndPoint", () => {
 	describe("User is authenticated", () => {
-		it("Should return the initial list of permissions", async () => {
+		it("should return the initial list of permissions", async () => {
 			const seededUserWithPermission = await seedUser({
 				allowPermissions: Permissions.MANAGE_PERMISSION,
 			});
@@ -32,7 +32,7 @@ describe("getPermissionsEndPoint", () => {
 			expect(userId).toBe(PermissionsDetail);
 		});
 
-		it("Should return an error if the user does not have MANAGE_PERMISSION permission", async () => {
+		it("should return an error if the user does not have MANAGE_PERMISSION permission", async () => {
 			const seededUserWithPermission = await seedUser({
 				allowPermissions: 0,
 			});
