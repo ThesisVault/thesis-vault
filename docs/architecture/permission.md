@@ -31,4 +31,3 @@ the privileges that they grant.
 | Manage Permission       | `0x0000000000000800` `(1 << 11)` | Allows granting or revoking permissions and roles for users. |
 | Manage User             | `0x0000000000001000` `(1 << 12)` | Allows managing user.                                        |
 | Manage Role             | `0x0000000000002000` `(1 << 13)` | Allows managing roles and role assignments.                  |
-

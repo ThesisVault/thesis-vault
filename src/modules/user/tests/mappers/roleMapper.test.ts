@@ -25,5 +25,7 @@ describe("RoleMapper", () => {
 		expect(roleSchemaObject.createdAt).toBe(roleDomainObject.createdAt);
 		expect(roleSchemaObject.updatedAt).toBe(roleDomainObject.updatedAt);
 		expect(roleSchemaObject.color).toBe(roleDomainObject.color);
+		expect(roleSchemaObject.isDeleted).toBe(roleDomainObject.isDeleted);
+		expect(roleSchemaObject.deletedAt).toBe(roleDomainObject.deletedAt);
 	});
 });

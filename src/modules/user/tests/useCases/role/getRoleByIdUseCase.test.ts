@@ -18,11 +18,11 @@ describe("GetRoleByIdUseCase", () => {
 
 	it("should return role when roleId exist", async () => {
 		const seededRole = await seedRole({});
-		const requestedByUser = await seedUser({});
+		const seededUserRequestedBy = await seedUser({});
 
 		const request: GetRoleByIdDTO = {
 			roleId: seededRole.id,
-			requestedById: requestedByUser.id,
+			requestedById: seededUserRequestedBy.id,
 		};
 
 		const role = await getRoleByIdUseCase.execute(request);

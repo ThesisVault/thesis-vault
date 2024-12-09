@@ -27,12 +27,12 @@ describe("UpdateUserRoleIdUseCase", () => {
 	it("should successfully update the user role and return the updated user ID", async () => {
 		const seededUser = await seedUser({});
 		const seededRole = await seedRole({});
-		const requestedByUser = await seedUser({});
+		const seededUserRequestedBy = await seedUser({});
 
 		const request: UpdateUserRoleIdDTO = {
 			userId: seededUser.id,
 			roleId: seededRole.id,
-			requestedById: requestedByUser.id,
+			requestedById: seededUserRequestedBy.id,
 		};
 		const updatedUserId = await updateUserRoleIdUseCase.execute(request);
 

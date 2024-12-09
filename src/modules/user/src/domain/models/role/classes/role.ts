@@ -8,8 +8,11 @@ export interface IRole {
 	permissions: RolePermission;
 	color: string;
 	permissionsValue: number;
+	isDeleted: boolean;
+	deletedAt: Date | null;
 	createdAt: Date;
 	updatedAt: Date;
+	softDelete: () => void;
 }
 
 export class Role implements IRole {
@@ -17,6 +20,8 @@ export class Role implements IRole {
 	private readonly _name: RoleName;
 	private readonly _permissions: RolePermission;
 	private readonly _color: string;
+	private _isDeleted: boolean;
+	private _deletedAt: Date | null;
 	private readonly _createdAt: Date;
 	private readonly _updatedAt: Date;
 
@@ -25,13 +30,17 @@ export class Role implements IRole {
 		name,
 		permissions,
 		color,
+		isDeleted,
+		deletedAt,
 		createdAt,
 		updatedAt,
 	}: {
 		id: string;
 		name: RoleName;
 		permissions: RolePermission;
-		color: string,
+		color: string;
+		isDeleted: boolean;
+		deletedAt: Date | null;
 		createdAt: Date;
 		updatedAt: Date;
 	}) {
@@ -39,6 +48,8 @@ export class Role implements IRole {
 		this._name = name;
 		this._permissions = permissions;
 		this._color = color;
+		this._isDeleted = isDeleted;
+		this._deletedAt = deletedAt;
 		this._createdAt = createdAt;
 		this._updatedAt = updatedAt;
 	}
@@ -63,10 +74,17 @@ export class Role implements IRole {
 		return this._permissions.value;
 	}
 
-	get color(): string { 
+	get color(): string {
 		return this._color;
 	}
 
+	get isDeleted(): boolean {
+		return this._isDeleted;
+	}
+
+	get deletedAt(): Date | null {
+		return this._deletedAt;
+	}
 
 	get createdAt(): Date {
 		return this._createdAt;
@@ -76,11 +94,18 @@ export class Role implements IRole {
 		return this._updatedAt;
 	}
 
+	public softDelete(): void {
+		this._isDeleted = true;
+		this._deletedAt = new Date();
+	}
+
 	public static create(props: {
 		id: string;
 		name: RoleName;
 		permissions: RolePermission;
 		color: string;
+		isDeleted: boolean;
+		deletedAt: Date | null;
 		createdAt: Date;
 		updatedAt: Date;
 	}): Role {
