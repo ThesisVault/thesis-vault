@@ -13,13 +13,14 @@ export interface IRole {
 	createdAt: Date;
 	updatedAt: Date;
 	softDelete: () => void;
+	updateRole: (name: RoleName, permission: RolePermission, color: string) => void;
 }
 
 export class Role implements IRole {
 	private readonly _id: string;
-	private readonly _name: RoleName;
-	private readonly _permissions: RolePermission;
-	private readonly _color: string;
+	private _name: RoleName;
+	private _permissions: RolePermission;
+	private _color: string;
 	private _isDeleted: boolean;
 	private _deletedAt: Date | null;
 	private readonly _createdAt: Date;
@@ -97,6 +98,12 @@ export class Role implements IRole {
 	public softDelete(): void {
 		this._isDeleted = true;
 		this._deletedAt = new Date();
+	}
+
+	public updateRole(name: RoleName, permission: RolePermission, color: string): void {
+		this._name = name;
+		this._permissions = permission;
+		this._color = color;
 	}
 
 	public static create(props: {
