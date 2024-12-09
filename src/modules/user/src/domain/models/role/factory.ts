@@ -11,13 +11,14 @@ export interface IRoleFactory {
 	permissions: number;
 	color: string;
 	createdAt: Date;
-	updatedAt: Date;
+	updatedAt?: Date | null;
 	isDeleted: boolean;
 	deletedAt: Date | null;
 }
 
 export class RoleFactory {
 	public static create(props: IRoleFactory): Result<Role> {
+		const updatedAt = props.updatedAt ? props.updatedAt : null;
 		const nameOrError = RoleName.create(props.name);
 		const permissionOrError = RolePermission.create(props.permissions);
 
@@ -31,6 +32,7 @@ export class RoleFactory {
 				name: nameOrError.getValue(),
 				permissions: permissionOrError.getValue(),
 				color: props.color,
+				updatedAt: updatedAt,
 			}),
 		);
 	}
