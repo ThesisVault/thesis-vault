@@ -91,13 +91,13 @@ export const PermissionsDetail = {
 	},
 	MANAGE_ROLE: {
 		name: "Manage Role",
-		description: "Allows managing roles",
+		description: "Allows managing roles.",
 		value: Permissions.MANAGE_ROLE,
 	},
 
 	ALL: {
 		name: "All",
-		description: "Allows one to do all",
+		description: "Allows the user to access and manage all permissions, settings, and resources within the system without restriction.",
 		value: Permissions.ALL,
 	},
 } as const;

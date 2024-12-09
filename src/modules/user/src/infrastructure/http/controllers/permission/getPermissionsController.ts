@@ -5,14 +5,14 @@ import {
 	type IUserPermissionService,
 	UserPermissionService,
 } from "../../../../domain/services/userPermissionService";
-import type { getPermissionsDTO } from "../../../../dtos/permissionDTO";
+import type { GetPermissionsDTO } from "../../../../dtos/permissionDTO";
 import { GetPermissionsUseCase } from "../../../../useCases/permission/getPermissionsUseCase";
 
 export class GetPermissionsController extends BaseController<
-	getPermissionsDTO,
+	GetPermissionsDTO,
 	PermissionsDetailType
 > {
-	private getPermissionsUseCase: GetPermissionsUseCase;
+	private _getPermissionsUseCase: GetPermissionsUseCase;
 	private userPermissionService: IUserPermissionService;
 
 	constructor(
@@ -21,21 +21,21 @@ export class GetPermissionsController extends BaseController<
 	) {
 		super();
 		this.userPermissionService = userPermissonService;
-		this.getPermissionsUseCase = getPermissionsUseCase;
+		this._getPermissionsUseCase = getPermissionsUseCase;
 	}
 
-	public async executeImpl(request: getPermissionsDTO): Promise<PermissionsDetailType> {
-		const hasManageUserPermission = await this.userPermissionService.hasPermission(
+	public async executeImpl(request: GetPermissionsDTO): Promise<PermissionsDetailType> {
+		const hasManagePermissionPermission = await this.userPermissionService.hasPermission(
 			request.requestedById,
 			"MANAGE_PERMISSION",
 		);
-		if (!hasManageUserPermission) {
+		if (!hasManagePermissionPermission) {
 			throw new ForbiddenError(
 				`User ${request.requestedById} does not have MANAGE_PERMISSION permission`,
 			);
 		}
 
-		const permission = await this.getPermissionsUseCase.execute();
+		const permission = await this._getPermissionsUseCase.execute();
 		return this.ok(permission);
 	}
 }

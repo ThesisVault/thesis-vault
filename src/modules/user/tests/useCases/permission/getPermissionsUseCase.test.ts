@@ -16,10 +16,4 @@ describe("GetPermissionsUseCase", () => {
 		expect(result).toBeDefined();
 		expect(result).toBe(PermissionsDetail);
 	});
-
-	it("should return the same instance of PermissionsDetail on each call", async () => {
-		const permissions1: PermissionsDetailType = await getPermissionsUseCase.execute();
-		const permissions2: PermissionsDetailType = await getPermissionsUseCase.execute();
-		expect(permissions1).toBe(permissions2);
-	});
 });
