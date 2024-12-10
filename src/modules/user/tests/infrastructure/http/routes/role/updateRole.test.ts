@@ -1,4 +1,8 @@
 import { roleRouter } from "@/modules/user/src/infrastructure/http/routes/roleRouter";
+import {
+	type IRoleRepository,
+	RoleRepository,
+} from "@/modules/user/src/repositories/roleRepository";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
@@ -9,6 +13,12 @@ import { faker } from "@faker-js/faker";
 import type { TRPCError } from "@trpc/server";
 
 describe("updateRoleEndPoint", () => {
+	let roleRepository: IRoleRepository;
+
+	beforeAll(() => {
+		roleRepository = new RoleRepository();
+	});
+
 	describe("User is authenticated", () => {
 		it("should successfully update role and return roleId", async () => {
 			const seededRole = await seedRole({});
@@ -38,10 +48,10 @@ describe("updateRoleEndPoint", () => {
 
 			expect(roleId).toBe(seededRole.id);
 
-			const updatedRole = await db.role.findUnique({ where: { id: roleId } });
+			const updatedRole = await roleRepository.getRoleById(roleId);
 			expect(updatedRole).not.toBeNull();
-			expect(updatedRole!.name).toBe(request.name);
-			expect(updatedRole!.permissions).toBe(request.permissions);
+			expect(updatedRole!.nameValue).toBe(request.name);
+			expect(updatedRole!.permissionsValue).toBe(request.permissions);
 			expect(updatedRole!.color).toBe(request.color);
 		});
 

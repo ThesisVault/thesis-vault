@@ -26,8 +26,6 @@ describe("UpdateRoleUseCase", () => {
 			allowPermissions: Permissions.MANAGE_ROLE,
 		});
 
-		console.log(seededRole.name);
-
 		const request: UpdateRoleDTO = {
 			roleId: seededRole.id,
 			name: faker.word.noun(),
