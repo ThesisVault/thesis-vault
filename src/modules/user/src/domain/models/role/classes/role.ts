@@ -17,9 +17,9 @@ export interface IRole {
 
 export class Role implements IRole {
 	private readonly _id: string;
-	private readonly _name: RoleName;
-	private readonly _permissions: RolePermission;
-	private readonly _color: string;
+	private _name: RoleName;
+	private _permissions: RolePermission;
+	private _color: string;
 	private _isDeleted: boolean;
 	private _deletedAt: Date | null;
 	private readonly _createdAt: Date;

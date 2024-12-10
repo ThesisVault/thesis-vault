@@ -38,3 +38,11 @@ export interface HasPermissionByUserIdDTO {
 	permission: number;
 	requestedById: string;
 }
+
+export interface UpdateRoleDTO {
+	roleId: string;
+	name: string;
+	permissions: number;
+	color: string;
+	requestedById: string;
+}
