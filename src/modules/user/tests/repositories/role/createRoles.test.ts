@@ -1,10 +1,8 @@
-import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
-import { UserAuditLogRepository } from "@/modules/user/src/repositories/userAuditLogRepository";
-import { db } from "@/shared/infrastructure/database";
-import { seedUser } from "../../utils/user/seedUser";
-import { createUserAuditLogDomainObject } from "../../utils/userAuditLog/createUserAuditLogDomainObject";
 import type { IRole } from "@/modules/user/src/domain/models/role/classes/role";
-import { RoleRepository, type IRoleRepository } from "@/modules/user/src/repositories/roleRepository";
+import {
+	type IRoleRepository,
+	RoleRepository,
+} from "@/modules/user/src/repositories/roleRepository";
 import { createRoleDomainObject } from "../../utils/role/createRoleDomainObject";
 
 const assertRole = (role: IRole, expectedRole: IRole) => {
@@ -34,11 +32,8 @@ describe("Test User Audit Log Repository createUserAuditLogs", () => {
 			updatedAt: null,
 			deletedAt: null,
 		});
-		const createdRoles = await roleRepository.createRoles([
-			roleDomainObject,
-			roleDomainObject2,
-		]);
-		
+		const createdRoles = await roleRepository.createRoles([roleDomainObject, roleDomainObject2]);
+
 		assertRole(createdRoles[0], roleDomainObject);
 		assertRole(createdRoles[1], roleDomainObject2);
 
