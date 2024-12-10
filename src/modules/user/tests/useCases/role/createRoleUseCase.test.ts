@@ -37,7 +37,6 @@ describe("CreateRoleUseCase", () => {
 		expect(createdRole!.nameValue).toBe(request!.name);
 		expect(createdRole!.color).toBe(request!.color);
 		expect(createdRole!.permissionsValue).toBe(request!.permissions);
-		console.log(result);
 
 		const roleAuditLog = await roleAuditLogRepository.getRoleAuditLogByRoleId(result);
 

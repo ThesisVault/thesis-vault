@@ -54,4 +54,18 @@ export const roleRouter = router({
 				requestedById: ctx.session.user.id,
 			});
 		}),
+	createRole: protectedProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				permissions: z.number(),
+				color: z.string(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			return new CreateRoleController().executeImpl({
+				...input,
+				requestedById: ctx.session.user.id,
+			});
+		}),
 });
