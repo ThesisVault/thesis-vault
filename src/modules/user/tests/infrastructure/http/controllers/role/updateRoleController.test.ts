@@ -1,4 +1,4 @@
-import type { UpdateRoleDTO } from "@/modules/user/src/dtos/userDTO";
+import type { UpdateRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import { UpdateRoleController } from "@/modules/user/src/infrastructure/http/controllers/role/updateRoleController";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";

@@ -1,4 +1,4 @@
-import type { GetRoleByIdDTO } from "@/modules/user/src/dtos/userDTO";
+import type { GetRoleByIdDTO } from "@/modules/user/src/dtos/roleDTO";
 import {
 	type IRoleRepository,
 	RoleRepository,
@@ -28,9 +28,9 @@ describe("GetRoleByIdUseCase", () => {
 		const role = await getRoleByIdUseCase.execute(request);
 
 		expect(role!.id).toBe(request.roleId);
-    expect(role!.nameValue).toBe(seededRole.name);
-    expect(role!.color).toBe(seededRole.color);
-    expect(role!.permissionsValue).toBe(seededRole.permissions);
+		expect(role!.nameValue).toBe(seededRole.name);
+		expect(role!.color).toBe(seededRole.color);
+		expect(role!.permissionsValue).toBe(seededRole.permissions);
 	});
 
 	it("should null when roleId does not exist", async () => {

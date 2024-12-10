@@ -5,6 +5,7 @@ import { db } from "@/shared/infrastructure/database";
 
 export interface IRoleRepository {
 	getRoleById(roleId: string, options?: QueryOptions): Promise<IRole | null>;
+	getRoles(): Promise<IRole[]>;
 	getRolesByIds(roleIds: string[], options?: QueryOptions): Promise<IRole[]>;
 	updateRole(data: IRole): Promise<IRole | null>;
 	updateRoles(roles: IRole[]): Promise<IRole[]>;
@@ -27,6 +28,12 @@ export class RoleRepository implements IRoleRepository {
 		}
 
 		return roles[0];
+	}
+
+	async getRoles(): Promise<IRole[]> {
+		const rolesRaw = await this._roleDatabase.findMany({});
+
+		return rolesRaw.map((role) => this._roleMapper.toDomain(role));
 	}
 
 	async getRolesByIds(roleIds: string[], options?: QueryOptions): Promise<IRole[]> {

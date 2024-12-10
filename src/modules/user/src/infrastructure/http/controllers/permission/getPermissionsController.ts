@@ -17,10 +17,10 @@ export class GetPermissionsController extends BaseController<
 
 	constructor(
 		getPermissionsUseCase = new GetPermissionsUseCase(),
-		userPermissonService = new UserPermissionService(),
+		userPermissionService = new UserPermissionService(),
 	) {
 		super();
-		this._userPermissionService = userPermissonService;
+		this._userPermissionService = userPermissionService;
 		this._getPermissionsUseCase = getPermissionsUseCase;
 	}
 

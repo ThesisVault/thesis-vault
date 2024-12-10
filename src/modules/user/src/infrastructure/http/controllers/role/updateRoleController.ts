@@ -2,7 +2,7 @@ import {
 	type IUserPermissionService,
 	UserPermissionService,
 } from "@/modules/user/src/domain/services/userPermissionService";
-import type { UpdateRoleDTO } from "@/modules/user/src/dtos/userDTO";
+import type { UpdateRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import { UpdateRoleUseCase } from "@/modules/user/src/useCases/role/updateRoleUseCase";
 import { ForbiddenError } from "@/shared/core/errors";
 import { BaseController } from "@/shared/infrastructure/trpc/models/baseController";

@@ -3,6 +3,7 @@ import { UpdateRoleController } from "@/modules/user/src/infrastructure/http/con
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
 import { GetRoleByIdController } from "../controllers/role/getRoleByIdController";
+import { GetRolesController } from "../controllers/role/getRolesController";
 
 export const roleRouter = router({
 	getRoleById: protectedProcedure
@@ -17,6 +18,12 @@ export const roleRouter = router({
 				requestedById: ctx.session.user.id,
 			});
 		}),
+
+	getRoles: protectedProcedure.query(async ({ ctx }) => {
+		return new GetRolesController().executeImpl({
+			requestedById: ctx.session.user.id,
+		});
+	}),
 
 	deleteRole: protectedProcedure
 		.input(

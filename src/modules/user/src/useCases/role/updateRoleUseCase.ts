@@ -1,5 +1,5 @@
 import { RoleFactory } from "@/modules/user/src/domain/models/role/factory";
-import type { UpdateRoleDTO } from "@/modules/user/src/dtos/userDTO";
+import type { UpdateRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import { RoleRepository } from "@/modules/user/src/repositories/roleRepository";
 import { BadRequestError, NotFoundError, UnexpectedError } from "@/shared/core/errors";
 

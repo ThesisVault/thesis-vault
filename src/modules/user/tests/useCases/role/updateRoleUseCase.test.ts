@@ -1,5 +1,5 @@
 import { RolePermission } from "@/modules/user/src/domain/models/role/classes/rolePermission";
-import type { UpdateRoleDTO } from "@/modules/user/src/dtos/userDTO";
+import type { UpdateRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import {
 	type IRoleRepository,
 	RoleRepository,

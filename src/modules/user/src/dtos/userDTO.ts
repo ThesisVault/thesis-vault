@@ -11,11 +11,6 @@ export interface UpdateUserRoleIdDTO {
 	requestedById: string;
 }
 
-export interface GetRoleByIdDTO {
-	roleId: string;
-	requestedById: string;
-}
-
 export interface DeleteUserDTO {
 	userId: string;
 	requestedById: string;
@@ -28,21 +23,8 @@ export interface GetUsersByPaginationDTO {
 	includeDeleted?: boolean;
 }
 
-export interface DeleteRoleDTO {
-	roleId: string;
-	requestedById: string;
-}
-
 export interface HasPermissionByUserIdDTO {
 	userId: string;
 	permission: number;
-	requestedById: string;
-}
-
-export interface UpdateRoleDTO {
-	roleId: string;
-	name: string;
-	permissions: number;
-	color: string;
 	requestedById: string;
 }

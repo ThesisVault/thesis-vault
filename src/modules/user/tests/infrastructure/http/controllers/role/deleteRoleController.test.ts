@@ -1,4 +1,4 @@
-import type { DeleteRoleDTO } from "@/modules/user/src/dtos/userDTO";
+import type { DeleteRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import { DeleteRoleController } from "@/modules/user/src/infrastructure/http/controllers/role/deleteRoleController";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedRole } from "@/modules/user/tests/utils/role/seedRole";

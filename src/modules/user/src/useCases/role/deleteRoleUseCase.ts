@@ -1,7 +1,7 @@
 import type { IRole } from "@/modules/user/src/domain/models/role/classes/role";
 import { type IRoleAuditLogService, RoleAuditLogService } from "@/modules/user/src/domain/services/roleAuditLogService";
 
-import type { DeleteRoleDTO } from "@/modules/user/src/dtos/userDTO";
+import type { DeleteRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import { type IRoleRepository, RoleRepository, } from "@/modules/user/src/repositories/roleRepository";
 import { NotFoundError, UnexpectedError } from "@/shared/core/errors";
 
