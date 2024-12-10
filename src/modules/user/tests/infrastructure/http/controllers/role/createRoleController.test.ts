@@ -1,40 +1,47 @@
 import type { CreateRoleDTO } from "@/modules/user/src/dtos/roleDTO";
 import { CreateRoleController } from "@/modules/user/src/infrastructure/http/controllers/role/createRoleController";
+import {
+	type IRoleRepository,
+	RoleRepository,
+} from "@/modules/user/src/repositories/roleRepository";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { seedUser } from "@/modules/user/tests/utils/user/seedUser";
 import { faker } from "@faker-js/faker";
 
 describe("CreateRoleController", () => {
 	let createRoleController: CreateRoleController;
+	let roleRepository: IRoleRepository;
 
 	beforeAll(() => {
 		createRoleController = new CreateRoleController();
+		roleRepository = new RoleRepository();
 	});
 
-  // it("should return the newly created role ID upon successful creation", async () => {
+	it("should successfully create role with required permission", async () => {
+		const seededUser = await seedUser({
+			allowPermissions: Permissions.MANAGE_ROLE,
+		});
 
-	// 	const seededUser = await seedUser({
-	// 		allowPermissions: Permissions.MANAGE_PERMISSION,
-	// 		denyPermissions: 0,
-	// 	});
+		const request = {
+			name: faker.word.noun(),
+			permissions: Permissions.MANAGE_ROLE,
+			color: faker.color.rgb(),
+			requestedById: seededUser.id,
+		};
 
-  //   const request: CreateRoleDTO = {
-	// 		name: faker.word.noun(),
-	// 		requestedById: seededUser.id,
-	// 		permissions: 0,
-	// 		color: faker.color.rgb(),
-	// 	};
+		const result = await createRoleController.executeImpl(request);
+		const createdRole = await roleRepository.getRoleById(result);
 
-
-	// 	const result = await createRoleController.executeImpl(request);
-
-	// 	expect(result).toBe(request.requestedById);
-	// });
+		expect(createdRole).not.toBeNull();
+		expect(createdRole!.nameValue).toBe(request!.name);
+		expect(createdRole!.color).toBe(request!.color);
+		expect(createdRole!.permissionsValue).toBe(request!.permissions);
+	});
 
 	it("should throw a Error when the user who requested does not have a required permissions", async () => {
 		const user = await seedUser({
-      allowPermissions: 0,
-    });
+			allowPermissions: 0,
+		});
 
 		const request: CreateRoleDTO = {
 			name: faker.word.noun(),
@@ -51,8 +58,7 @@ describe("CreateRoleController", () => {
 		}
 
 		expect(errorMessage).toEqual(
-				`User ${request.requestedById} does not have MANAGE_ROLE permission`,
+			`User ${request.requestedById} does not have MANAGE_ROLE permission`,
 		);
 	});
-
 });

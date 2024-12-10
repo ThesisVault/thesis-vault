@@ -31,7 +31,7 @@ export class CreateRoleUseCase {
 			isDeleted: false,
 			deletedAt: null,
 		});
-    
+
 		if (roleOrFailure.isFailure) {
 			throw new BadRequestError(`failed to create role ${roleOrFailure.getErrorMessage}`);
 		}
