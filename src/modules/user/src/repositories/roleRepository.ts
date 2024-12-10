@@ -81,13 +81,13 @@ export class RoleRepository implements IRoleRepository {
 	}
 
 	async createRole(role: IRole): Promise<IRole | null> {
-		const roleDomain = await this.createRoles([role]);
+		const roleDomains = await this.createRoles([role]);
 		
-		if (roleDomain.length === 0) {
+		if (roleDomains.length === 0) {
 			return null;
 		}
 		
-		return roleDomain[0];
+		return roleDomains[0];
 	}
 
 	async createRoles(roles: IRole[]): Promise<IRole[]> {

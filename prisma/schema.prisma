@@ -61,7 +61,7 @@ model Role {
   permissions Int
   color       String         @default("#FFFFFF")
   createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  updatedAt   DateTime?      @updatedAt
   isDeleted   Boolean        @default(false)
   deletedAt   DateTime?
   users       User[]         @relation
