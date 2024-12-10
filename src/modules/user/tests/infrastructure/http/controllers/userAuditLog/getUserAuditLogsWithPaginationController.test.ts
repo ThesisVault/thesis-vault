@@ -13,7 +13,6 @@ describe("GetUserAuditLogsWithPaginationController", () => {
 
 	beforeEach(async () => {
 		await db.userAuditLog.deleteMany();
-		await db.user.deleteMany();
 	});
 
 	it("should return logs, limited by pagination size", async () => {

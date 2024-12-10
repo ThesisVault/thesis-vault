@@ -13,7 +13,6 @@ describe("GetUserAuditLogsWithPaginationUseCase", () => {
 
 	beforeEach(async () => {
 		await db.userAuditLog.deleteMany();
-		await db.user.deleteMany();
 	});
 
 	it("should return user audit logs with pagination", async () => {

@@ -11,7 +11,6 @@ describe("getUserAuditLogsWithPaginationEndPoint", () => {
 	describe("User is authenticated", () => {
 		beforeEach(async () => {
 			await db.userAuditLog.deleteMany();
-			await db.user.deleteMany();
 		});
 
 		it("should return user audit logs, limited by pagination size", async () => {

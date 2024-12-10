@@ -11,7 +11,6 @@ describe("GetUserAuditLogsWithPagination", () => {
 
 	beforeEach(async () => {
 		await db.userAuditLog.deleteMany();
-		await db.user.deleteMany();
 	});
 
 	it("should return paginated user audit logs", async () => {
