@@ -27,7 +27,7 @@ describe("Role", () => {
 		expect(role.nameValue).toBe(mockRoleData.name.value);
 		expect(role.color).toBe(mockRoleData.color);
 		expect(role.createdAt.toString()).toBe(mockRoleData.createdAt.toString());
-		expect(role.updatedAt.toString()).toBe(mockRoleData.updatedAt.toString());
+		expect(role.updatedAt!.toString()).toBe(mockRoleData.updatedAt.toString());
 	});
 
 	describe("softDelete", () => {
