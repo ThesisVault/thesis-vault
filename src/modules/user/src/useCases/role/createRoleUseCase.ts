@@ -55,14 +55,3 @@ export class CreateRoleUseCase {
 		});
 	}
 }
-/**
- * id: string;
-	name: string;
-	permissions: number;
-	color: string;
-	createdAt: Date;
-	updatedAt: Date;
-	isDeleted: boolean;
-	deletedAt: Date | null; 
- * 
- */

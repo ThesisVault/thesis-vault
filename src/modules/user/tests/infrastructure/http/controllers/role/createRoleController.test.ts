@@ -17,7 +17,7 @@ describe("CreateRoleController", () => {
 		roleRepository = new RoleRepository();
 	});
 
-	it("should successfully create role with required permission", async () => {
+	it("should successfully create role", async () => {
 		const seededUser = await seedUser({
 			allowPermissions: Permissions.MANAGE_ROLE,
 		});
