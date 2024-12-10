@@ -3,7 +3,7 @@ import {
 	type IRoleAuditLogRepository,
 	RoleAuditLogRepository,
 } from "@/modules/user/src/repositories/roleAuditLogRepository";
-import { RoleRepository } from "@/modules/user/src/repositories/roleRepository";
+import { type IRoleRepository, RoleRepository } from "@/modules/user/src/repositories/roleRepository";
 import { Permissions } from "@/modules/user/src/shared/permissions";
 import { CreateRoleUseCase } from "@/modules/user/src/useCases/role/createRoleUseCase";
 import { faker } from "@faker-js/faker";
@@ -11,7 +11,7 @@ import { seedUser } from "../../utils/user/seedUser";
 
 describe("CreateRoleUseCase", () => {
 	let createRoleUseCase: CreateRoleUseCase;
-	let roleRepository: RoleRepository;
+	let roleRepository: IRoleRepository;
 	let roleAuditLogRepository: IRoleAuditLogRepository;
 
 	beforeAll(() => {
@@ -37,6 +37,9 @@ describe("CreateRoleUseCase", () => {
 		expect(createdRole!.nameValue).toBe(request!.name);
 		expect(createdRole!.color).toBe(request!.color);
 		expect(createdRole!.permissionsValue).toBe(request!.permissions);
+		expect(createdRole!.isDeleted).toBe(false);
+		expect(createdRole!.deletedAt).toBeNull();
+		expect(createdRole!.updatedAt).toBeNull();
 
 		const roleAuditLog = await roleAuditLogRepository.getRoleAuditLogByRoleId(result);
 
