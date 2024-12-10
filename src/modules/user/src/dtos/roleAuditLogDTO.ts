@@ -4,3 +4,9 @@ export interface CreateAndSaveRoleAuditLogDTO {
 	type: string;
 	description: string;
 }
+
+export interface GetRoleAuditLogsByPaginationDTO {
+	perPage: number;
+	page: number;
+	requestedById: string;
+}
