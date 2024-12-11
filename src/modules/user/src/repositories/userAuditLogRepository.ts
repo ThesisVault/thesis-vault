@@ -1,5 +1,6 @@
 import type { IUserAuditLog } from "@/modules/user/src/domain/models/userAuditLog/classes/userAuditLog";
 import { UserAuditLogMapper } from "@/modules/user/src/mappers/userAuditLogMapper";
+import type { Pagination } from "@/shared/constant";
 import { db } from "@/shared/infrastructure/database";
 
 export interface IUserAuditLogRepository {
@@ -8,6 +9,8 @@ export interface IUserAuditLogRepository {
 	getUserAuditLogsByUserId(userId: string): Promise<IUserAuditLog[]>;
 	createUserAuditLog(userAuditLog: IUserAuditLog): Promise<IUserAuditLog | null>;
 	createUserAuditLogs(userAuditLogs: IUserAuditLog[]): Promise<IUserAuditLog[]>;
+	getUserAuditLogsWithPagination(pagination: Pagination): Promise<IUserAuditLog[]>;
+	getUserAuditLogTotalPage(perPage: number): Promise<number>;
 }
 
 export class UserAuditLogRepository implements IUserAuditLogRepository {
@@ -53,11 +56,11 @@ export class UserAuditLogRepository implements IUserAuditLogRepository {
 
 	async createUserAuditLog(userAuditLog: IUserAuditLog): Promise<IUserAuditLog | null> {
 		const userAuditLogDomain = await this.createUserAuditLogs([userAuditLog]);
-		
+
 		if (userAuditLogDomain.length === 0) {
 			return null;
 		}
-		
+
 		return userAuditLogDomain[0];
 	}
 
@@ -70,10 +73,28 @@ export class UserAuditLogRepository implements IUserAuditLogRepository {
 					});
 				}),
 			);
-			
-			return userAuditLogPersistence.map(userAuditLog => UserAuditLogMapper.toDomain(userAuditLog));
+
+			return userAuditLogPersistence.map((userAuditLog) =>
+				UserAuditLogMapper.toDomain(userAuditLog),
+			);
 		} catch {
 			return [];
 		}
+	}
+
+	async getUserAuditLogsWithPagination(pagination: Pagination): Promise<IUserAuditLog[]> {
+		const userAuditLogRaw = await this._auditLogDatabase.findMany({
+			skip: pagination.skip,
+			take: pagination.size,
+			orderBy: [{ createdAt: "asc" }],
+		});
+
+		return userAuditLogRaw.map((userAuditLog) => this._auditLogMapper.toDomain(userAuditLog));
+	}
+
+	async getUserAuditLogTotalPage(perPage: number): Promise<number> {
+		const totalCount = await this._auditLogDatabase.count({});
+
+		return Math.ceil(totalCount / perPage);
 	}
 }
