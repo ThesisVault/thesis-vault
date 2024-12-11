@@ -2,6 +2,7 @@ import { DeleteRoleController } from "@/modules/user/src/infrastructure/http/con
 import { UpdateRoleController } from "@/modules/user/src/infrastructure/http/controllers/role/updateRoleController"; // Import the UpdateRoleController
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
+import { CreateRoleController } from "../controllers/role/createRoleController";
 import { GetRoleByIdController } from "../controllers/role/getRoleByIdController";
 import { GetRolesController } from "../controllers/role/getRolesController";
 
@@ -49,6 +50,21 @@ export const roleRouter = router({
 		)
 		.mutation(async ({ input, ctx }) => {
 			return new UpdateRoleController().executeImpl({
+				...input,
+				requestedById: ctx.session.user.id,
+			});
+		}),
+		
+	createRole: protectedProcedure
+		.input(
+			z.object({
+				name: z.string(),
+				permissions: z.number(),
+				color: z.string(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			return new CreateRoleController().executeImpl({
 				...input,
 				requestedById: ctx.session.user.id,
 			});

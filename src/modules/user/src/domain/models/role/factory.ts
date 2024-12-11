@@ -10,14 +10,15 @@ export interface IRoleFactory {
 	name: string;
 	permissions: number;
 	color: string;
-	createdAt: Date;
-	updatedAt: Date;
-	isDeleted: boolean;
-	deletedAt: Date | null;
+	createdAt?: Date;
+	updatedAt?: Date | null;
+	isDeleted?: boolean;
+	deletedAt?: Date | null;
 }
 
 export class RoleFactory {
 	public static create(props: IRoleFactory): Result<Role> {
+		
 		const nameOrError = RoleName.create(props.name);
 		const permissionOrError = RolePermission.create(props.permissions);
 
@@ -26,11 +27,14 @@ export class RoleFactory {
 
 		return Result.ok<Role>(
 			Role.create({
-				...props,
 				id: defaultTo(uuid(), props.id),
 				name: nameOrError.getValue(),
 				permissions: permissionOrError.getValue(),
 				color: props.color,
+				createdAt: defaultTo(new Date(), props.createdAt),
+				updatedAt: defaultTo(null, props.updatedAt),
+				deletedAt: defaultTo(null, props.deletedAt),
+				isDeleted: defaultTo(false, props.isDeleted),
 			}),
 		);
 	}
