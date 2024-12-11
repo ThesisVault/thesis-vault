@@ -3,6 +3,7 @@ import { UpdateRoleController } from "@/modules/user/src/infrastructure/http/con
 import { protectedProcedure, router } from "@/shared/infrastructure/trpc";
 import { z } from "zod";
 import { CreateRoleController } from "../controllers/role/createRoleController";
+import { CreateRoleController } from "../controllers/role/createRoleController";
 import { GetRoleByIdController } from "../controllers/role/getRoleByIdController";
 import { GetRolesController } from "../controllers/role/getRolesController";
 
